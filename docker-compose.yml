@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  caddy:
+    image: caddy:2.7.6-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - .:/srv
+    restart: unless-stopped
