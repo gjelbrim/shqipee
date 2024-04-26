@@ -21,7 +21,7 @@
         {
             "src": "/icons/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png",
+            "type": "image/png"
         },
         {
           "src": "/icons/android-chrome-maskable-192x192.png",
