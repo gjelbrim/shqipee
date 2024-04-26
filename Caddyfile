@@ -1,3 +1,5 @@
+# template if you want to use a reverse proxy
+
 {
     auto_https off
 }
