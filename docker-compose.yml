@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   caddy:
-    image: caddy:2.7.6-alpine
+    build: .
     ports:
       - "5555:80" # for reverse proxy; change to 80:80 or 443:443 for standalone use
     volumes:
