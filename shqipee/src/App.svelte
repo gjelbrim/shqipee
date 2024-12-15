@@ -9,16 +9,14 @@
   };
 </script>
 
-<header>
-  <h1>elbasans alphabet</h1>
-  <nav>
+
+
+<main>
+  <nav class="navbar">
     <!-- Navigation mittels Hash-Routing -->
     <a href="#/">elbasan</a>
     <a href="#/vithkuqi">vithkuqi</a>
   </nav>
-</header>
-
-<main>
   <!-- Hier wird entsprechend der Route Elbasan oder Vithkuqi angezeigt -->
   <Router {routes} />
 </main>
@@ -26,5 +24,5 @@
 <footer></footer>
 
 <style>
-  /* Deine Styles hier */
+
 </style>

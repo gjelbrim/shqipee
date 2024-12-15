@@ -1,0 +1,22 @@
+@font-face {
+  font-family: "Univers";
+  src: url("/src/assets/fonts/UniversBold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Univers Condensed Bold Font */
+@font-face {
+  font-family: "Univers Condensed";
+  src: url("/src/assets/fonts/UniversCnBold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+
+* {
+  background: #DBE1D5;
+  font-family: "Univers", Arial, sans-serif;
+  max-height: 100%;
+}
+
+
