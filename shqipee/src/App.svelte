@@ -1,38 +1,30 @@
 <script>
-    import { goto } from '$app/navigation'; // Gilt für SvelteKit
+  import Router from "svelte-spa-router";
+  import Elbasan from "./routes/Elbasan.svelte";
+  import Vithkuqi from "./routes/Vithkuqi.svelte";
 
-let selected = 'elbasan';
-
-// Wenn sich der Wert ändert, wird die Navigation ausgeführt
-$: if (selected) {
-    goto(`/${selected}`);
-}
+  const routes = {
+    "/": Elbasan,
+    "/vithkuqi": Vithkuqi
+  };
 </script>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
-    <title>Elbasan Alphabet</title>
-</head>
-<body>
-  <header>
-   <div>
-    <h1>
-      elbasans alphabet
-    </h1>
-   </div> 
-   <div>
-    <select bind:value={selected}>
-      <option value="elbasan">elbasan</option>
-      <option value="vithkuqi">vithkuqi</option>
-  </select>
-   </div>
+<header>
+  <h1>elbasans alphabet</h1>
+  <nav>
+    <!-- Navigation mittels Hash-Routing -->
+    <a href="#/">elbasan</a>
+    <a href="#/vithkuqi">vithkuqi</a>
+  </nav>
 </header>
-</body>
 
+<main>
+  <!-- Hier wird entsprechend der Route Elbasan oder Vithkuqi angezeigt -->
+  <Router {routes} />
+</main>
 
+<footer></footer>
 
 <style>
-
-
+  /* Deine Styles hier */
 </style>
