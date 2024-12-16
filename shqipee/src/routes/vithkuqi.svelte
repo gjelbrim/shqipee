@@ -2,6 +2,7 @@
 
 
     import Navbar from "../components/Navbar.svelte";
+    import BottomContent from "../components/bottomContent.svelte";
     import { vithkuqiMapping } from "../data/mappings.js";
   
   
@@ -142,23 +143,5 @@
   
     </div>
   
-    <div class="bottom-content">
-      <div class="text-left">
-        <div class="text-left-item">
-          <p id="sign">!</p>
-        </div>
-        <div>
-          <p id="disclaimer">
-            Language and pronunciation change over time. Therefore, Vithkuqi cannot be transliterated 1:1 into Latin and vice versa. Support outside of this site is very limited.
-          </p>
-        </div>
-      </div>
-      <div class="text-right">
-        <p id="author">
-          developed by <a href="http://github.com/gjelbrim">gjelbrim haskaj</a> <br />
-          designed by <a href="https://github.com/Litorian113">franz anhäupl</a>
-        </p>
-        <p id="wiki"><br>more info about the vithkuqi alphabet on <a href="https://en.wikipedia.org/wiki/Vithkuqi_alphabet">wikipedia</a></p>
-      </div>
-    </div>
+    <BottomContent/>
   </main>
