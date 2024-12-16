@@ -149,8 +149,7 @@
         </div>
         <div>
           <p id="disclaimer">
-            elbasanscript is being misused on social media by far-right extremists. the developer of
-            this page explicitly distances himself from such ideologies and condemns them.
+            Language and pronunciation change over time. Therefore, Vithkuqi cannot be transliterated 1:1 into Latin and vice versa. Support outside of this site is very limited.
           </p>
         </div>
       </div>
