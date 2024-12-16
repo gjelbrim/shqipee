@@ -99,19 +99,21 @@ const copyToClipboard = () => {
 
 
 <main>
-  <div>
+  <div class="top-section">
+  <div class="redLine">
     <!-- rote Linie -->
   </div>
-  <div>
+  <div class="headingTop">
     <h1>elbasan <br> alphabet</h1>
   </div>
-  <div>
+  <div class="insertNav">
     <!-- nav -->
     <!-- Router -->
   </div>
-  <div>
-    <!-- Logo -->
+  <div class="logoIcon">
+    <p>𐔋</p>
   </div>
+</div>
   <div class="switchArea">
     <div class="input-container">
       <div class="input-header">
@@ -173,6 +175,27 @@ const copyToClipboard = () => {
 </main>
 
 <style>
+
+.top-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  /* justify-content: baseline; */
+
+}
+.headingTop {
+  display: flex;
+  flex: 2;
+}
+
+.logoIcon {
+  font-size: 128px;
+  display: flex;
+  flex: 1;
+  color: #C3181E;
+  margin: 0px;
+
+}
 /* Bestehende CSS bleibt wie es ist */
 h2 {
   font-size: 64px;

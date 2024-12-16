@@ -26,6 +26,9 @@
   background: #DBE1D5;
   font-family: "Univers", Noto, Arial, sans-serif;
   max-height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 
