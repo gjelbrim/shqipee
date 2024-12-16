@@ -2,6 +2,7 @@
 
 
   import Navbar from "../components/Navbar.svelte";
+  import {elbasanMapping} from "../data/mappings.js";
 
 
   // Initiale Werte für Richtung und Titel
@@ -12,31 +13,6 @@
   // Eingabetext und Ausgabetext
   let inputText = ""; // Text im Eingabefeld
   let outputText = ""; // Text im Ausgabefeld
-
-  // Char-Code-Mapping nur einmal definieren
-  const charCodes = {
-    ngj: '\u{10514}\u{1050B}',
-    ng: '\u{10514}\u{1050A}',
-    nd: '\u{10505}',
-    dh: '\u{10506}',
-    gj: '\u{1050B}',
-    ll: '\u{10511}',
-    nj: '\u{10515}',
-    rr: '\u{1051A}',
-    sh: '\u{1051C}',
-    th: '\u{1051E}',
-    zh: '\u{10524}',
-    gh: '\u{10525}',
-    kh: '\u{10527}',
-    xh: '\u{10503}',
-    a: '\u{10500}', b: '\u{10501}', c: '\u{10502}', ç: '\u{10503}',
-    e: '\u{10507}', ë: '\u{10508}', f: '\u{10509}', d: '\u{10504}',
-    g: '\u{1050A}', h: '\u{1050C}', i: '\u{1050D}', j: '\u{1050E}',
-    k: '\u{1050F}', l: '\u{10510}', m: '\u{10512}', n: '\u{10513}',
-    o: '\u{10516}', p: '\u{10517}', q: '\u{10518}', r: '\u{10519}',
-    s: '\u{1051B}', t: '\u{1051D}', u: '\u{1051F}', v: '\u{10520}',
-    x: '\u{10521}', y: '\u{10522}', z: '\u{10523}'
-  };
 
   // Funktion, um das Mapping umzukehren
   const flipMapping = (mapping) => {
@@ -49,7 +25,7 @@
   // Transliteration basierend auf der Richtung
   const transliterate = (word) => {
     word = word.toLowerCase();
-    const activeMapping = isLatinToElbasan ? charCodes : flipMapping(charCodes);
+    const activeMapping = isLatinToElbasan ? elbasanMapping : flipMapping(elbasanMapping);
     const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
     return word.replace(pattern, match => activeMapping[match]);
   };
