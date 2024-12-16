@@ -208,6 +208,8 @@ const copyToClipboard = () => {
 .headingTop {
   display: flex;
   flex: 2;
+  border-left: 14px solid #C3181E;
+  padding-left: 10px;
 }
 
 .logoIcon {
