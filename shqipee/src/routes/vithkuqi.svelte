@@ -156,10 +156,10 @@
       </div>
       <div class="text-right">
         <p id="author">
-          developed by gjelbrim haskaj <br />
-          designed by franz anhäupl
+          developed by <a href="http://github.com/gjelbrim">gjelbrim haskaj</a> <br />
+          designed by <a href="https://github.com/Litorian113">franz anhäupl</a>
         </p>
-        <p id="wiki"><br>more info about the elbasan script on wikipedia</p>
+        <p id="wiki"><br>more info about the vithkuqi alphabet on <a href="https://en.wikipedia.org/wiki/Vithkuqi_alphabet">wikipedia</a></p>
       </div>
     </div>
   </main>

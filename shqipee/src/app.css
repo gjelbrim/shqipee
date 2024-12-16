@@ -280,4 +280,7 @@ max-width: 450px;
   }
 }
 
-
+a, a:visited {
+  color: black;
+  text-decoration: underline;
+}
