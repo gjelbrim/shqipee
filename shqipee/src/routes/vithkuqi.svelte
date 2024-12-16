@@ -5,9 +5,9 @@
   
   
     // Initiale Werte für Richtung und Titel
-    let isLatinToElbasan = true; // true = Latin -> Elbasan, false = Elbasan -> Latin
+    let isLatinToVithkuqi = true; // true = Latin -> Elbasan, false = Elbasan -> Latin
     let inputTitle = "latin";
-    let outputTitle = "elbasan";
+    let outputTitle = "vithkuqi";
   
     // Eingabetext und Ausgabetext
     let inputText = ""; // Text im Eingabefeld
@@ -15,27 +15,35 @@
   
     // Char-Code-Mapping nur einmal definieren
     const charCodes = {
-      ngj: '\u{10514}\u{1050B}',
-      ng: '\u{10514}\u{1050A}',
-      nd: '\u{10505}',
-      dh: '\u{10506}',
-      gj: '\u{1050B}',
-      ll: '\u{10511}',
-      nj: '\u{10515}',
-      rr: '\u{1051A}',
-      sh: '\u{1051C}',
-      th: '\u{1051E}',
-      zh: '\u{10524}',
-      gh: '\u{10525}',
-      kh: '\u{10527}',
-      xh: '\u{10503}',
-      a: '\u{10500}', b: '\u{10501}', c: '\u{10502}', ç: '\u{10503}',
-      e: '\u{10507}', ë: '\u{10508}', f: '\u{10509}', d: '\u{10504}',
-      g: '\u{1050A}', h: '\u{1050C}', i: '\u{1050D}', j: '\u{1050E}',
-      k: '\u{1050F}', l: '\u{10510}', m: '\u{10512}', n: '\u{10513}',
-      o: '\u{10516}', p: '\u{10517}', q: '\u{10518}', r: '\u{10519}',
-      s: '\u{1051B}', t: '\u{1051D}', u: '\u{1051F}', v: '\u{10520}',
-      x: '\u{10521}', y: '\u{10522}', z: '\u{10523}'
+      //two letter majuscule+majuscule (CAPS)
+      DH: '\u{10576}',
+      GI: '\u{1057A}\u{105A6}',
+      GJ: '\u{1057A}\u{105A6}',
+      LL: '\u{10583}',
+      NJ: '\u{10586}',
+      RR: '\u{1058A}',
+      SH: '\u{1058D}',
+      TH: '\u{1058F}',
+      XH: '\u{1057A}\u{105A6}',
+      ZH: '\u{1058D}',
+      
+      //two letter majuscule+minuscule
+      Dh: '\u{10576}',
+      Xh: '\u{1057A}\u{105A6}',
+      Gi: '\u{1057A}\u{105A6}',
+      Gj: '\u{1057A}\u{105A6}',
+      Ll: '\u{10583}',
+      Nj: '\u{10586}',
+      Rr: '\u{1058A}',
+      Zh: '\u{1058D}',
+      Sh: '\u{1058D}',
+      Th: '\u{1058F}',
+      //two letter minuscule
+
+      //single letter majuscule
+
+      //single letter minuscule
+
     };
   
     // Funktion, um das Mapping umzukehren
@@ -48,17 +56,17 @@
   
     // Transliteration basierend auf der Richtung
     const transliterate = (word) => {
-      const activeMapping = isLatinToElbasan ? charCodes : flipMapping(charCodes);
+      const activeMapping = isLatinToVithkuqi ? charCodes : flipMapping(charCodes);
       const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
       return word.replace(pattern, match => activeMapping[match]);
     };
   
     // Funktion zum Swappen der Richtung
     const swapDirection = () => {
-      isLatinToElbasan = !isLatinToElbasan;
+      isLatinToVithkuqi = !isLatinToVithkuqi;
   
       // Tausche die Titel
-      if (isLatinToElbasan) {
+      if (isLatinToVithkuqi) {
         inputTitle = "latin";
         outputTitle = "vithkuqi";
       } else {
