@@ -25,20 +25,30 @@
       SH: '\u{1058D}',
       TH: '\u{1058F}',
       XH: '\u{1057A}\u{105A6}',
-      ZH: '\u{1058D}',
+      ZH: '\u{1058D}\u{10595}',
       
       //two letter majuscule+minuscule
       Dh: '\u{10576}',
-      Xh: '\u{1057A}\u{105A6}',
       Gi: '\u{1057A}\u{105A6}',
       Gj: '\u{1057A}\u{105A6}',
       Ll: '\u{10583}',
       Nj: '\u{10586}',
       Rr: '\u{1058A}',
-      Zh: '\u{1058D}',
       Sh: '\u{1058D}',
       Th: '\u{1058F}',
+      Xh: '\u{10574}',
+      Zh: '\u{1058D}\u{105BC}',
       //two letter minuscule
+      dh: '\u{1059D}',
+      gi: '\u{105A1}\u{105A6}',
+      gj: '\u{105A1}\u{105A6}',
+      ll: '\u{105AA}',
+      nj: '\u{105AD}',
+      rr: '\u{105B1}',
+      sh: '\u{105B4}',
+      th: '\u{105B6}',
+      xh: '\u{1059B}',
+      zh: '\u{105B4}\u{105BC}',
 
       //single letter majuscule
 
