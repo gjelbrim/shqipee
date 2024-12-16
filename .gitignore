@@ -1,6 +1,45 @@
+# Created by https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode,macos,svelte
+# Edit at https://www.toptal.com/developers/gitignore?templates=vim,visualstudiocode,macos,svelte
 
-# Created by https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=vim,visualstudiocode
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### macOS Patch ###
+# iCloud generated files
+*.icloud
+
+### Svelte ###
+# gitignore template for the SvelteKit, frontend web component framework
+# website: https://kit.svelte.dev/
+
+.svelte-kit/
+package
 
 ### Vim ###
 # Swap
@@ -29,14 +68,17 @@ tags
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-*.code-workspace
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
 .ionide
 
-ads.txt
-privacy-policy.html
-version.json
-# End of https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode
+# End of https://www.toptal.com/developers/gitignore/api/vim,visualstudiocode,macos,svelte
