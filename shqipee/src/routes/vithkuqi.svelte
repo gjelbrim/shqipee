@@ -379,7 +379,7 @@
     display: relative;
     max-width: 1600px; /* Maximale Breite des Inhalts */
     margin: 0 auto; /* Zentriert den Inhalt horizontal */
-    padding: 0 80px; /* Fester Abstand innen (links und rechts) */
+    padding: 20px 80px; /* Fester Abstand innen (links und rechts) */
     box-sizing: border-box;
   
   }
