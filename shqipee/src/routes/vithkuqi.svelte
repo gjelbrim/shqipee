@@ -2,6 +2,7 @@
 
 
     import Navbar from "../components/Navbar.svelte";
+    import { vithkuqiMapping } from "../data/mappings.js";
   
   
     // Initiale Werte für Richtung und Titel
@@ -13,53 +14,6 @@
     let inputText = ""; // Text im Eingabefeld
     let outputText = ""; // Text im Ausgabefeld
   
-    // Char-Code-Mapping nur einmal definieren
-    const charCodes = {
-      //two letter majuscule+majuscule (CAPS)
-      DH: '\u{10576}',
-      GI: '\u{1057A}\u{105A6}',
-      GJ: '\u{1057A}\u{105A6}',
-      JI: '\u{10580}\u{105A6}',
-      LL: '\u{10583}',
-      NJ: '\u{10586}',
-      RR: '\u{1058A}',
-      SH: '\u{1058D}',
-      TH: '\u{1058F}',
-      XH: '\u{1057A}\u{105A6}',
-      ZH: '\u{1058D}\u{10595}',
-      
-      //two letter majuscule+minuscule
-      Dh: '\u{10576}',
-      Gi: '\u{1057A}\u{105A6}',
-      Gj: '\u{1057A}\u{105A6}',
-      Ji: '\u{10580}\u{105A6}',
-      Ll: '\u{10583}',
-      Nj: '\u{10586}',
-      Rr: '\u{1058A}',
-      Sh: '\u{1058D}',
-      Th: '\u{1058F}',
-      Xh: '\u{10574}',
-      Zh: '\u{1058D}\u{105BC}',
-      //two letter minuscule
-      dh: '\u{1059D}',
-      gi: '\u{105A1}\u{105A6}',
-      gj: '\u{105A1}\u{105A6}',
-      ji: '\u{105A7}\u{105A6}',
-      ll: '\u{105AA}',
-      nj: '\u{105AD}',
-      rr: '\u{105B1}',
-      sh: '\u{105B4}',
-      th: '\u{105B6}',
-      xh: '\u{1059B}',
-      zh: '\u{105B4}\u{105BC}',
-
-      //single letter majuscule
-      A: '\u{10570}', B: '\u{10572}', C: '\u{10573}', Ç: '\u{10574}', D: '\u{10575}', E: '\u{10577}', Ë: '\u{10578}', F: '\u{10579}', G: '\u{1057A}', H: '\u{1057C}', I: '\u{1057E}', J: '\u{10580}', K: '\u{10581}', L: '\u{10582}', M: '\u{10584}', N: '\u{10585}', O: '\u{10587}', P: '\u{10588}', Q: '\u{10589}', R: '\u{1058A}', S: '\u{1058C}', T: '\u{1058E}', U: '\u{10590}', V: '\u{10591}', X: '\u{10592}', Y: '\u{10594}', Z: '\u{10595}', 
-      //single letter minuscule
-      a: '\u{10597}', b: '\u{10599}', c: '\u{1059A}', ç: '\u{1059B}', d: '\u{1059C}', e: '\u{1059E}', ë: '\u{1059F}', f: '\u{105A0}', g: '\u{105A1}', h: '\u{105A3}', i: '\u{105A5}', j: '\u{105A7}', k: '\u{105A8}', l: '\u{105A9}', m: '\u{105AB}', n: '\u{105AC}', o: '\u{105AE}', p: '\u{105AF}', q: '\u{105B0}', r: '\u{105B1}', s: '\u{105B3}', t: '\u{105B5}', u: '\u{105B7}', v: '\u{105B8}', x: '\u{105B9}', y: '\u{105BB}', z: '\u{105BC}'
-
-    };
-  
     // Funktion, um das Mapping umzukehren
     const flipMapping = (mapping) => {
       return Object.entries(mapping).reduce((flipped, [key, value]) => {
@@ -70,7 +24,7 @@
   
     // Transliteration basierend auf der Richtung
     const transliterate = (word) => {
-      const activeMapping = isLatinToVithkuqi ? charCodes : flipMapping(charCodes);
+      const activeMapping = isLatinToVithkuqi ? vithkuqiMapping : flipMapping(vithkuqiMapping);
       const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
       return word.replace(pattern, match => activeMapping[match]);
     };
