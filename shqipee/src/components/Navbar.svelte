@@ -2,11 +2,11 @@
     import { onMount } from "svelte";
   
     // Aktuelle Route
-    let activeRoute = window.location.hash || "/";
+    let activeRoute = window.location.hash || "#/";
   
     // Funktion, um die Route zu aktualisieren
     const updateRoute = () => {
-      activeRoute = window.location.hash || "/";
+      activeRoute = window.location.hash || "#/";
     };
   
     // Event-Listener hinzufügen, um Änderungen der Route zu überwachen
