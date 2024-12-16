@@ -109,7 +109,7 @@
     <div class="input-container">
       <div class="input-header">
         <h2>{inputTitle}</h2>
-        <button class="switch-button" title="Switch"></button>
+        <button class="switch-button" title="Switch" aria-label="Switch direction"></button>
       </div>
       <!-- Eingabetextfeld -->
       <textarea
@@ -123,13 +123,13 @@
     </div>
 
     <div class="swap-container">
-      <button class="swap-button" title="Swap" on:click={swapDirection}></button>
+      <button class="swap-button" title="Swap" aria-label="Swap direction" on:click={swapDirection}></button>
     </div>
 
     <div class="input-container">
       <div class="input-header">
         <h2>{outputTitle}</h2>
-        <button class="copy-button" title="Copy"></button>
+        <button class="copy-button" title="Copy" aria-label="Copy text"></button>
       </div>
       <!-- Ausgabe in Echtzeit -->
       <textarea
