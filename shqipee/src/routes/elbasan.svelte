@@ -1,5 +1,9 @@
 <script>
 
+
+  import Navbar from "../components/Navbar.svelte";
+
+
   // Initiale Werte für Richtung und Titel
   let isLatinToElbasan = true; // true = Latin -> Elbasan, false = Elbasan -> Latin
   let inputTitle = "latin";
@@ -108,13 +112,18 @@ const copyToClipboard = () => {
   </div>
   <div class="insertNav">
     <!-- nav -->
+    <Navbar />
     <!-- Router -->
   </div>
   <div class="logoIcon">
     <p>𐔋</p>
   </div>
 </div>
+
+
   <div class="switchArea">
+
+  <div class="input-div">
     <div class="input-container">
       <div class="input-header">
         <h2>{inputTitle}</h2>
@@ -131,11 +140,14 @@ const copyToClipboard = () => {
       <div class="input-bottom-line"></div>
     </div>
 
+
     <div class="swap-container">
       <button class="swap-button" title="Swap" aria-label="Swap direction" on:click={swapDirection}></button>
     </div>
 
-    <div class="input-container">
+
+
+    <div class="output-container">
       <div class="input-header">
         <h2>{outputTitle}</h2>
         <button class="copy-button" title="Copy" aria-label="Copy text" on:click={copyToClipboard}></button>
@@ -150,6 +162,8 @@ const copyToClipboard = () => {
       ></textarea>
       <div class="input-bottom-line"></div>
     </div>
+  </div>
+
   </div>
 
   <div class="bottom-content">
@@ -169,7 +183,7 @@ const copyToClipboard = () => {
         developed by gjelbrim haskaj <br />
         designed by franz anhäupl
       </p>
-      <p id="wiki">more info about the elbasan script on wikipedia</p>
+      <p id="wiki"><br>more info about the elbasan script on wikipedia</p>
     </div>
   </div>
 </main>
@@ -181,6 +195,7 @@ const copyToClipboard = () => {
   flex-direction: row;
   flex-wrap: wrap;
   /* justify-content: baseline; */
+  padding-bottom: 10%;
 
 }
 .headingTop {
@@ -194,6 +209,7 @@ const copyToClipboard = () => {
   flex: 1;
   color: #C3181E;
   margin: 0px;
+  justify-content:center;
 
 }
 /* Bestehende CSS bleibt wie es ist */
@@ -203,10 +219,45 @@ h2 {
 }
 
 .switchArea {
-  display: flex;
+  display: relative;
   flex-direction: row;
   gap: 3%;
 }
+
+
+.input-div {
+  display: flex;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  padding-right: 20%;
+  padding-bottom: 5%;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  min-width: 300px;
+  width: 300px;
+}
+
+.swap-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  width: 300px;
+  min-width: 300px;
+}
+
+.output-container {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  width: 300px;
+  min-width: 300px;
+}
+
 
 .swap-button {
   width: 64px;
@@ -253,16 +304,7 @@ h2 {
   opacity: 0.8;
 }
 
-.swap-container {
-  display: flex;
-}
 
-.input-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 30%;
-}
 
 .input-header {
   display: flex;
@@ -272,7 +314,7 @@ h2 {
 }
 
 .styled-input {
-  width: 100%;
+  /* width: 100%; */
   height: 150px;
   border: none;
   outline: none;
@@ -290,7 +332,7 @@ h2 {
 }
 
 .input-bottom-line {
-  position: absolute;
+  display: flex;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -306,8 +348,12 @@ h2 {
 }
 
 main {
-  width: 100%;
-  padding-left: 10%;
+  display: relative;
+  max-width: 1600px; /* Maximale Breite des Inhalts */
+  margin: 0 auto; /* Zentriert den Inhalt horizontal */
+  padding: 0 80px; /* Fester Abstand innen (links und rechts) */
+  box-sizing: border-box;
+
 }
 
 h1 {
@@ -329,14 +375,15 @@ h1 {
 .bottom-content {
   display: flex;
   flex-direction: row;
-  width: 100%;
-  gap: 10%;
+  gap: 20%;
 }
 
 .text-left {
   display: flex;
   flex-direction: row;
-  width: 30%;
+  flex: 2;
+  min-width: 300px;
+  max-width: 450px;
 }
 
 .text-left-item {
@@ -347,6 +394,38 @@ h1 {
 .text-right {
   display: flex;
   flex-direction: column;
-  width: 30%;
+  flex: 2;
+  min-width: 300px;
+  max-width: 450px;
 }
+@media (max-width: 1200px) {
+    .input-div {
+        display: flex;
+        flex-direction: column;
+        width: 100%; /* Schriftgröße verkleinert für mobile Ansicht */
+        /* align-items: stretch; */
+        flex-wrap: wrap;
+    }
+    .input-container {
+      flex: 1;
+      width: 100%;
+    }
+    .output-container {
+      flex: 1;
+      width: 100%;
+    }
+    .swap-container {
+      flex: 1;
+      width: 100%;
+    }
+    .bottom-content {
+      flex-direction: column;
+    }
+    .text-right {
+      padding-top: 40px;
+      padding-left: 45px;
+      padding-bottom: 80px;
+    }
+}
+
 </style>

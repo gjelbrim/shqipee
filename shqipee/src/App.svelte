@@ -12,11 +12,6 @@
 
 
 <main>
-  <nav class="navbar">
-    <!-- Navigation mittels Hash-Routing -->
-    <a href="#/">elbasan</a>
-    <a href="#/vithkuqi">vithkuqi</a>
-  </nav>
   <!-- Hier wird entsprechend der Route Elbasan oder Vithkuqi angezeigt -->
   <Router {routes} />
 </main>
