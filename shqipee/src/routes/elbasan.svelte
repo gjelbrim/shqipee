@@ -147,12 +147,12 @@ const copyToClipboard = () => {
     <div class="text-left">
       <div class="text-left-item">
         <p id="sign">!</p>
-      </div>
-      <div>
         <p id="disclaimer">
           elbasanscript is being misused on social media by far-right extremists. the developer of
           this page explicitly distances himself from such ideologies and condemns them.
         </p>
+      </div>
+      <div>
       </div>
     </div>
     <div class="text-right">
