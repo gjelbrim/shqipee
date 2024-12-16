@@ -1,4 +1,8 @@
 @font-face {
+  font-family: "Vithkuqi";
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+Vithkuqi:wght@400..700&display=swap');
+}
+@font-face {
   font-family: "Univers";
   src: url("/src/assets/fonts/UniversBold.ttf") format("truetype");
   font-weight: bold;
@@ -24,7 +28,7 @@
 
 * {
   background: #DBE1D5;
-  font-family: "Univers", Noto, Arial, sans-serif;
+  font-family: Univers, Vithkuqi, Noto, Arial, sans-serif;
   max-height: 100%;
   margin: 0;
   padding: 0;
