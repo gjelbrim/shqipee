@@ -13,9 +13,18 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Noto";
+  src: url("/shqipee/src/assets/fonts/NotoSansElbasan-Regular.ttf");}
+
+@font-face {
+  font-family: "Albanian";
+  src: url("/shqipee/src/assets/fonts/Albanian-Ka2e.ttf");
+}
+
 * {
   background: #DBE1D5;
-  font-family: "Univers", Arial, sans-serif;
+  font-family: "Univers", Noto, Arial, sans-serif;
   max-height: 100%;
 }
 
