@@ -190,6 +190,12 @@ const copyToClipboard = () => {
 
 <style>
 
+  .insertNav {
+    display: flex;
+
+    /* justify-content: center; */
+  }
+
 .top-section {
   display: flex;
   flex-direction: row;
