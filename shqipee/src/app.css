@@ -1,32 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Vithkuqi:wght@400..700&display=swap');
-
-@font-face {
-  font-family: "Univers";
-  src: url("/src/assets/fonts/UniversBold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-}
-
-/* Univers Condensed Bold Font */
-@font-face {
-  font-family: "Univers Condensed";
-  src: url("/src/assets/fonts/UniversCnBold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Noto";
-  src: url("/shqipee/src/assets/fonts/NotoSansElbasan-Regular.ttf");}
-
-@font-face {
-  font-family: "Albanian";
-  src: url("/shqipee/src/assets/fonts/Albanian-Ka2e.ttf");
-}
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Elbasan&family=Noto+Sans+Vithkuqi:wght@400..700&family=Roboto:wght@500&display=swap');
 
 * {
   background: #DBE1D5;
-  font-family: Univers, "Noto Sans Vithkuqi", Noto, Arial, sans-serif;
+  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", sans-serif;
   max-height: 100%;
   margin: 0;
   padding: 0;
