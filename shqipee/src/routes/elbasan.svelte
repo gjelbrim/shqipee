@@ -48,6 +48,7 @@
 
   // Transliteration basierend auf der Richtung
   const transliterate = (word) => {
+    word = word.toLowerCase();
     const activeMapping = isLatinToElbasan ? charCodes : flipMapping(charCodes);
     const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
     return word.replace(pattern, match => activeMapping[match]);
