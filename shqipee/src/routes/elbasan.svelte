@@ -89,6 +89,27 @@
     inputText = event.target.value;
     outputText = transliterate(inputText);
   };
+
+  // Funktion, um den Inhalt aus der Zwischenablage zu lesen und in das Eingabefeld einzufügen
+const pasteFromClipboard = async () => {
+  try {
+    const clipboardText = await navigator.clipboard.readText();
+    inputText = clipboardText; // Fügt den Text in das Eingabefeld ein
+    outputText = transliterate(inputText); // Transliterate den eingefügten Text direkt
+  } catch (error) {
+    console.error("Error accessing clipboard: ", error);
+  }
+};
+
+// Funktion, um den Inhalt des Ausgabefeldes in die Zwischenablage zu kopieren
+const copyToClipboard = () => {
+  try {
+    navigator.clipboard.writeText(outputText);
+    console.log("Text copied to clipboard:", outputText);
+  } catch (error) {
+    console.error("Error copying text: ", error);
+  }
+};
 </script>
 
 
@@ -109,7 +130,7 @@
     <div class="input-container">
       <div class="input-header">
         <h2>{inputTitle}</h2>
-        <button class="switch-button" title="Switch" aria-label="Switch direction"></button>
+        <button class="switch-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
       </div>
       <!-- Eingabetextfeld -->
       <textarea
@@ -129,7 +150,7 @@
     <div class="input-container">
       <div class="input-header">
         <h2>{outputTitle}</h2>
-        <button class="copy-button" title="Copy" aria-label="Copy text"></button>
+        <button class="copy-button" title="Copy" aria-label="Copy text" on:click={copyToClipboard}></button>
       </div>
       <!-- Ausgabe in Echtzeit -->
       <textarea
