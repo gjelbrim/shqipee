@@ -1,4 +1,5 @@
 <script>
+
   // Initiale Werte für Richtung und Titel
   let isLatinToElbasan = true; // true = Latin -> Elbasan, false = Elbasan -> Latin
   let inputTitle = "latin";
@@ -7,6 +8,46 @@
   // Eingabetext und Ausgabetext
   let inputText = ""; // Text im Eingabefeld
   let outputText = ""; // Text im Ausgabefeld
+
+  // Char-Code-Mapping nur einmal definieren
+  const charCodes = {
+    ngj: '\u{10514}\u{1050B}',
+    ng: '\u{10514}\u{1050A}',
+    nd: '\u{10505}',
+    dh: '\u{10506}',
+    gj: '\u{1050B}',
+    ll: '\u{10511}',
+    nj: '\u{10515}',
+    rr: '\u{1051A}',
+    sh: '\u{1051C}',
+    th: '\u{1051E}',
+    zh: '\u{10524}',
+    gh: '\u{10525}',
+    kh: '\u{10527}',
+    xh: '\u{10503}',
+    a: '\u{10500}', b: '\u{10501}', c: '\u{10502}', ç: '\u{10503}',
+    e: '\u{10507}', ë: '\u{10508}', f: '\u{10509}', d: '\u{10504}',
+    g: '\u{1050A}', h: '\u{1050C}', i: '\u{1050D}', j: '\u{1050E}',
+    k: '\u{1050F}', l: '\u{10510}', m: '\u{10512}', n: '\u{10513}',
+    o: '\u{10516}', p: '\u{10517}', q: '\u{10518}', r: '\u{10519}',
+    s: '\u{1051B}', t: '\u{1051D}', u: '\u{1051F}', v: '\u{10520}',
+    x: '\u{10521}', y: '\u{10522}', z: '\u{10523}'
+  };
+
+  // Funktion, um das Mapping umzukehren
+  const flipMapping = (mapping) => {
+    return Object.entries(mapping).reduce((flipped, [key, value]) => {
+      flipped[value] = key;
+      return flipped;
+    }, {});
+  };
+
+  // Transliteration basierend auf der Richtung
+  const transliterate = (word) => {
+    const activeMapping = isLatinToElbasan ? charCodes : flipMapping(charCodes);
+    const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
+    return word.replace(pattern, match => activeMapping[match]);
+  };
 
   // Funktion zum Swappen der Richtung
   const swapDirection = () => {
@@ -26,69 +67,13 @@
     outputText = "";
   };
 
-  // Transliteration basierend auf der Richtung
-  const transliterate = (word) => {
-    word = word.toLowerCase();
-
-    // Char-Code-Mapping basierend auf der Richtung
-    let charCodes = isLatinToElbasan
-      ? {
-          ngj: '\u{10514}\u{1050B}',
-          ng: '\u{10514}\u{1050A}',
-          nd: '\u{10505}',
-          dh: '\u{10506}',
-          gj: '\u{1050B}',
-          ll: '\u{10511}',
-          nj: '\u{10515}',
-          rr: '\u{1051A}',
-          sh: '\u{1051C}',
-          th: '\u{1051E}',
-          zh: '\u{10524}',
-          gh: '\u{10525}',
-          kh: '\u{10527}',
-          xh: '\u{10503}',
-          a: '\u{10500}', b: '\u{10501}', c: '\u{10502}', ç: '\u{10503}',
-          e: '\u{10507}', ë: '\u{10508}', f: '\u{10509}', d: '\u{10504}',
-          g: '\u{1050A}', h: '\u{1050C}', i: '\u{1050D}', j: '\u{1050E}',
-          k: '\u{1050F}', l: '\u{10510}', m: '\u{10512}', n: '\u{10513}',
-          o: '\u{10516}', p: '\u{10517}', q: '\u{10518}', r: '\u{10519}',
-          s: '\u{1051B}', t: '\u{1051D}', u: '\u{1051F}', v: '\u{10520}',
-          x: '\u{10521}', y: '\u{10522}', z: '\u{10523}'
-        }
-      : {
-          '\u{10514}\u{1050B}': 'ngj',
-          '\u{10514}\u{1050A}': 'ng',
-          '\u{10505}': 'nd',
-          '\u{10506}': 'dh',
-          '\u{1050B}': 'gj',
-          '\u{10511}': 'll',
-          '\u{10515}': 'nj',
-          '\u{1051A}': 'rr',
-          '\u{1051C}': 'sh',
-          '\u{1051E}': 'th',
-          '\u{10524}': 'zh',
-          '\u{10525}': 'gh',
-          '\u{10527}': 'kh',
-          '\u{10503}': 'xh',
-          '\u{10500}': 'a', '\u{10501}': 'b', '\u{10502}': 'c', '\u{10503}': 'ç',
-          '\u{10507}': 'e', '\u{10508}': 'ë', '\u{10509}': 'f', '\u{10504}': 'd',
-          '\u{1050A}': 'g', '\u{1050C}': 'h', '\u{1050D}': 'i', '\u{1050E}': 'j',
-          '\u{1050F}': 'k', '\u{10510}': 'l', '\u{10512}': 'm', '\u{10513}': 'n',
-          '\u{10516}': 'o', '\u{10517}': 'p', '\u{10518}': 'q', '\u{10519}': 'r',
-          '\u{1051B}': 's', '\u{1051D}': 't', '\u{1051F}': 'u', '\u{10520}': 'v',
-          '\u{10521}': 'x', '\u{10522}': 'y', '\u{10523}': 'z'
-        };
-
-    // Transliteration durchführen
-    const pattern = new RegExp(Object.keys(charCodes).join('|'), 'g');
-    return word.replace(pattern, match => charCodes[match]);
-  };
-
   // Eingabe-Handler: Text transliterieren und Output aktualisieren
   const handleInput = (event) => {
     inputText = event.target.value;
     outputText = transliterate(inputText);
   };
+
+
 
   // Funktion, um den Inhalt aus der Zwischenablage zu lesen und in das Eingabefeld einzufügen
 const pasteFromClipboard = async () => {
@@ -121,6 +106,7 @@ const copyToClipboard = () => {
     <h1>elbasan <br> alphabet</h1>
   </div>
   <div>
+    <!-- nav -->
     <!-- Router -->
   </div>
   <div>
