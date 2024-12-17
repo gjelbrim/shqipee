@@ -76,14 +76,12 @@ const pasteFromClipboard = async () => {
 </script>
 
 <div class="switchArea">
-
     <div class="input-div">
       <div class="input-container">
         <div class="input-header">
           <h2>{inputTitle}</h2>
           <button class="switch-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
         </div>
-        <!-- Eingabetextfeld -->
         <textarea
           id="inp"
           class="styled-input"
@@ -106,7 +104,6 @@ const pasteFromClipboard = async () => {
           <h2>{outputTitle}</h2>
           <button class="copy-button" title="Copy" aria-label="Copy text" on:click={copyToClipboard}></button>
         </div>
-        <!-- Ausgabe in Echtzeit -->
         <textarea
           id="out"
           class="styled-input"
@@ -118,8 +115,147 @@ const pasteFromClipboard = async () => {
       </div>
     </div>
   
-    </div>
+</div>
 
 <style>
+  .switchArea {
+    display: relative;
+    flex-direction: row;
+    gap: 3%;
+  }
 
+  .input-div {
+    display: flex;
+    flex-direction: row;
+    padding-right: 20%;
+    padding-bottom: 5%;
+  }
+
+  .input-container {
+      display: flex;
+      flex-direction: column;
+      flex: 2;
+      min-width: 300px;
+    width: 300px;
+  }
+
+  .input-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .switch-button {
+    width: 32px;
+    height: 32px;
+    background-image: url("/src/assets/switch.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .switch-button:hover {
+    opacity: 0.8;
+  }
+
+  .styled-input {
+    height: 150px;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1rem;
+    resize: none;
+    padding-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .styled-input::placeholder {
+    color: rgb(0, 0, 0);
+    opacity: 0.7;
+    font-family: "Univers", Arial, sans-serif;
+  }
+
+  .input-bottom-line {
+    display: flex;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #1d1d1b;
+  }
+
+  .swap-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
+  width: 300px;
+  min-width: 300px;
+  }
+
+  .swap-button {
+    width: 64px;
+    height: 64px;
+    background-image: url("/src/assets/swap.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+.swap-button:hover {
+opacity: 0.8;
+}
+
+  .output-container {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    width: 300px;
+    min-width: 300px;
+  }
+
+  .copy-button {
+    width: 32px;
+    height: 32px;
+    background-image: url("/src/assets/copy.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .copy-button:hover {
+    opacity: 0.8;
+  }
+
+  @media (max-width: 1200px) {
+    .input-div {
+      display: flex;
+      flex-direction: column;
+      width: 100%; /* Schriftgröße verkleinert für mobile Ansicht */
+      /* align-items: stretch; */
+      flex-wrap: wrap;
+    }
+
+    .input-container {
+      flex: 1;
+      width: 100%;
+    }
+
+    .swap-container {
+      flex: 1;
+      width: 100%;
+    }
+
+    .output-container {
+      flex: 1;
+      width: 100%;
+    }
+  }
 </style>
