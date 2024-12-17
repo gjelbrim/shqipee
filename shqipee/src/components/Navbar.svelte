@@ -1,24 +1,24 @@
 <script>
   import { onMount } from "svelte";
 
-  // Aktuelle Route
+  // current route
   let activeRoute = window.location.hash || "#/";
 
-  // Funktion, um die Route zu aktualisieren
+
   const updateRoute = () => {
     activeRoute = window.location.hash || "#/";
   };
 
-  // Event-Listener hinzufügen, um Änderungen der Route zu überwachen
+  // event listner for route change
   onMount(() => {
     window.addEventListener("hashchange", updateRoute);
     updateRoute(); // Initiale Route setzen
 
-    // Cleanup des Event-Listeners beim Verlassen der Komponente
+    // clean up of event listeners when component is destroyed
     return () => window.removeEventListener("hashchange", updateRoute);
   });
 
-  // Define routes
+  // define routes
   const routes = [
     { name: "elbasan", path: "#/" },
     { name: "vithkuqi", path: "#/vithkuqi" },
@@ -47,20 +47,20 @@
     text-decoration: none;
     font-size: 1.2rem;
     color: #333;
-    position: relative; /* Für die Unterstreichung */
+    position: relative;
   }
 
   .navbar a.active {
-    color: #C3181E; /* Rot für aktive Seite */
+    color: #C3181E;
   }
 
   .navbar a.active::after {
     content: "";
     position: absolute;
-    bottom: -5px; /* Position der Unterstreichung */
+    bottom: -5px;
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #C3181E; /* Unterstrich-Farbe */
+    background-color: #C3181E;
   }
 </style>

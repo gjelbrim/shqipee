@@ -12,7 +12,6 @@
 
 
 <main>
-  <!-- Hier wird entsprechend der Route Elbasan oder Vithkuqi angezeigt -->
   <Router {routes} />
 </main>
 
