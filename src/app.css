@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Elbasan&family=Noto+Sans+Vithkuqi:wght@400..700&family=Roboto:wght@500&display=swap');
+
+* {
+  background: #DBE1D5;
+  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", sans-serif;
+  max-height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h2 {
+  font-size: 64px;
+  margin: 0;
+}
+
+main {
+  display: relative;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px 80px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 92px;
+  line-height: 0.9em;
+  padding-bottom: 5%;
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 48px;
+  }
+
+  h1 {
+    font-size: 64px;
+    text-align: left;
+  }
+
+  main {
+    padding: 10px 20px;
+  }
+}
