@@ -1,5 +1,5 @@
 [![GitHub license](https://img.shields.io/github/license/gjelbrim/elbasanscript?style=for-the-badge)](https://github.com/gjelbrim/elbasanscript/blob/main/LICENSE)
 # elbasanscri.pt
-This web app allows you to transliterate Latin Text to [Elbsan Script](https://en.wikipedia.org/wiki/Elbasan_script) and vice versa.<br>
-[Bulma](https://bulma.io) Framework has been used.<br>
-This Application is a PWA and can be installed on your device to be used offline.
+This web app allows you to transliterate Latin Text into the [Elbasan Alphabet](https://en.wikipedia.org/wiki/Elbasan_alphabet) and the [Vithkuqi Alphabet](https://en.wikipedia.org/wiki/Vithkuqi_alphabet) and vice versa.<br>
+
+Made with [Svelte](https://svelte.dev/)
