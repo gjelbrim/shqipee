@@ -1,8 +1,5 @@
 <script>
-const ScriptType = {
-  ELBASAN: 'elbasan',
-  VITHKUQI: 'vithkuqi'
-}
+import {ScriptType} from '../utils/scriptTypes.js';
 export let scriptType;
 </script>
 

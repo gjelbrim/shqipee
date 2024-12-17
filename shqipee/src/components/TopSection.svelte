@@ -1,10 +1,6 @@
 <script>
     import Navbar from "./Navbar.svelte";
-
-    const ScriptType = {
-        ELBASAN: 'elbasan',
-        VITHKUQI: 'vithkuqi'
-    }
+    import {ScriptType} from '../utils/scriptTypes.js';
     export let scriptType;
 </script>
 
@@ -13,9 +9,9 @@
       <!-- red line -->
     </div>
     <div class="headingTop">
-        {#if scriptType === 'elbasan'}
+        {#if scriptType === ScriptType.ELBASAN}
             <h1>elbasan <br> alphabet</h1>
-        {:else if scriptType === 'vithkuqi'}
+        {:else if scriptType === ScriptType.VITHKUQI}
             <h1>vithkuqi <br> alphabet</h1>
         {/if}
     </div>
