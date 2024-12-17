@@ -1,4 +1,5 @@
 <script>
+import {copy} from 'svelte-copy'
 import {elbasanMapping, vithkuqiMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
 export let scriptType;
@@ -54,11 +55,6 @@ const handleInput = (event) => {
     outputText = transliterate(inputText);
 };
 
-// copy text to clipboard
-const copyToClipboard = () => {
-    navigator.clipboard.writeText(outputText);
-};
-
 // paste text from clipboard
 const pasteFromClipboard = async () => {
     try {
@@ -98,7 +94,7 @@ const pasteFromClipboard = async () => {
       <div class="output-container">
         <div class="input-header">
           <h2>{outputTitle}</h2>
-          <button class="copy-button" title="Copy" aria-label="Copy text" on:click={copyToClipboard}></button>
+          <button class="copy-button" title="Copy" aria-label="Copy text" use:copy={{ text: outputText }}></button>
         </div>
         <textarea
           id="out"
