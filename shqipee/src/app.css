@@ -168,13 +168,6 @@ height: 3px;
 background-color: #1d1d1b;
 }
 
-#sign {
-font-size: 120px;
-color: #C3181E;
-line-height: 1em;
-margin: auto;
-}
-
 main {
 display: relative;
 max-width: 1600px; /* Maximale Breite des Inhalts */
@@ -190,43 +183,7 @@ line-height: 0.9em;
 padding-bottom: 5%;
 }
 
-#author,
-#disclaimer {
-line-height: 1.2em;
-font-size: 20px;
-margin-top: 10px;
-}
 
-#wiki {
-font-size: 14px;
-}
-
-.bottom-content {
-display: flex;
-flex-direction: row;
-gap: 20%;
-}
-
-.text-left {
-display: flex;
-flex-direction: row;
-flex: 2;
-min-width: 300px;
-max-width: 450px;
-}
-
-.text-left-item {
-display: flex;
-flex-direction: row;
-}
-
-.text-right {
-display: flex;
-flex-direction: column;
-flex: 2;
-min-width: 300px;
-max-width: 450px;
-}
 @media (max-width: 1200px) {
   .input-div {
       display: flex;
@@ -247,17 +204,4 @@ max-width: 450px;
     flex: 1;
     width: 100%;
   }
-  .bottom-content {
-    flex-direction: column;
-  }
-  .text-right {
-    padding-top: 40px;
-    padding-left: 45px;
-    padding-bottom: 80px;
-  }
-}
-
-a, a:visited {
-  color: black;
-  text-decoration: underline;
 }

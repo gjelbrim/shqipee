@@ -23,10 +23,75 @@ export let isElbasan = false;
         developed by <a href="http://github.com/gjelbrim">gjelbrim haskaj</a> <br />
         designed by <a href="https://github.com/Litorian113">franz anhäupl</a>
       </p>
-      <p id="wiki"><br>more info about the elbasan alphabet on <a href="https://en.wikipedia.org/wiki/Elbasan_alphabet">wikipedia</a></p>
+      <p id="wiki">
+        {#if isElbasan}
+            more info about the elbasan alphabet on <a href="https://en.wikipedia.org/wiki/Elbasan_alphabet">wikipedia</a>
+        {:else}
+            more info about the vithkuqi alphabet on <a href="https://en.wikipedia.org/wiki/Vithkuqi_alphabet">wikipedia</a>
+        {/if}
+      </p>
     </div>
   </div>
 
 <style>
+#author,
+#disclaimer {
+line-height: 1.2em;
+font-size: 20px;
+margin-top: 10px;
+}
 
+#wiki {
+font-size: 14px;
+}
+
+.bottom-content {
+display: flex;
+flex-direction: row;
+gap: 20%;
+}
+
+#sign {
+font-size: 120px;
+color: #C3181E;
+line-height: 1em;
+margin: auto;
+}
+
+.text-left {
+display: flex;
+flex-direction: row;
+flex: 2;
+min-width: 300px;
+max-width: 450px;
+}
+
+.text-left-item {
+display: flex;
+flex-direction: row;
+}
+
+.text-right {
+display: flex;
+flex-direction: column;
+flex: 2;
+min-width: 300px;
+max-width: 450px;
+}
+
+a, a:visited {
+  color: black;
+  text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+  .bottom-content {
+    flex-direction: column;
+  }
+  .text-right {
+    padding-top: 40px;
+    padding-left: 45px;
+    padding-bottom: 80px;
+  }
+}
 </style>
