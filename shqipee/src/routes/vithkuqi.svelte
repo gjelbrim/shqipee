@@ -1,7 +1,7 @@
 <script>
   import TopSection from "../components/TopSection.svelte";
-  import Transliterator from "../components/transliterator.svelte";
-  import BottomContent from "../components/bottomContent.svelte";
+  import Transliterator from "../components/Transliterator.svelte";
+  import BottomContent from "../components/BottomContent.svelte";
   const scriptType = "vithkuqi";
 </script>
   
