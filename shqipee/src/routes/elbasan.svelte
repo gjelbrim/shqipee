@@ -1,5 +1,6 @@
 <script>
   import BottomContent from "../components/bottomContent.svelte";
+  // import {ScriptType} from "../components/bottomContent.svelte";
   import Navbar from "../components/Navbar.svelte";
   import {elbasanMapping} from "../data/mappings.js";
 
@@ -141,5 +142,5 @@ const copyToClipboard = () => {
   </div>
 
   </div>
-<BottomContent isElbasan={true}/>
+<BottomContent scriptType={"elbasan"}/>
 </main>
