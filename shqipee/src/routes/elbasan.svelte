@@ -2,7 +2,8 @@
   import TopSection from "../components/TopSection.svelte";
   import Transliterator from "../components/Transliterator.svelte";
   import BottomContent from "../components/BottomContent.svelte";
-  const scriptType = "elbasan";
+  import { ScriptType } from "../utils/scriptTypes.js";
+  const scriptType = ScriptType.ELBASAN;
 </script>
 
 <TopSection scriptType={scriptType} />
