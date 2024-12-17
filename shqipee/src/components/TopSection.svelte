@@ -33,10 +33,10 @@
   }
 
   .headingTop {
-  display: flex;
-  flex: 2;
-  border-left: 14px solid #C3181E;
-  padding-left: 10px;
+    display: flex;
+    flex: 2;
+    border-left: 14px solid #c3181e;
+    padding-left: 10px;
   }
 
   .insertNav {
@@ -47,8 +47,25 @@
     font-size: 128px;
     display: flex;
     flex: 1;
-    color: #C3181E;
+    color: #c3181e;
     margin: 0px;
-    justify-content:center;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .top-section {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .headingTop {
+      border-left: 7px solid #c3181e;
+      padding-left: 5px;
+      text-align: center;
+    }
+
+    .logoIcon {
+      display: none;
+    }
   }
 </style>

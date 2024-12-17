@@ -124,10 +124,10 @@ const pasteFromClipboard = async () => {
   }
 
   .input-container {
-      display: flex;
-      flex-direction: column;
-      flex: 2;
-      min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    min-width: 300px;
     width: 300px;
   }
 
@@ -180,12 +180,12 @@ const pasteFromClipboard = async () => {
   }
 
   .swap-container {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  align-items: center;
-  width: 300px;
-  min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    width: 300px;
+    min-width: 300px;
   }
 
   .swap-button {
@@ -199,9 +199,9 @@ const pasteFromClipboard = async () => {
     cursor: pointer;
   }
 
-.swap-button:hover {
-opacity: 0.8;
-}
+  .swap-button:hover {
+    opacity: 0.8;
+  }
 
   .output-container {
     display: flex;
@@ -230,24 +230,42 @@ opacity: 0.8;
     .input-div {
       display: flex;
       flex-direction: column;
-      width: 100%; /* Schriftgröße verkleinert für mobile Ansicht */
-      /* align-items: stretch; */
+      width: 100%;
       flex-wrap: wrap;
     }
 
-    .input-container {
-      flex: 1;
-      width: 100%;
-    }
-
-    .swap-container {
-      flex: 1;
-      width: 100%;
-    }
-
+    .input-container,
+    .swap-container,
     .output-container {
       flex: 1;
       width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .switchArea {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .input-div {
+      padding-right: 0;
+      padding-bottom: 2%;
+    }
+
+    .styled-input {
+      height: 100px;
+    }
+
+    .swap-button {
+      width: 48px;
+      height: 48px;
+    }
+
+    .switch-button,
+    .copy-button {
+      width: 24px;
+      height: 24px;
     }
   }
 </style>

@@ -35,64 +35,81 @@ export let scriptType;
   </div>
 
 <style>
-#author,
-#disclaimer {
-line-height: 1.2em;
-font-size: 20px;
-margin-top: 10px;
-}
+  #author,
+  #disclaimer {
+    line-height: 1.2em;
+    font-size: 20px;
+    margin-top: 10px;
+  }
 
-#wiki {
-font-size: 14px;
-}
+  #wiki {
+    font-size: 14px;
+  }
 
-.bottom-content {
-display: flex;
-flex-direction: row;
-gap: 20%;
-}
-
-#sign {
-font-size: 120px;
-color: #C3181E;
-line-height: 1em;
-margin: auto;
-}
-
-.text-left {
-display: flex;
-flex-direction: row;
-flex: 2;
-min-width: 300px;
-max-width: 450px;
-}
-
-.text-left-item {
-display: flex;
-flex-direction: row;
-}
-
-.text-right {
-display: flex;
-flex-direction: column;
-flex: 2;
-min-width: 300px;
-max-width: 450px;
-}
-
-a, a:visited {
-  color: black;
-  text-decoration: underline;
-}
-
-@media (max-width: 1200px) {
   .bottom-content {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    gap: 20%;
   }
+
+  #sign {
+    font-size: 120px;
+    color: #c3181e;
+    line-height: 1em;
+    margin: auto;
+  }
+
+  .text-left {
+    display: flex;
+    flex-direction: row;
+    flex: 2;
+    min-width: 300px;
+    max-width: 450px;
+  }
+
+  .text-left-item {
+    display: flex;
+    flex-direction: row;
+  }
+
   .text-right {
-    padding-top: 40px;
-    padding-left: 45px;
-    padding-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    min-width: 300px;
+    max-width: 450px;
   }
-}
+
+  a,
+  a:visited {
+    color: black;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 1200px) {
+    .bottom-content {
+      flex-direction: column;
+    }
+
+    .text-right {
+      padding-top: 40px;
+      padding-left: 45px;
+      padding-bottom: 80px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #author,
+    #disclaimer {
+      font-size: 16px;
+    }
+
+    #sign {
+      font-size: 80px;
+    }
+
+    .text-right {
+      padding-left: 20px;
+    }
+  }
 </style>
