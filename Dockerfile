@@ -1,17 +1,17 @@
-# Caddy-Image
-FROM caddy:2.7.6-alpine
+# Node.js-Umgebung
+FROM node:22.9-alpine
 
-COPY . /srv
-COPY Caddyfile /etc/caddy/Caddyfile
+# Arbeitsverzeichnis erstellen
+WORKDIR /app
 
+# Dependencies installieren
+COPY package*.json ./
+RUN npm install
 
-WORKDIR /srv
+# Code kopieren und bauen
+COPY . .
+RUN npm run build
 
-RUN apk add --no-cache git
-RUN apk add bash
-RUN  chmod +x ./version.sh
-RUN ./version.sh
-
-EXPOSE 80 443
-
-CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
+# Svelte App starten
+EXPOSE 4173
+CMD ["npm", "run", "preview", "--", "--host"]
