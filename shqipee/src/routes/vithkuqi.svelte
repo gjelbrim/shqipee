@@ -143,5 +143,5 @@
   
     </div>
   
-    <BottomContent/>
+    <BottomContent scriptType={"vithkuqi"}/>
   </main>
