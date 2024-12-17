@@ -4,7 +4,7 @@
   import BottomContent from "../components/BottomContent.svelte";
   const scriptType = "vithkuqi";
 </script>
-  
+
 <TopSection scriptType={scriptType} />
 <Transliterator scriptType={scriptType} />
 <BottomContent scriptType={scriptType} />
