@@ -72,7 +72,7 @@ const pasteFromClipboard = async () => {
       <div class="input-container">
         <div class="input-header">
           <h2>{inputTitle}</h2>
-          <button class="switch-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
+          <button class="paste-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
         </div>
         <textarea
           id="inp"
@@ -138,7 +138,7 @@ const pasteFromClipboard = async () => {
     margin-bottom: 0.5rem;
   }
 
-  .switch-button {
+  .paste-button {
     width: 32px;
     height: 32px;
     background-image: url("/src/assets/switch.svg");
@@ -149,7 +149,7 @@ const pasteFromClipboard = async () => {
     cursor: pointer;
   }
 
-  .switch-button:hover {
+  .paste-button:hover {
     opacity: 0.8;
   }
 
@@ -261,9 +261,15 @@ const pasteFromClipboard = async () => {
     .swap-button {
       width: 48px;
       height: 48px;
+      transform: rotate(90deg);
     }
 
-    .switch-button,
+    .swap-container {
+      padding-top: 1.5em;
+      padding-bottom: 1.5em;
+    }
+
+    .paste-button,
     .copy-button {
       width: 24px;
       height: 24px;
