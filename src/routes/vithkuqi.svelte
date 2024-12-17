@@ -6,6 +6,10 @@
   const scriptType = ScriptType.VITHKUQI;
 </script>
 
+<svelte:head>
+  <title>shqip.ee | vithkuqi</title> 
+</svelte:head>
+
 <TopSection scriptType={scriptType} />
 <Transliterator scriptType={scriptType} />
 <BottomContent scriptType={scriptType} />

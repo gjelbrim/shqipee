@@ -6,6 +6,10 @@
   const scriptType = ScriptType.ELBASAN;
 </script>
 
+<svelte:head>
+  <title>shqip.ee | elbasan</title> 
+</svelte:head>
+
 <TopSection scriptType={scriptType} />
 <Transliterator scriptType={scriptType} />
 <BottomContent scriptType={scriptType} />
