@@ -27,3 +27,17 @@ h1 {
   line-height: 0.9em;
   padding-bottom: 5%;
 }
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 48px;
+  }
+
+  h1 {
+    font-size: 64px;
+  }
+
+  main {
+    padding: 10px 20px;
+  }
+}
