@@ -1,5 +1,5 @@
 <script>
-export const ScriptType = {
+const ScriptType = {
   ELBASAN: 'elbasan',
   VITHKUQI: 'vithkuqi'
 }
