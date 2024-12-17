@@ -9,54 +9,21 @@
   box-sizing: border-box;
 }
 
-
-.insertNav {
-  display: flex;
-
-  /* justify-content: center; */
-}
-
-.top-section {
-display: flex;
-flex-direction: row;
-flex-wrap: wrap;
-/* justify-content: baseline; */
-padding-bottom: 10%;
-
-}
-.headingTop {
-display: flex;
-flex: 2;
-border-left: 14px solid #C3181E;
-padding-left: 10px;
-}
-
-.logoIcon {
-font-size: 128px;
-display: flex;
-flex: 1;
-color: #C3181E;
-margin: 0px;
-justify-content:center;
-
-}
-/* Bestehende CSS bleibt wie es ist */
 h2 {
-font-size: 64px;
-margin: 0;
+  font-size: 64px;
+  margin: 0;
 }
 
 main {
-display: relative;
-max-width: 1600px; /* Maximale Breite des Inhalts */
-margin: 0 auto; /* Zentriert den Inhalt horizontal */
-padding: 20px 80px; /* Fester Abstand innen (links und rechts) */
-box-sizing: border-box;
-
+  display: relative;
+  max-width: 1600px; /* Maximale Breite des Inhalts */
+  margin: 0 auto; /* Zentriert den Inhalt horizontal */
+  padding: 20px 80px; /* Fester Abstand innen (links und rechts) */
+  box-sizing: border-box;
 }
 
 h1 {
-font-size: 92px;
-line-height: 0.9em;
-padding-bottom: 5%;
+  font-size: 92px;
+  line-height: 0.9em;
+  padding-bottom: 5%;
 }
