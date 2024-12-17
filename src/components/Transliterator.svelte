@@ -158,7 +158,7 @@ const pasteFromClipboard = async () => {
     border: none;
     outline: none;
     background: none;
-    font-size: 1rem;
+    font-size: 1.5rem;
     resize: none;
     padding-top: 10px;
     box-sizing: border-box;
@@ -255,6 +255,7 @@ const pasteFromClipboard = async () => {
 
     .styled-input {
       height: 100px;
+      font-size: 1rem;
     }
 
     .swap-button {
