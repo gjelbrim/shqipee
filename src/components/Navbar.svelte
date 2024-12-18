@@ -1,33 +1,19 @@
 <script>
-  import { onMount } from "svelte";
+  import { link, useLocation } from "svelte-routing";
 
-  // current route
-  let activeRoute = window.location.hash || "#/";
-
-
-  const updateRoute = () => {
-    activeRoute = window.location.hash || "#/";
-  };
-
-  // event listner for route change
-  onMount(() => {
-    window.addEventListener("hashchange", updateRoute);
-    updateRoute(); // Initiale Route setzen
-
-    // clean up of event listeners when component is destroyed
-    return () => window.removeEventListener("hashchange", updateRoute);
-  });
-
-  // define routes
   const routes = [
-    { name: "elbasan", path: "#/" },
-    { name: "vithkuqi", path: "#/vithkuqi" },
+    { name: "elbasan", path: "/" },
+    { name: "vithkuqi", path: "/vithkuqi" },
   ];
+
+  const location = useLocation();
+  let currentLocation;
+  location.subscribe(value => currentLocation = value);
 </script>
 
 <nav class="navbar">
   {#each routes as route}
-    <a href={route.path} class:active={activeRoute === route.path}>
+    <a href={route.path} use:link class:active={currentLocation?.pathname === route.path}>
       {route.name}
     </a>
   {/each}

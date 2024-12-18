@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@sveltejs/kit": "^2.11.1",
+    "svelte-routing": "^2.13.0",
     "svelte-spa-router": "^4.0.1"
   }
 }
