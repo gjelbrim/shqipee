@@ -1,8 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Elbasan&family=Noto+Sans+Vithkuqi:wght@400..700&family=Roboto:wght@500&display=swap');
 
+@font-face {
+  font-family: "Trodhi";
+  src: url(./assets/TodhriFont.ttf);
+}
+
 * {
   background: #DBE1D5;
-  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", sans-serif;
+  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Trodhi, sans-serif;
   max-height: 100%;
   margin: 0;
   padding: 0;
