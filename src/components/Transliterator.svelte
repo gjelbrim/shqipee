@@ -1,10 +1,21 @@
 <script>
 import {copy} from 'svelte-copy'
-import {elbasanMapping, vithkuqiMapping} from '../data/mappings.js';
+import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
 export let scriptType;
 
-let currentMapping = scriptType === ScriptType.ELBASAN ? elbasanMapping : vithkuqiMapping;
+let currentMapping
+ switch(scriptType){
+  case ScriptType.ELBASAN:
+    currentMapping = elbasanMapping;
+    break;
+  case ScriptType.VITHKUQI:
+    currentMapping = vithkuqiMapping;
+    break;
+  case ScriptType.TODHRI:
+    currentMapping = todhriMapping;
+    break;
+ }
 
 // initial values for direction and title
 let isLatinToScript = true;
@@ -25,7 +36,7 @@ const flipMapping = (mapping) => {
 
 // transliteration based on direction
 const transliterate = (word) => {
-    word = word.toLowerCase();
+    if (scriptType === ScriptType.TODHRI || scriptType === ScriptType.ELBASAN) word = word.toLowerCase();
     const activeMapping = isLatinToScript ? currentMapping : flipMapping(currentMapping);
     const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
     return word.replace(pattern, match => activeMapping[match]);

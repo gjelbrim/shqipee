@@ -4,6 +4,7 @@
   const routes = [
     { name: "elbasan", path: "/" },
     { name: "vithkuqi", path: "/vithkuqi" },
+    { name: "todhri", path: "/todhri" }
   ];
 
   const location = useLocation();
