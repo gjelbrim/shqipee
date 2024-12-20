@@ -66,3 +66,40 @@ export const vithkuqiMapping = {
      //single letter minuscule
     a: '\u{10597}', b: '\u{10599}', c: '\u{1059A}', ç: '\u{1059B}', d: '\u{1059C}', e: '\u{1059E}', ë: '\u{1059F}', f: '\u{105A0}', g: '\u{105A1}', h: '\u{105A3}', i: '\u{105A5}', j: '\u{105A7}', k: '\u{105A8}', l: '\u{105A9}', m: '\u{105AB}', n: '\u{105AC}', o: '\u{105AE}', p: '\u{105AF}', q: '\u{105B0}', r: '\u{105B1}', s: '\u{105B3}', t: '\u{105B5}', u: '\u{105B7}', v: '\u{105B8}', x: '\u{105B9}', y: '\u{105BB}', z: '\u{105BC}'
 };
+
+export const todhriMapping = {
+    //three letter
+    ngj: '\u{105CF}',
+    sht: '\u{105E1}',
+    nxh: '\u{105E9}',
+    
+    //two letter
+    as: '\u{105C1}',
+    mb: '\u{105C3}',
+    nd: '\u{105C7}',
+    dh: '\u{105C8}',
+    ng: '\u{105CD}',
+    gj: '\u{105CE}',
+    hj: '\u{105D1}',
+    ll: '\u{105D6}',
+    nj: '\u{105D9}',
+    rr: '\u{105DE}',
+    sh: '\u{105E0}',
+    th: '\u{105E3}',
+    nx: '\u{105E7}',
+    xh: '\u{105E8}',
+    jy: '\u{105EB}',
+    ju: '\u{105EB}',
+    zh: '\u{105ED}',
+
+    //single letter
+    a: '\u{105C0}', b: '\u{105C2}', c: '\u{105C4}', ç: '\u{105C5}', d: '\u{105C6}', e: '\u{105C9}', ë: '\u{105CA}', f: '\u{105CB}', g: '\u{105CC}', h: '\u{105D0}', i: '\u{105D2}', j: '\u{105D3}', k: '\u{105D4}', l: '\u{105D5}', m: '\u{105D7}', n: '\u{105D8}', o: '\u{105DA}', p: '\u{105DB}', q: '\u{105DC}', r: '\u{105DD}', s: '\u{105DF}', t: '\u{105E2}', u: '\u{105E4}', v: '\u{105E5}', x: '\u{105E6}', y: '\u{105EA}', z: '\u{105EC}',
+
+    //greek
+    γ: '\u{105EE}', //gh = gamma
+    χ: '\u{105F1}', //kh = chi
+    ω: '\u{105F3}', //oo = omega
+    ψ: '\u{105F2}',//ps = psi
+    ξ: '\u{105F0}',//sk = ξ (xi)
+    ϛ: '\u{105EF}'//st = stigma
+};
