@@ -13,6 +13,8 @@
             <h1>elbasan <br> alphabet</h1>
         {:else if scriptType === ScriptType.VITHKUQI}
             <h1>vithkuqi <br> alphabet</h1>
+        {:else if scriptType === ScriptType.TODHRI}
+            <h1>todhri <br> alphabet</h1>
         {/if}
     </div>
     <div class="insertNav">

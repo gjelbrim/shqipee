@@ -13,6 +13,8 @@ export let scriptType;
                 this page explicitly distances himself from such ideologies and condemns them.
             {:else if scriptType === ScriptType.VITHKUQI}
                 language and pronunciation change over time. therefore, vithkuqi cannot be transliterated 1:1 into latin and vice versa. support outside of this site is very limited.
+            {:else if scriptType === ScriptType.TODHRI}
+                todhri alphabet has been added to the unicode standard in 2024. currently there is no font mapping this alphabet. therefore it cannot be displayed outside of this site.
             {/if}
         </p>
       </div>
@@ -29,6 +31,8 @@ export let scriptType;
             more info about the elbasan alphabet on <a href="https://en.wikipedia.org/wiki/Elbasan_alphabet" target="_blank">wikipedia</a>
         {:else if scriptType === ScriptType.VITHKUQI}
             more info about the vithkuqi alphabet on <a href="https://en.wikipedia.org/wiki/Vithkuqi_alphabet" target="_blank">wikipedia</a>
+        {:else if scriptType === ScriptType.TODHRI}
+            more info about the todhri alphabet on <a href="https://en.wikipedia.org/wiki/Todhri_alphabet" target="_blank">wikipedia</a>
         {/if}
       </p>
     </div>
