@@ -70,8 +70,8 @@ export const vithkuqiMapping = {
 export const todhriMapping = {
     //three letter
     ngj: '\u{105CF}',
-    sht: '\u{105E7}',
-    nxh: '\u{105EF}',
+    sht: '\u{105E1}',
+    nxh: '\u{105E9}',
     
     //two letter
     as: '\u{105C1}',
@@ -80,26 +80,26 @@ export const todhriMapping = {
     dh: '\u{105C8}',
     ng: '\u{105CD}',
     gj: '\u{105CE}',
-    hj: '\u{105D2}',
-    ll: '\u{105D8}',
-    nj: '\u{105DB}',
-    rr: '\u{105E2}',
-    sh: '\u{105E6}',
-    th: '\u{105E9}',
-    nx: '\u{105ED}',
-    xh: '\u{105EE}',
-    jy: '\u{105F1}',
-    ju: '\u{105F1}',
-    zh: '\u{105F3}',
+    hj: '\u{105D1}',
+    ll: '\u{105D6}',
+    nj: '\u{105D9}',
+    rr: '\u{105DE}',
+    sh: '\u{105E0}',
+    th: '\u{105E3}',
+    nx: '\u{105E7}',
+    xh: '\u{105E8}',
+    jy: '\u{105EB}',
+    ju: '\u{105EB}',
+    zh: '\u{105ED}',
 
     //single letter
-    a: '\u{105C0}', b: '\u{105C2}', c: '\u{105C4}', ç: '\u{105C5}', d: '\u{105C6}', e: '\u{105C9}', ë: '\u{105CA}', f: '\u{105CB}', g: '\u{105CC}', h: '\u{105D1}', i: '\u{105D3}', j: '\u{105D4}', k: '\u{105D5}', l: '\u{105D7}', m: '\u{105D9}', n: '\u{105DA}', o: '\u{105DC}', p: '\u{105DE}', q: '\u{105E0}', r: '\u{105E1}', s: '\u{105E3}', t: '\u{105E8}', u: '\u{105EA}', v: '\u{105EB}', x: '\u{105EC}', y: '\u{105F0}', z: '\u{105F2}',
+    a: '\u{105C0}', b: '\u{105C2}', c: '\u{105C4}', ç: '\u{105C5}', d: '\u{105C6}', e: '\u{105C9}', ë: '\u{105CA}', f: '\u{105CB}', g: '\u{105CC}', h: '\u{105D0}', i: '\u{105D2}', j: '\u{105D3}', k: '\u{105D4}', l: '\u{105D5}', m: '\u{105D7}', n: '\u{105D8}', o: '\u{105DA}', p: '\u{105DB}', q: '\u{105DC}', r: '\u{105DD}', s: '\u{105DF}', t: '\u{105E2}', u: '\u{105E4}', v: '\u{105E5}', x: '\u{105E6}', y: '\u{105EA}', z: '\u{105EC}',
 
     //greek
-    γ: '\u{105D0}', //gh = gamma
-    χ: '\u{105D6}', //kh = chi
-    ω: '\u{105DD}', //oo = omega
-    ψ: '\u{105DF}',//ps = psi
-    ξ: '\u{105E4}',//sk = ξ (xi)
-    ϛ: '\u{105E5}'//st = stigma
+    γ: '\u{105EE}', //gh = gamma
+    χ: '\u{105F1}', //kh = chi
+    ω: '\u{105F3}', //oo = omega
+    ψ: '\u{105F2}',//ps = psi
+    ξ: '\u{105F0}',//sk = ξ (xi)
+    ϛ: '\u{105EF}'//st = stigma
 };
