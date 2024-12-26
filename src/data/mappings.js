@@ -25,32 +25,32 @@ export const elbasanMapping = {
 export const vithkuqiMapping = {
     //two letter majuscule+majuscule (CAPS)
     DH: '\u{10576}',
-    GI: '\u{1057A}\u{105A6}',
+    GI: '\u{1057A}\u{105A6}\u200C',
     GJ: '\u{1057A}\u{105A6}',
     JI: '\u{10580}\u{105A6}',
     LL: '\u{10583}',
     NJ: '\u{10586}',
-    RR: '\u{1058A}',
+    RR: '\u{1058A}\u200C',
     SH: '\u{1058D}',
     TH: '\u{1058F}',
-    XH: '\u{1057A}\u{105A6}',
+    XH: '\u{10574}\u200C',
     ZH: '\u{1058D}\u{10595}',
     
     //two letter majuscule+minuscule
     Dh: '\u{10576}',
-    Gi: '\u{1057A}\u{105A6}',
+    Gi: '\u{1057A}\u{105A6}\u200C',
     Gj: '\u{1057A}\u{105A6}',
     Ji: '\u{10580}\u{105A6}',
     Ll: '\u{10583}',
     Nj: '\u{10586}',
-    Rr: '\u{1058A}',
+    Rr: '\u{1058A}\u200C',
     Sh: '\u{1058D}',
     Th: '\u{1058F}',
-    Xh: '\u{10574}',
+    Xh: '\u{10574}\u200C',
     Zh: '\u{1058D}\u{105BC}',
     //two letter minuscule
     dh: '\u{1059D}',
-    gi: '\u{105A1}\u{105A6}',
+    gi: '\u{105A1}\u{105A6}\u200C',
     gj: '\u{105A1}\u{105A6}',
     ji: '\u{105A7}\u{105A6}',
     ll: '\u{105AA}',
@@ -58,7 +58,7 @@ export const vithkuqiMapping = {
     rr: '\u{105B1}',
     sh: '\u{105B4}',
     th: '\u{105B6}',
-    xh: '\u{1059B}',
+    xh: '\u{1059B}\u200C',
     zh: '\u{105B4}\u{105BC}',
     
     //single letter majuscule
