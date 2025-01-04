@@ -178,7 +178,6 @@ const pasteFromClipboard = async () => {
   .styled-input::placeholder {
     color: rgb(0, 0, 0);
     opacity: 0.7;
-    font-family: "Univers", Arial, sans-serif;
   }
 
   .input-bottom-line {
