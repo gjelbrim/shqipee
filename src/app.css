@@ -9,10 +9,13 @@
 :root {
   /* Colors */
   --color-background: #DBE1D5;
-  --color-background-dark: #121212;
-  --color-text: inherit;
+  --color-text: #000000;
   --color-border: #bdc3c7;
   
+  /* Dark Mode Colors */
+  --color-background-dark: #000000;
+  --color-text-dark: #f8f9fa;
+
   /* Typography */
   --font-family-primary: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
   --font-size-h1-desktop: 92px;
