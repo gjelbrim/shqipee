@@ -82,6 +82,10 @@ main {
   margin: 0 auto;
   padding: var(--container-padding-desktop);
   box-sizing: border-box;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 h1 {

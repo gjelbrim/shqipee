@@ -146,16 +146,16 @@ onMount(() => {
   .input-div {
     display: flex;
     flex-direction: row;
-    padding-right: 20%;
     padding-bottom: 5%;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .input-container {
     display: flex;
     flex-direction: column;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
-    width: 300px;
   }
 
   .input-header {
@@ -208,10 +208,10 @@ onMount(() => {
   .swap-container {
     display: flex;
     flex-direction: column;
-    flex: 1;
     align-items: center;
-    width: 300px;
-    min-width: 300px;
+    justify-content: center;
+    width: 100px;
+    min-width: 100px;
   }
 
   .swap-button {
@@ -232,8 +232,7 @@ onMount(() => {
   .output-container {
     display: flex;
     flex-direction: column;
-    flex: 2;
-    width: 300px;
+    flex: 1;
     min-width: 300px;
   }
 
