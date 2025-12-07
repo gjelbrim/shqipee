@@ -53,7 +53,8 @@ export let scriptType;
   .bottom-content {
     display: flex;
     flex-direction: row;
-    gap: 20%;
+    justify-content: space-between;
+    gap: 5%;
   }
 
   #sign {
@@ -66,9 +67,8 @@ export let scriptType;
   .text-left {
     display: flex;
     flex-direction: row;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
-    max-width: 450px;
   }
 
   .text-left-item {
@@ -79,9 +79,8 @@ export let scriptType;
   .text-right {
     display: flex;
     flex-direction: column;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
-    max-width: 450px;
   }
 
   a,

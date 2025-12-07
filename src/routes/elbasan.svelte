@@ -10,6 +10,8 @@
   <title>shqip.ee | elbasan</title> 
 </svelte:head>
 
-<TopSection scriptType={scriptType} />
-<Transliterator scriptType={scriptType} />
-<BottomContent scriptType={scriptType} />
+<main>
+  <TopSection scriptType={scriptType} />
+  <Transliterator scriptType={scriptType} />
+  <BottomContent scriptType={scriptType} />
+</main>
