@@ -2,6 +2,7 @@
 import {copy} from 'svelte-copy'
 import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
+import { onMount } from 'svelte';
 export let scriptType;
 
 let currentMapping
@@ -56,13 +57,17 @@ const swapDirection = () => {
     }
 
     // reset input and output
-    inputText = "";
-    outputText = "";
+    inputText = outputText;
+    localStorage.setItem('transliterationInput', inputText);
+    localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
+    outputText = transliterate(inputText);
 };
 
 // input handler: transliterate text and update output
 const handleInput = (event) => {
     inputText = event.target.value;
+    localStorage.setItem('transliterationInput', inputText);
+    localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
     outputText = transliterate(inputText);
 };
 
@@ -71,11 +76,22 @@ const pasteFromClipboard = async () => {
     try {
         const clipboardText = await navigator.clipboard.readText();
         inputText = clipboardText;
+        localStorage.setItem('transliterationInput', inputText);
+        localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
         outputText = transliterate(inputText);
     } catch (error) {
         console.error("Error accessing clipboard: ", error);
     }
 };
+
+onMount(() => {
+    const savedInput = localStorage.getItem('transliterationInput');
+    const savedIsLatin = localStorage.getItem('transliterationIsLatin') === 'true';
+    if (savedInput && savedIsLatin) {
+        inputText = savedInput;
+        outputText = transliterate(inputText);
+    }
+});
 </script>
 
 <div class="switchArea">
