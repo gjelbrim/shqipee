@@ -10,6 +10,8 @@
     <title>shqip.ee | todhri</title> 
   </svelte:head>
   
+<main>
   <TopSection scriptType={scriptType} />
   <Transliterator scriptType={scriptType} />
   <BottomContent scriptType={scriptType} />
+</main>

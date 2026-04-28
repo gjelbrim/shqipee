@@ -31,7 +31,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding-bottom: 10%;
+    padding-bottom: 5%;
   }
 
   .headingTop {
