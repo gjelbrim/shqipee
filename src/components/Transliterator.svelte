@@ -86,8 +86,11 @@ const pasteFromClipboard = async () => {
 
 onMount(() => {
     const savedInput = localStorage.getItem('transliterationInput');
-    const savedIsLatin = localStorage.getItem('transliterationIsLatin') === 'true';
-    if (savedInput && savedIsLatin) {
+    const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
+    if (savedInput !== null && savedIsLatinRaw !== null) {
+        isLatinToScript = savedIsLatinRaw === 'true';
+        inputTitle = isLatinToScript ? 'latin' : scriptType;
+        outputTitle = isLatinToScript ? scriptType : 'latin';
         inputText = savedInput;
         outputText = transliterate(inputText);
     }
