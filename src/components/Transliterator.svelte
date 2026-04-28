@@ -48,7 +48,9 @@ const saveToStorage = (input, isLatin) => {
     try {
         localStorage.setItem('transliterationInput', input);
         localStorage.setItem('transliterationIsLatin', String(isLatin));
-    } catch (_) {}
+    } catch (e) {
+        console.warn('localStorage unavailable, state will not be persisted:', e);
+    }
 };
 
 // swap direction: carry over the previous output as the new input and transliterate
@@ -103,7 +105,9 @@ onMount(() => {
             inputText = savedInput;
             outputText = transliterate(inputText);
         }
-    } catch (_) {}
+    } catch (e) {
+        console.warn('localStorage unavailable, saved state could not be restored:', e);
+    }
 });
 </script>
 
