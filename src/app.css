@@ -77,7 +77,6 @@ h2 {
 }
 
 main {
-  display: relative;
   max-width: var(--container-max-width);
   margin: 0 auto;
   padding: var(--container-padding-desktop);
