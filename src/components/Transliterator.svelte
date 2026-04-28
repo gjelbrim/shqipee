@@ -2,6 +2,7 @@
 import {copy} from 'svelte-copy'
 import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
+import { onMount } from 'svelte';
 export let scriptType;
 
 let currentMapping
@@ -42,7 +43,17 @@ const transliterate = (word) => {
     return word.replace(pattern, match => activeMapping[match]);
 };
 
-// swap direction
+// persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
+const saveToStorage = (input, isLatin) => {
+    try {
+        localStorage.setItem('transliterationInput', input);
+        localStorage.setItem('transliterationIsLatin', String(isLatin));
+    } catch (e) {
+        console.warn('localStorage unavailable, state will not be persisted:', e);
+    }
+};
+
+// swap direction: carry over the previous output as the new input and transliterate
 const swapDirection = () => {
     isLatinToScript = !isLatinToScript;
 
@@ -55,15 +66,20 @@ const swapDirection = () => {
       outputTitle = "latin";
     }
 
-    // reset input and output
-    inputText = "";
-    outputText = "";
+    inputText = outputText;
+    saveToStorage(inputText, isLatinToScript);
+    outputText = transliterate(inputText);
 };
 
-// input handler: transliterate text and update output
+// debounce timer for localStorage writes
+let saveDebounceTimer;
+
+// input handler: transliterate text immediately; debounce the localStorage write
 const handleInput = (event) => {
     inputText = event.target.value;
     outputText = transliterate(inputText);
+    clearTimeout(saveDebounceTimer);
+    saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
 };
 
 // paste text from clipboard
@@ -71,11 +87,28 @@ const pasteFromClipboard = async () => {
     try {
         const clipboardText = await navigator.clipboard.readText();
         inputText = clipboardText;
+        saveToStorage(inputText, isLatinToScript);
         outputText = transliterate(inputText);
     } catch (error) {
         console.error("Error accessing clipboard: ", error);
     }
 };
+
+onMount(() => {
+    try {
+        const savedInput = localStorage.getItem('transliterationInput');
+        const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
+        if (savedInput !== null && savedIsLatinRaw !== null) {
+            isLatinToScript = savedIsLatinRaw === 'true';
+            inputTitle = isLatinToScript ? 'latin' : scriptType;
+            outputTitle = isLatinToScript ? scriptType : 'latin';
+            inputText = savedInput;
+            outputText = transliterate(inputText);
+        }
+    } catch (e) {
+        console.warn('localStorage unavailable, saved state could not be restored:', e);
+    }
+});
 </script>
 
 <div class="switchArea">
@@ -122,7 +155,6 @@ const pasteFromClipboard = async () => {
 
 <style>
   .switchArea {
-    display: relative;
     flex-direction: row;
     gap: 3%;
   }
@@ -130,16 +162,16 @@ const pasteFromClipboard = async () => {
   .input-div {
     display: flex;
     flex-direction: row;
-    padding-right: 20%;
     padding-bottom: 5%;
+    width: 100%;
+    justify-content: space-between;
   }
 
   .input-container {
     display: flex;
     flex-direction: column;
-    flex: 2;
+    flex: 1;
     min-width: 300px;
-    width: 300px;
   }
 
   .input-header {
@@ -192,10 +224,10 @@ const pasteFromClipboard = async () => {
   .swap-container {
     display: flex;
     flex-direction: column;
-    flex: 1;
     align-items: center;
-    width: 300px;
-    min-width: 300px;
+    justify-content: center;
+    width: 100px;
+    min-width: 100px;
   }
 
   .swap-button {
@@ -216,8 +248,7 @@ const pasteFromClipboard = async () => {
   .output-container {
     display: flex;
     flex-direction: column;
-    flex: 2;
-    width: 300px;
+    flex: 1;
     min-width: 300px;
   }
 

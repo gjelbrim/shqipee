@@ -27,7 +27,6 @@
     align-items: center;
     gap: 30px;
     margin-bottom: 20px;
-    background-color: #DBE1D5;
   }
 
   .navbar a {
