@@ -43,7 +43,15 @@ const transliterate = (word) => {
     return word.replace(pattern, match => activeMapping[match]);
 };
 
-// swap direction
+// persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
+const saveToStorage = (input, isLatin) => {
+    try {
+        localStorage.setItem('transliterationInput', input);
+        localStorage.setItem('transliterationIsLatin', String(isLatin));
+    } catch (_) {}
+};
+
+// swap direction: carry over the previous output as the new input and transliterate
 const swapDirection = () => {
     isLatinToScript = !isLatinToScript;
 
@@ -56,19 +64,20 @@ const swapDirection = () => {
       outputTitle = "latin";
     }
 
-    // carry over the previous output as the new input and transliterate in the new direction
     inputText = outputText;
-    localStorage.setItem('transliterationInput', inputText);
-    localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
+    saveToStorage(inputText, isLatinToScript);
     outputText = transliterate(inputText);
 };
 
-// input handler: transliterate text and update output
+// debounce timer for localStorage writes
+let saveDebounceTimer;
+
+// input handler: transliterate text immediately; debounce the localStorage write
 const handleInput = (event) => {
     inputText = event.target.value;
-    localStorage.setItem('transliterationInput', inputText);
-    localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
     outputText = transliterate(inputText);
+    clearTimeout(saveDebounceTimer);
+    saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
 };
 
 // paste text from clipboard
@@ -76,8 +85,7 @@ const pasteFromClipboard = async () => {
     try {
         const clipboardText = await navigator.clipboard.readText();
         inputText = clipboardText;
-        localStorage.setItem('transliterationInput', inputText);
-        localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
+        saveToStorage(inputText, isLatinToScript);
         outputText = transliterate(inputText);
     } catch (error) {
         console.error("Error accessing clipboard: ", error);
@@ -85,15 +93,17 @@ const pasteFromClipboard = async () => {
 };
 
 onMount(() => {
-    const savedInput = localStorage.getItem('transliterationInput');
-    const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
-    if (savedInput !== null && savedIsLatinRaw !== null) {
-        isLatinToScript = savedIsLatinRaw === 'true';
-        inputTitle = isLatinToScript ? 'latin' : scriptType;
-        outputTitle = isLatinToScript ? scriptType : 'latin';
-        inputText = savedInput;
-        outputText = transliterate(inputText);
-    }
+    try {
+        const savedInput = localStorage.getItem('transliterationInput');
+        const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
+        if (savedInput !== null && savedIsLatinRaw !== null) {
+            isLatinToScript = savedIsLatinRaw === 'true';
+            inputTitle = isLatinToScript ? 'latin' : scriptType;
+            outputTitle = isLatinToScript ? scriptType : 'latin';
+            inputText = savedInput;
+            outputText = transliterate(inputText);
+        }
+    } catch (_) {}
 });
 </script>
 
