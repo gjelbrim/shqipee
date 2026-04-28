@@ -79,12 +79,8 @@ h2 {
 main {
   max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: var(--container-padding-desktop);
+  padding: 60px 200px 20px 80px;
   box-sizing: border-box;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 h1 {

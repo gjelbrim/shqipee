@@ -51,24 +51,22 @@ export let scriptType;
   }
 
   .bottom-content {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
   #sign {
     font-size: 120px;
     color: #c3181e;
     line-height: 1em;
-    margin: auto;
+    margin-right: 8px;
+    align-self: flex-start;
   }
 
   .text-left {
     display: flex;
     flex-direction: row;
-    flex: 1;
-    min-width: 300px;
+    max-width: 450px;
   }
 
   .text-left-item {
@@ -79,8 +77,7 @@ export let scriptType;
   .text-right {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    min-width: 300px;
+    padding-left: 65px;
   }
 
   a,
@@ -91,7 +88,7 @@ export let scriptType;
 
   @media (max-width: 1200px) {
     .bottom-content {
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
     .text-right {
