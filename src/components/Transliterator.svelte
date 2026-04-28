@@ -56,7 +56,7 @@ const swapDirection = () => {
       outputTitle = "latin";
     }
 
-    // reset input and output
+    // carry over the previous output as the new input and transliterate in the new direction
     inputText = outputText;
     localStorage.setItem('transliterationInput', inputText);
     localStorage.setItem('transliterationIsLatin', String(isLatinToScript));
