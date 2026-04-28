@@ -96,12 +96,8 @@ const pasteFromClipboard = async () => {
 
 onMount(() => {
     try {
-        if (savedInput !== null) {
-            if (savedIsLatinRaw === 'true') {
-                isLatinToScript = true;
-            } else if (savedIsLatinRaw === 'false') {
-                isLatinToScript = false;
-            }
+        const savedInput = localStorage.getItem('transliterationInput');
+        const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
         if (savedInput !== null && savedIsLatinRaw !== null) {
             isLatinToScript = savedIsLatinRaw === 'true';
             inputTitle = isLatinToScript ? 'latin' : scriptType;
@@ -159,7 +155,6 @@ onMount(() => {
 
 <style>
   .switchArea {
-    display: relative;
     flex-direction: row;
     gap: 3%;
   }
