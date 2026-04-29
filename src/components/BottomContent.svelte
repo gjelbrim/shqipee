@@ -146,7 +146,7 @@ $: {
     margin-bottom: 5px;
   }
 
-  :global(.highlight) {
+  .highlight {
     color: #c3181e;
     font-weight: 700;
   }
