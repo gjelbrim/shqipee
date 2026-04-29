@@ -2,7 +2,7 @@
 import {copy} from 'svelte-copy'
 import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 export let scriptType;
 
 let currentMapping
@@ -75,6 +75,9 @@ const swapDirection = () => {
 // debounce timer for localStorage writes
 let saveDebounceTimer;
 
+// timer for clearing paste error message
+let pasteErrorTimer;
+
 // input handler: transliterate text immediately; debounce the localStorage write
 const handleInput = (event) => {
     inputText = event.target.value;
@@ -93,7 +96,8 @@ const pasteFromClipboard = async () => {
         pasteError = false;
     } catch (error) {
         pasteError = true;
-        setTimeout(() => pasteError = false, 3000);
+        clearTimeout(pasteErrorTimer);
+        pasteErrorTimer = setTimeout(() => pasteError = false, 3000);
     }
 };
 
@@ -111,6 +115,11 @@ onMount(() => {
     } catch (e) {
         console.warn('localStorage unavailable, saved state could not be restored:', e);
     }
+});
+
+onDestroy(() => {
+    clearTimeout(pasteErrorTimer);
+    clearTimeout(saveDebounceTimer);
 });
 </script>
 
