@@ -3,7 +3,7 @@
   import Elbasan from "./routes/elbasan.svelte";
   import Vithkuqi from "./routes/vithkuqi.svelte";
   import Todhri from "./routes/todhri.svelte";
-  import NotFound from "./routes/NotFound.svelte";
+  import NotFound from "./routes/notfound.svelte";
 </script>
 
 <Router>
