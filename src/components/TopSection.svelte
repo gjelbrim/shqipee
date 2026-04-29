@@ -51,7 +51,7 @@
     flex: 1;
     color: #c3181e;
     margin: 0px;
-    justify-content: center;
+    justify-content: flex-end;
   }
 
   @media (max-width: 768px) {
