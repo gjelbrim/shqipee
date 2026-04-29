@@ -2,20 +2,25 @@
 import {ScriptType} from '../utils/scriptTypes.js';
 export let scriptType;
 
+const SCRIPT_INFO = {
+    [ScriptType.ELBASAN]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Elbasan_alphabet"
+    },
+    [ScriptType.VITHKUQI]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Vithkuqi_alphabet"
+    },
+    [ScriptType.TODHRI]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Todhri_alphabet"
+    }
+};
+
 let wikiLink = "";
 let scriptName = "";
 
 $: {
-    if (scriptType === ScriptType.ELBASAN) {
-        wikiLink = "https://en.wikipedia.org/wiki/Elbasan_alphabet";
-        scriptName = "elbasan";
-    } else if (scriptType === ScriptType.VITHKUQI) {
-        wikiLink = "https://en.wikipedia.org/wiki/Vithkuqi_alphabet";
-        scriptName = "vithkuqi";
-    } else if (scriptType === ScriptType.TODHRI) {
-        wikiLink = "https://en.wikipedia.org/wiki/Todhri_alphabet";
-        scriptName = "todhri";
-    }
+    const scriptInfo = SCRIPT_INFO[scriptType];
+    wikiLink = scriptInfo ? scriptInfo.wikiLink : "";
+    scriptName = scriptInfo ? scriptType : "";
 }
 </script>
 
