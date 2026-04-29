@@ -130,7 +130,7 @@ onMount(() => {
         ></textarea>
         <div class="input-bottom-line"></div>
         {#if pasteError}
-          <p class="paste-error">clipboard access denied</p>
+          <p class="paste-error">Unable to read from clipboard</p>
         {/if}
       </div>
   
