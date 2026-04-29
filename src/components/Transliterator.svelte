@@ -2,7 +2,7 @@
 import {copy} from 'svelte-copy'
 import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 import {ScriptType} from '../utils/scriptTypes.js';
-import { onMount } from 'svelte';
+import { onMount, onDestroy } from 'svelte';
 export let scriptType;
 
 let currentMapping
@@ -22,6 +22,7 @@ let currentMapping
 let isLatinToScript = true;
 let inputTitle = "latin";
 let outputTitle = scriptType;
+let pasteError = false;
 
 // input text and output text
 let inputText = "";
@@ -74,6 +75,9 @@ const swapDirection = () => {
 // debounce timer for localStorage writes
 let saveDebounceTimer;
 
+// timer for clearing paste error message
+let pasteErrorTimer;
+
 // input handler: transliterate text immediately; debounce the localStorage write
 const handleInput = (event) => {
     inputText = event.target.value;
@@ -89,8 +93,11 @@ const pasteFromClipboard = async () => {
         inputText = clipboardText;
         saveToStorage(inputText, isLatinToScript);
         outputText = transliterate(inputText);
+        pasteError = false;
     } catch (error) {
-        console.error("Error accessing clipboard: ", error);
+        pasteError = true;
+        clearTimeout(pasteErrorTimer);
+        pasteErrorTimer = setTimeout(() => pasteError = false, 3000);
     }
 };
 
@@ -109,6 +116,11 @@ onMount(() => {
         console.warn('localStorage unavailable, saved state could not be restored:', e);
     }
 });
+
+onDestroy(() => {
+    clearTimeout(pasteErrorTimer);
+    clearTimeout(saveDebounceTimer);
+});
 </script>
 
 <div class="switchArea">
@@ -126,6 +138,9 @@ onMount(() => {
           bind:value={inputText}
         ></textarea>
         <div class="input-bottom-line"></div>
+        {#if pasteError}
+          <p class="paste-error" role="alert">Unable to read from clipboard</p>
+        {/if}
       </div>
   
   
@@ -194,6 +209,12 @@ onMount(() => {
 
   .paste-button:hover {
     opacity: 0.8;
+  }
+
+  .paste-error {
+    font-size: 0.75rem;
+    color: #c3181e;
+    margin-top: 4px;
   }
 
   .styled-input {
