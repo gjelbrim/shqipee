@@ -139,7 +139,7 @@ onDestroy(() => {
         ></textarea>
         <div class="input-bottom-line"></div>
         {#if pasteError}
-          <p class="paste-error">Unable to read from clipboard</p>
+          <p class="paste-error" role="alert">Unable to read from clipboard</p>
         {/if}
       </div>
   
