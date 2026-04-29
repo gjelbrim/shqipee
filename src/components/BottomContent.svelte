@@ -1,72 +1,177 @@
 <script>
 import {ScriptType} from '../utils/scriptTypes.js';
 export let scriptType;
+
+const SCRIPT_INFO = {
+    [ScriptType.ELBASAN]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Elbasan_alphabet"
+    },
+    [ScriptType.VITHKUQI]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Vithkuqi_alphabet"
+    },
+    [ScriptType.TODHRI]: {
+        wikiLink: "https://en.wikipedia.org/wiki/Todhri_alphabet"
+    }
+};
+
+let wikiLink = "";
+let scriptName = "";
+
+$: {
+    const scriptInfo = SCRIPT_INFO[scriptType];
+    wikiLink = scriptInfo ? scriptInfo.wikiLink : "";
+    scriptName = scriptInfo ? scriptType : "";
+}
 </script>
 
 <div class="bottom-content">
     <div class="text-left">
       <div class="text-left-item">
-        <p id="sign">!</p>
-        <p id="disclaimer">
-            {#if scriptType === ScriptType.ELBASAN}
-                elbasanscript is being misused on social media by far-right extremists. the developer of
-                this page explicitly distances himself from such ideologies and condemns them.
-            {:else if scriptType === ScriptType.VITHKUQI}
-                language and pronunciation change over time. therefore, vithkuqi cannot be transliterated 1:1 into latin and vice versa. support outside of this site is very limited.
-            {:else if scriptType === ScriptType.TODHRI}
-                todhri alphabet has been added to the unicode standard in 2024. currently there is no font mapping this alphabet. therefore it cannot be displayed outside of this site.
-            {/if}
-        </p>
-      </div>
-      <div>
+        <div class="disclaimer-wrapper">
+          <span class="label warning-label">important note</span>
+          <p id="disclaimer">
+              {#if scriptType === ScriptType.ELBASAN}
+                  elbasanscript is being misused on social media by far-right extremists. the developer of
+                  this page explicitly <span class="highlight">distances himself</span> from such ideologies and condemns them.
+              {:else if scriptType === ScriptType.VITHKUQI}
+                  language and pronunciation <span class="highlight">change over time</span>. therefore, vithkuqi <span class="highlight">cannot be transliterated 1:1</span> into latin and vice versa. support outside of this site is <span class="highlight">very limited</span>.
+              {:else if scriptType === ScriptType.TODHRI}
+                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. currently there is <span class="highlight">no font mapping</span> this alphabet. therefore it <span class="highlight">cannot be displayed</span> outside of this site.
+              {/if}
+          </p>
+        </div>
       </div>
     </div>
-    <div class="text-right">
-      <p id="author">
-        developed by <a href="http://github.com/gjelbrim" target="_blank">gjelbrim haskaj</a> <br />
-        designed by <a href="https://github.com/Litorian113" target="_blank">franz anhäupl</a>
-      </p>
-      <p id="wiki">
-        {#if scriptType === ScriptType.ELBASAN}
-            more info about the elbasan alphabet on <a href="https://en.wikipedia.org/wiki/Elbasan_alphabet" target="_blank">wikipedia</a>
-        {:else if scriptType === ScriptType.VITHKUQI}
-            more info about the vithkuqi alphabet on <a href="https://en.wikipedia.org/wiki/Vithkuqi_alphabet" target="_blank">wikipedia</a>
-        {:else if scriptType === ScriptType.TODHRI}
-            more info about the todhri alphabet on <a href="https://en.wikipedia.org/wiki/Todhri_alphabet" target="_blank">wikipedia</a>
-        {/if}
-      </p>
+    <div class="spacer"></div>
+        <div class="text-right">
+      <div class="credits-section">
+        <div class="credit-block">
+          <span class="label">developed by</span>
+          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj</a>
+        </div>
+        <div class="credit-block">
+          <span class="label">designed by</span>
+          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl</a>
+        </div>
+      </div>
+
+      <div class="wiki-section">
+        <span class="label">learn more</span>
+        <a href={wikiLink} target="_blank" rel="noopener noreferrer" class="wiki-link">
+          read about {scriptName} on wikipedia <span class="arrow">↗</span>
+        </a>
+      </div>
     </div>
   </div>
 
 <style>
-  #author,
-  #disclaimer {
-    line-height: 1.2em;
-    font-size: 20px;
-    margin-top: 10px;
+  .credits-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
   }
 
-  #wiki {
-    font-size: 14px;
+  .credit-block {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.6;
+    margin-bottom: 2px;
+  }
+
+  .credit-link {
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #1d1d1b;
+    transition: color 0.2s ease;
+  }
+
+  .credit-link:hover {
+    color: #c3181e;
+  }
+
+  .wiki-section {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wiki-link {
+    font-size: 18px;
+    text-decoration: none;
+    color: #1d1d1b;
+    border-bottom: 1px solid #1d1d1b;
+    padding-bottom: 2px;
+    display: inline-block;
+    width: fit-content;
+    transition: all 0.2s ease;
+  }
+
+  .wiki-link:hover {
+    color: #c3181e;
+    border-bottom-color: #c3181e;
+  }
+
+  .arrow {
+    font-size: 0.8em;
+    margin-left: 5px;
+  }
+
+  #disclaimer {
+    line-height: 1.3em;
+    font-size: 20px;
+    margin-top: 5px;
+    max-width: 500px;
+    font-weight: 500;
+  }
+
+  .disclaimer-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 14px solid #c3181e;
+    padding-left: 20px;
+    transition: all 0.3s ease;
+  }
+
+  .disclaimer-wrapper:hover {
+    border-left-width: 18px;
+    padding-left: 16px;
+  }
+
+  .warning-label {
+    color: #c3181e;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .highlight {
+    color: #c3181e;
+    font-weight: 700;
   }
 
   .bottom-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
 
-  #sign {
-    font-size: 120px;
-    color: #c3181e;
-    line-height: 1em;
-    margin-right: 8px;
-    align-self: flex-start;
+  .spacer {
+    width: 200px;
+    min-width: 200px;
   }
 
   .text-left {
     display: flex;
     flex-direction: row;
-    max-width: 450px;
+    flex: 1;
+    min-width: 300px;
   }
 
   .text-left-item {
@@ -77,7 +182,8 @@ export let scriptType;
   .text-right {
     display: flex;
     flex-direction: column;
-    padding-left: 65px;
+    flex: 1;
+    min-width: 300px;
   }
 
   a,
@@ -88,7 +194,11 @@ export let scriptType;
 
   @media (max-width: 1200px) {
     .bottom-content {
-      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+
+    .spacer {
+      display: none;
     }
 
     .text-right {
@@ -99,13 +209,18 @@ export let scriptType;
   }
 
   @media (max-width: 768px) {
-    #author,
     #disclaimer {
       font-size: 16px;
     }
 
-    #sign {
-      font-size: 80px;
+    .disclaimer-wrapper {
+      border-left-width: 7px;
+      padding-left: 15px;
+    }
+
+    .disclaimer-wrapper:hover {
+      border-left-width: 10px;
+      padding-left: 12px;
     }
 
     .text-right {
