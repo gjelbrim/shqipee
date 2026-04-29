@@ -22,6 +22,7 @@ let currentMapping
 let isLatinToScript = true;
 let inputTitle = "latin";
 let outputTitle = scriptType;
+let pasteError = false;
 
 // input text and output text
 let inputText = "";
@@ -89,8 +90,10 @@ const pasteFromClipboard = async () => {
         inputText = clipboardText;
         saveToStorage(inputText, isLatinToScript);
         outputText = transliterate(inputText);
+        pasteError = false;
     } catch (error) {
-        console.error("Error accessing clipboard: ", error);
+        pasteError = true;
+        setTimeout(() => pasteError = false, 3000);
     }
 };
 
@@ -126,6 +129,9 @@ onMount(() => {
           bind:value={inputText}
         ></textarea>
         <div class="input-bottom-line"></div>
+        {#if pasteError}
+          <p class="paste-error">clipboard access denied</p>
+        {/if}
       </div>
   
   
@@ -194,6 +200,12 @@ onMount(() => {
 
   .paste-button:hover {
     opacity: 0.8;
+  }
+
+  .paste-error {
+    font-size: 0.75rem;
+    color: #c3181e;
+    margin-top: 4px;
   }
 
   .styled-input {
