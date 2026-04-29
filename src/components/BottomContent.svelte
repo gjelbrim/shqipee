@@ -47,17 +47,17 @@ $: {
       <div class="credits-section">
         <div class="credit-block">
           <span class="label">developed by</span>
-          <a href="http://github.com/gjelbrim" target="_blank" class="credit-link">gjelbrim haskaj</a>
+          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj</a>
         </div>
         <div class="credit-block">
           <span class="label">designed by</span>
-          <a href="https://github.com/Litorian113" target="_blank" class="credit-link">franz anhäupl</a>
+          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl</a>
         </div>
       </div>
 
       <div class="wiki-section">
         <span class="label">learn more</span>
-        <a href={wikiLink} target="_blank" class="wiki-link">
+        <a href={wikiLink} target="_blank" rel="noopener noreferrer" class="wiki-link">
           read about {scriptName} on wikipedia <span class="arrow">↗</span>
         </a>
       </div>
