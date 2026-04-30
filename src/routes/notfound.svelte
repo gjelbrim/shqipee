@@ -1,5 +1,5 @@
 <script>
-  import { link } from "svelte-routing";
+  import { navigate } from '../router.svelte.js';
 </script>
 
 <svelte:head>
@@ -10,7 +10,7 @@
   <div class="not-found">
     <h1>404</h1>
     <p>this page doesn't exist.</p>
-    <a href="/" use:link>back to elbasan</a>
+    <a href="/" onclick={(e) => { e.preventDefault(); navigate('/'); }}>back to elbasan</a>
   </div>
 </main>
 
