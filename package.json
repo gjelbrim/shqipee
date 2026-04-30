@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
-    "@vercel/speed-insights": "^2.0.0",
-    "svelte-routing": "^2.13.0"
+    "@vercel/speed-insights": "^2.0.0"
   }
 }
