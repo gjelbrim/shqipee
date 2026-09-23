@@ -12,7 +12,7 @@ export const elbasanMapping = {
     zh: '\u{10524}',
     gh: '\u{10525}',
     kh: '\u{10527}',
-    xh: '\u{10503}',
+    xh: '\u{10503}\u200C',
     a: '\u{10500}', b: '\u{10501}', c: '\u{10502}', ç: '\u{10503}',
     e: '\u{10507}', ë: '\u{10508}', f: '\u{10509}', d: '\u{10504}',
     g: '\u{1050A}', h: '\u{1050C}', i: '\u{1050D}', j: '\u{1050E}',
@@ -55,7 +55,7 @@ export const vithkuqiMapping = {
     ji: '\u{105A7}\u{105A6}',
     ll: '\u{105AA}',
     nj: '\u{105AD}',
-    rr: '\u{105B1}',
+    rr: '\u{105B1}\u200C',
     sh: '\u{105B4}',
     th: '\u{105B6}',
     xh: '\u{1059B}\u200C',
@@ -88,8 +88,8 @@ export const todhriMapping = {
     th: '\u{105E3}',
     nx: '\u{105E7}',
     xh: '\u{105E8}',
+    ju: '\u{105EB}\u200C',
     jy: '\u{105EB}',
-    ju: '\u{105EB}',
     zh: '\u{105ED}',
 
     //single letter
