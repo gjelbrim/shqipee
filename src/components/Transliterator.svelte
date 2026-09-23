@@ -128,7 +128,7 @@ onDestroy(() => {
       <div class="input-container">
         <div class="input-header">
           <h2>{inputTitle}</h2>
-          <button class="paste-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
+          <button class="paste-button" title="Paste" aria-label="Paste from clipboard" on:click={pasteFromClipboard}></button>
         </div>
         <textarea
           id="inp"
@@ -199,7 +199,7 @@ onDestroy(() => {
   .paste-button {
     width: 32px;
     height: 32px;
-    background-image: url("/src/assets/switch.svg");
+    background-image: url("/src/assets/paste.svg");
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
