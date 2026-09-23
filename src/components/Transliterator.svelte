@@ -40,7 +40,9 @@ const flipMapping = (mapping) => {
 const transliterate = (word) => {
     if (scriptType === ScriptType.TODHRI || scriptType === ScriptType.ELBASAN) word = word.toLowerCase();
     const activeMapping = isLatinToScript ? currentMapping : flipMapping(currentMapping);
-    const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
+    // longest keys first so multi-character sequences match before their prefixes
+    const keys = Object.keys(activeMapping).sort((a, b) => b.length - a.length);
+    const pattern = new RegExp(keys.join('|'), 'g');
     return word.replace(pattern, match => activeMapping[match]);
 };
 
