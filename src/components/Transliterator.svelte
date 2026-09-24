@@ -20,8 +20,8 @@ const transliterate = (text) => transliterateText(text, scriptType, isLatinToScr
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
 const saveToStorage = (input, isLatin) => {
     try {
-        localStorage.setItem('transliterationInput', input);
-        localStorage.setItem('transliterationIsLatin', String(isLatin));
+        localStorage.setItem(`transliterationInput:${scriptType}`, input);
+        localStorage.setItem(`transliterationIsLatin:${scriptType}`, String(isLatin));
     } catch (e) {
         console.warn('localStorage unavailable, state will not be persisted:', e);
     }
@@ -76,8 +76,11 @@ const pasteFromClipboard = async () => {
 
 onMount(() => {
     try {
-        const savedInput = localStorage.getItem('transliterationInput');
-        const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
+        // drop pre-per-script keys, which leaked state between scripts
+        localStorage.removeItem('transliterationInput');
+        localStorage.removeItem('transliterationIsLatin');
+        const savedInput = localStorage.getItem(`transliterationInput:${scriptType}`);
+        const savedIsLatinRaw = localStorage.getItem(`transliterationIsLatin:${scriptType}`);
         if (savedInput !== null && savedIsLatinRaw !== null) {
             isLatinToScript = savedIsLatinRaw === 'true';
             inputTitle = isLatinToScript ? 'latin' : scriptType;
