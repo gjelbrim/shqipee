@@ -17,6 +17,16 @@ describe('mappings', () => {
         const lengths = Object.keys(mapping).map(key => key.length);
         expect(lengths).toEqual([...lengths].sort((a, b) => b - a));
     });
+
+    // letters sharing a code point can't be told apart in script -> Latin direction;
+    // only case variants of the same letter (e.g. DH/Dh) may collide
+    it.each(Object.entries(mappings))('%s has no ambiguous values', (_, mapping) => {
+        const seen = {};
+        for (const [key, value] of Object.entries(mapping)) {
+            if (value in seen) expect(key.toLowerCase()).toBe(seen[value].toLowerCase());
+            else seen[value] = key;
+        }
+    });
 });
 
 describe('elbasan', () => {
@@ -75,9 +85,9 @@ describe('todhri', () => {
 
 describe('round trip', () => {
     const words = {
-        [ScriptType.ELBASAN]: ['shqipëri', 'ngjyrë', 'dhe', 'ndërtesë', 'çaj', 'gjuha'],
-        [ScriptType.VITHKUQI]: ['Shqipëria', 'Gjergj', 'xhami', 'çaj', 'Llapi', 'nata'],
-        [ScriptType.TODHRI]: ['shtëpi', 'asht', 'nxënës', 'juga', 'mbret']
+        [ScriptType.ELBASAN]: ['shqipëri', 'ngjyrë', 'dhe', 'ndërtesë', 'çaj', 'gjuha', 'xhami'],
+        [ScriptType.VITHKUQI]: ['Shqipëria', 'Gjergj', 'xhami', 'çaj', 'Llapi', 'nata', 'rruga', 'rrugë'],
+        [ScriptType.TODHRI]: ['shtëpi', 'asht', 'nxënës', 'juga', 'mbret', 'jyq']
     };
 
     for (const [scriptType, list] of Object.entries(words)) {
