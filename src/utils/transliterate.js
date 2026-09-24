@@ -20,6 +20,8 @@ export const transliterate = (text, scriptType, isLatinToScript) => {
     if (scriptType === ScriptType.TODHRI || scriptType === ScriptType.ELBASAN) text = text.toLowerCase();
     const mapping = mappings[scriptType];
     const activeMapping = isLatinToScript ? mapping : flipMapping(mapping);
-    const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
+    // longest keys first so multi-character sequences match before their prefixes
+    const keys = Object.keys(activeMapping).sort((a, b) => b.length - a.length);
+    const pattern = new RegExp(keys.join('|'), 'g');
     return text.replace(pattern, match => activeMapping[match]);
 };

@@ -86,7 +86,7 @@ describe('todhri', () => {
 describe('round trip', () => {
     const words = {
         [ScriptType.ELBASAN]: ['shqipëri', 'ngjyrë', 'dhe', 'ndërtesë', 'çaj', 'gjuha', 'xhami'],
-        [ScriptType.VITHKUQI]: ['Shqipëria', 'Gjergj', 'xhami', 'çaj', 'Llapi', 'nata', 'rruga', 'rrugë'],
+        [ScriptType.VITHKUQI]: ['Shqipëria', 'Gjergj', 'xhami', 'çaj', 'Llapi', 'nata', 'rruga', 'rrugë', 'Zhurmë', 'zhurmë', 'ZHURMË'],
         [ScriptType.TODHRI]: ['shtëpi', 'asht', 'nxënës', 'juga', 'mbret', 'jyq']
     };
 
