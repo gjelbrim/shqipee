@@ -1,20 +1,20 @@
 <script>
-  import { link, useLocation } from "svelte-routing";
+  import { router, navigate } from '../router.svelte.js';
 
   const routes = [
     { name: "elbasan", path: "/" },
     { name: "vithkuqi", path: "/vithkuqi" },
     { name: "todhri", path: "/todhri" }
   ];
-
-  const location = useLocation();
-  let currentLocation;
-  location.subscribe(value => currentLocation = value);
 </script>
 
 <nav class="navbar">
   {#each routes as route}
-    <a href={route.path} use:link class:active={currentLocation?.pathname === route.path}>
+    <a
+      href={route.path}
+      onclick={(e) => { e.preventDefault(); navigate(route.path); }}
+      class:active={router.path === route.path}
+    >
       {route.name}
     </a>
   {/each}

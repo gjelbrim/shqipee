@@ -1,17 +1,20 @@
 <script>
-  import { Router, Route } from "svelte-routing";
-  import Elbasan from "./routes/elbasan.svelte";
-  import Vithkuqi from "./routes/vithkuqi.svelte";
-  import Todhri from "./routes/todhri.svelte";
-  import NotFound from "./routes/notfound.svelte";
+  import { router } from './router.svelte.js';
+  import Elbasan from './routes/elbasan.svelte';
+  import Vithkuqi from './routes/vithkuqi.svelte';
+  import Todhri from './routes/todhri.svelte';
+  import NotFound from './routes/notfound.svelte';
 </script>
 
-<Router>
-  <Route path="/" component={Elbasan} />
-  <Route path="/vithkuqi" component={Vithkuqi} />
-  <Route path="/todhri" component={Todhri} />
-  <Route path="*" component={NotFound} />
-</Router>
+{#if router.path === '/'}
+  <Elbasan />
+{:else if router.path === '/vithkuqi'}
+  <Vithkuqi />
+{:else if router.path === '/todhri'}
+  <Todhri />
+{:else}
+  <NotFound />
+{/if}
 
 <footer></footer>
 

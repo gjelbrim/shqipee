@@ -1,22 +1,8 @@
 <script>
 import {copy} from 'svelte-copy'
-import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
-import {ScriptType} from '../utils/scriptTypes.js';
+import {transliterate as transliterateText} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 export let scriptType;
-
-let currentMapping
- switch(scriptType){
-  case ScriptType.ELBASAN:
-    currentMapping = elbasanMapping;
-    break;
-  case ScriptType.VITHKUQI:
-    currentMapping = vithkuqiMapping;
-    break;
-  case ScriptType.TODHRI:
-    currentMapping = todhriMapping;
-    break;
- }
 
 // initial values for direction and title
 let isLatinToScript = true;
@@ -28,27 +14,14 @@ let pasteError = false;
 let inputText = "";
 let outputText = "";
 
-// flip mapping
-const flipMapping = (mapping) => {
-    return Object.entries(mapping).reduce((flipped, [key, value]) => {
-      flipped[value] = key;
-      return flipped;
-    }, {});
-};
-
 // transliteration based on direction
-const transliterate = (word) => {
-    if (scriptType === ScriptType.TODHRI || scriptType === ScriptType.ELBASAN) word = word.toLowerCase();
-    const activeMapping = isLatinToScript ? currentMapping : flipMapping(currentMapping);
-    const pattern = new RegExp(Object.keys(activeMapping).join('|'), 'g');
-    return word.replace(pattern, match => activeMapping[match]);
-};
+const transliterate = (text) => transliterateText(text, scriptType, isLatinToScript);
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
 const saveToStorage = (input, isLatin) => {
     try {
-        localStorage.setItem('transliterationInput', input);
-        localStorage.setItem('transliterationIsLatin', String(isLatin));
+        localStorage.setItem(`transliterationInput:${scriptType}`, input);
+        localStorage.setItem(`transliterationIsLatin:${scriptType}`, String(isLatin));
     } catch (e) {
         console.warn('localStorage unavailable, state will not be persisted:', e);
     }
@@ -103,8 +76,11 @@ const pasteFromClipboard = async () => {
 
 onMount(() => {
     try {
-        const savedInput = localStorage.getItem('transliterationInput');
-        const savedIsLatinRaw = localStorage.getItem('transliterationIsLatin');
+        // drop pre-per-script keys, which leaked state between scripts
+        localStorage.removeItem('transliterationInput');
+        localStorage.removeItem('transliterationIsLatin');
+        const savedInput = localStorage.getItem(`transliterationInput:${scriptType}`);
+        const savedIsLatinRaw = localStorage.getItem(`transliterationIsLatin:${scriptType}`);
         if (savedInput !== null && savedIsLatinRaw !== null) {
             isLatinToScript = savedIsLatinRaw === 'true';
             inputTitle = isLatinToScript ? 'latin' : scriptType;
@@ -128,7 +104,7 @@ onDestroy(() => {
       <div class="input-container">
         <div class="input-header">
           <h2>{inputTitle}</h2>
-          <button class="paste-button" title="Switch" aria-label="paste" on:click={pasteFromClipboard}></button>
+          <button class="paste-button" title="Paste" aria-label="Paste from clipboard" on:click={pasteFromClipboard}></button>
         </div>
         <textarea
           id="inp"
@@ -199,7 +175,7 @@ onDestroy(() => {
   .paste-button {
     width: 32px;
     height: 32px;
-    background-image: url("/src/assets/switch.svg");
+    background-image: url("/src/assets/paste.svg");
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
