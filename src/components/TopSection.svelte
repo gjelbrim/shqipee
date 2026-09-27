@@ -1,7 +1,7 @@
 <script>
     import Navbar from "./Navbar.svelte";
     import {ScriptType} from '../utils/scriptTypes.js';
-    export let scriptType;
+    let { scriptType } = $props();
 </script>
 
   <div class="top-section">
