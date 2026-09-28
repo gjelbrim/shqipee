@@ -1,21 +1,18 @@
 <script>
 import {copy} from 'svelte-copy'
-import {transliterate as transliterateText} from '../utils/transliterate.js';
+import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
-export let scriptType;
 
-// initial values for direction and title
-let isLatinToScript = true;
-let inputTitle = "latin";
-let outputTitle = scriptType;
-let pasteError = false;
+let { scriptType } = $props();
 
-// input text and output text
-let inputText = "";
-let outputText = "";
+// direction and input; titles and output follow from them
+let isLatinToScript = $state(true);
+let inputText = $state("");
+let pasteError = $state(false);
 
-// transliteration based on direction
-const transliterate = (text) => transliterateText(text, scriptType, isLatinToScript);
+const inputTitle = $derived(isLatinToScript ? "latin" : scriptType);
+const outputTitle = $derived(isLatinToScript ? scriptType : "latin");
+const outputText = $derived(transliterate(inputText, scriptType, isLatinToScript));
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
 const saveToStorage = (input, isLatin) => {
@@ -27,22 +24,12 @@ const saveToStorage = (input, isLatin) => {
     }
 };
 
-// swap direction: carry over the previous output as the new input and transliterate
+// swap direction: carry over the previous output as the new input
 const swapDirection = () => {
+    const previousOutput = outputText;
     isLatinToScript = !isLatinToScript;
-
-    // swap titles
-    if (isLatinToScript) {
-      inputTitle = "latin";
-      outputTitle = scriptType;
-    } else {
-      inputTitle = scriptType;
-      outputTitle = "latin";
-    }
-
-    inputText = outputText;
+    inputText = previousOutput;
     saveToStorage(inputText, isLatinToScript);
-    outputText = transliterate(inputText);
 };
 
 // debounce timer for localStorage writes
@@ -51,21 +38,18 @@ let saveDebounceTimer;
 // timer for clearing paste error message
 let pasteErrorTimer;
 
-// input handler: transliterate text immediately; debounce the localStorage write
+// input handler: bind:value updates the text; debounce the localStorage write
 const handleInput = (event) => {
-    inputText = event.target.value;
-    outputText = transliterate(inputText);
+    const input = event.target.value;
     clearTimeout(saveDebounceTimer);
-    saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
+    saveDebounceTimer = setTimeout(() => saveToStorage(input, isLatinToScript), 300);
 };
 
 // paste text from clipboard
 const pasteFromClipboard = async () => {
     try {
-        const clipboardText = await navigator.clipboard.readText();
-        inputText = clipboardText;
+        inputText = await navigator.clipboard.readText();
         saveToStorage(inputText, isLatinToScript);
-        outputText = transliterate(inputText);
         pasteError = false;
     } catch (error) {
         pasteError = true;
@@ -83,10 +67,7 @@ onMount(() => {
         const savedIsLatinRaw = localStorage.getItem(`transliterationIsLatin:${scriptType}`);
         if (savedInput !== null && savedIsLatinRaw !== null) {
             isLatinToScript = savedIsLatinRaw === 'true';
-            inputTitle = isLatinToScript ? 'latin' : scriptType;
-            outputTitle = isLatinToScript ? scriptType : 'latin';
             inputText = savedInput;
-            outputText = transliterate(inputText);
         }
     } catch (e) {
         console.warn('localStorage unavailable, saved state could not be restored:', e);
@@ -104,13 +85,13 @@ onDestroy(() => {
       <div class="input-container">
         <div class="input-header">
           <h2>{inputTitle}</h2>
-          <button class="paste-button" title="Paste" aria-label="Paste from clipboard" on:click={pasteFromClipboard}></button>
+          <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
         </div>
         <textarea
           id="inp"
           class="styled-input"
           placeholder="input text"
-          on:input={handleInput}
+          oninput={handleInput}
           bind:value={inputText}
         ></textarea>
         <div class="input-bottom-line"></div>
@@ -121,7 +102,7 @@ onDestroy(() => {
   
   
       <div class="swap-container">
-        <button class="swap-button" title="Swap" aria-label="Swap direction" on:click={swapDirection}></button>
+        <button class="swap-button" title="Swap" aria-label="Swap direction" onclick={swapDirection}></button>
       </div>
   
   
@@ -136,7 +117,7 @@ onDestroy(() => {
           class="styled-input"
           placeholder="transliteration"
           readonly
-          bind:value={outputText}
+          value={outputText}
         ></textarea>
         <div class="input-bottom-line"></div>
       </div>
