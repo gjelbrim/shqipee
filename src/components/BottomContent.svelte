@@ -1,6 +1,6 @@
 <script>
 import {ScriptType} from '../utils/scriptTypes.js';
-export let scriptType;
+let { scriptType } = $props();
 
 const SCRIPT_INFO = {
     [ScriptType.ELBASAN]: {
@@ -14,14 +14,8 @@ const SCRIPT_INFO = {
     }
 };
 
-let wikiLink = "";
-let scriptName = "";
-
-$: {
-    const scriptInfo = SCRIPT_INFO[scriptType];
-    wikiLink = scriptInfo ? scriptInfo.wikiLink : "";
-    scriptName = scriptInfo ? scriptType : "";
-}
+const wikiLink = $derived(SCRIPT_INFO[scriptType]?.wikiLink ?? "");
+const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
 </script>
 
 <div class="bottom-content">
