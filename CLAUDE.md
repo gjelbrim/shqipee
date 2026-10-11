@@ -34,7 +34,7 @@ src/components/BottomContent.svelte          — supplementary info per script
 
 - Mapping keys in `mappings.js` are ordered longest-first so the `RegExp(Object.keys(mapping).join('|'))` pattern matches multi-character digraphs/trigraphs before single letters.
 - Elbasan and Todhri are always lowercased before transliteration; Vithkuqi is case-sensitive (separate uppercase and lowercase entries in the map).
-- `flipMapping()` in `transliterate.js` inverts a mapping for script→Latin direction; since the flipped keys lose that order, `transliterate()` sorts the regex alternatives by length.
+- `flipMapping()` in `transliterate.js` inverts a mapping for script→Latin direction; since the flipped keys lose that order, the regex alternatives are sorted by length. The regex for each script and direction is built once at module load (`matchers`), not per call.
 - `localStorage` persists `transliterationInput:<script>` and `transliterationIsLatin:<script>` per script across page reloads.
 
 

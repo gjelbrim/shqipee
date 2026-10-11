@@ -15,13 +15,22 @@ export const flipMapping = (mapping) => {
     }, {});
 };
 
+// regex matching any key of the mapping; longest keys first so multi-character
+// sequences match before their prefixes (the flipped mappings lose that order)
+const buildMatcher = (mapping) => {
+    const keys = Object.keys(mapping).sort((a, b) => b.length - a.length);
+    return {mapping, pattern: new RegExp(keys.join('|'), 'g')};
+};
+
+// built once per script and direction instead of on every call
+const matchers = Object.fromEntries(Object.entries(mappings).map(([scriptType, mapping]) => [
+    scriptType,
+    {toScript: buildMatcher(mapping), toLatin: buildMatcher(flipMapping(mapping))}
+]));
+
 // transliterate text from Latin to the given script, or back if isLatinToScript is false
 export const transliterate = (text, scriptType, isLatinToScript) => {
     if (scriptType === ScriptType.TODHRI || scriptType === ScriptType.ELBASAN) text = text.toLowerCase();
-    const mapping = mappings[scriptType];
-    const activeMapping = isLatinToScript ? mapping : flipMapping(mapping);
-    // longest keys first so multi-character sequences match before their prefixes
-    const keys = Object.keys(activeMapping).sort((a, b) => b.length - a.length);
-    const pattern = new RegExp(keys.join('|'), 'g');
-    return text.replace(pattern, match => activeMapping[match]);
+    const {mapping, pattern} = matchers[scriptType][isLatinToScript ? 'toScript' : 'toLatin'];
+    return text.replace(pattern, match => mapping[match]);
 };
