@@ -1,17 +1,23 @@
 <script>
   import { router } from './router.svelte.js';
-  import Elbasan from './routes/elbasan.svelte';
-  import Vithkuqi from './routes/vithkuqi.svelte';
-  import Todhri from './routes/todhri.svelte';
+  import { ScriptType } from './utils/scriptTypes.js';
+  import ScriptRoute from './routes/ScriptRoute.svelte';
   import NotFound from './routes/notfound.svelte';
+
+  const scriptRoutes = {
+    '/': ScriptType.ELBASAN,
+    '/vithkuqi': ScriptType.VITHKUQI,
+    '/todhri': ScriptType.TODHRI
+  };
+
+  const scriptType = $derived(scriptRoutes[router.path]);
 </script>
 
-{#if router.path === '/'}
-  <Elbasan />
-{:else if router.path === '/vithkuqi'}
-  <Vithkuqi />
-{:else if router.path === '/todhri'}
-  <Todhri />
+{#if scriptType}
+  <!-- remount per script so each page restores its own saved state -->
+  {#key scriptType}
+    <ScriptRoute {scriptType} />
+  {/key}
 {:else}
   <NotFound />
 {/if}

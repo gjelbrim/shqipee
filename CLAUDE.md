@@ -23,7 +23,7 @@ Tests live next to the code (`*.test.js`). CI (`.github/workflows/ci.yml`) runs 
 src/data/mappings.js          — character maps (Latin → Unicode codepoints)
 src/utils/scriptTypes.js      — ScriptType enum { ELBASAN, VITHKUQI, TODHRI }
 src/utils/transliterate.js    — pure transliterate(text, scriptType, isLatinToScript) + flipMapping()
-src/routes/{elbasan,vithkuqi,todhri}.svelte  — one route per script, passes scriptType prop down
+src/routes/ScriptRoute.svelte                — page for one script (title, TopSection, Transliterator, BottomContent); App.svelte maps paths to script types
 src/components/Transliterator.svelte         — UI: calls transliterate(), swap direction, clipboard, localStorage persistence
 src/components/TopSection.svelte             — heading + Navbar
 src/components/Navbar.svelte                 — links to the three routes
