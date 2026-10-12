@@ -1,21 +1,25 @@
 @font-face {
   font-family: "Roboto";
   src: url(./assets/Roboto-VariableFont_wdth_wght-latin.woff2) format("woff2");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Elbasan";
   src: url(./assets/NotoSansElbasan-Regular.woff2) format("woff2");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Vithkuqi";
   src: url(./assets/NotoSansVithkuqi-VariableFont_wght.woff2) format("woff2");
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Todhri";
   src: url(./assets/NotoSerifTodhri-Regular.woff2) format("woff2");
+  font-display: swap;
 }
 
 * {
