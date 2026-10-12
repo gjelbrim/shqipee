@@ -97,3 +97,13 @@ describe('round trip', () => {
         });
     }
 });
+
+describe('repeated calls', () => {
+    // the regexes are shared between calls, so no state may carry over
+    it('returns the same result when called again', () => {
+        const first = toScript('shqipëri', ScriptType.ELBASAN);
+        expect(toScript('shqipëri', ScriptType.ELBASAN)).toBe(first);
+        expect(toLatin(first, ScriptType.ELBASAN)).toBe('shqipëri');
+        expect(toLatin(first, ScriptType.ELBASAN)).toBe('shqipëri');
+    });
+});
