@@ -15,7 +15,7 @@ Tests live next to the code (`*.test.js`). CI (`.github/workflows/ci.yml`) runs 
 
 ## Architecture
 
-**shqipee** is a Svelte 5 SPA that transliterates Albanian Latin text into three historical scripts — Elbasan, Vithkuqi, and Todhri — and back. Routing is handled by `svelte-routing` (client-side only; `historyApiFallback: true` in Vite makes deep links work in dev).
+**shqipee** is a Svelte 5 SPA that transliterates Albanian Latin text into three historical scripts — Elbasan, Vithkuqi, and Todhri — and back. Routing is a small hand-written client-side router in `src/router.svelte.js` (`historyApiFallback: true` in Vite makes deep links work in dev; `vercel.json` rewrites all paths to `index.html` in production).
 
 ### Data flow
 
@@ -26,6 +26,7 @@ src/utils/transliterate.js    — pure transliterate(text, scriptType, isLatinTo
 src/routes/{elbasan,vithkuqi,todhri}.svelte  — one route per script, passes scriptType prop down
 src/components/Transliterator.svelte         — UI: calls transliterate(), swap direction, clipboard, localStorage persistence
 src/components/TopSection.svelte             — heading + Navbar
+src/router.svelte.js                         — reactive router state + navigate()
 src/components/Navbar.svelte                 — links to the three routes
 src/components/BottomContent.svelte          — supplementary info per script
 ```
@@ -44,4 +45,4 @@ src/components/BottomContent.svelte          — supplementary info per script
 
 ### Routing
 
-`App.svelte` uses `<Router>` with three `<Route>` entries (`/`, `/vithkuqi`, `/todhri`). The Navbar uses `svelte-routing`'s `use:link` directive and `useLocation()` to highlight the active route.
+`src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.
