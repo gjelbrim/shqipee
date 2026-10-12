@@ -9,12 +9,14 @@
 @font-face {
   font-family: "Noto Sans Elbasan";
   src: url(./assets/NotoSansElbasan-Regular.woff2) format("woff2");
+  unicode-range: U+10500-1052F;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Vithkuqi";
   src: url(./assets/NotoSansVithkuqi-VariableFont_wght.woff2) format("woff2");
+  unicode-range: U+10570-105BF;
   font-display: swap;
   font-weight: 400 700;
 }
@@ -22,6 +24,7 @@
 @font-face {
   font-family: "Todhri";
   src: url(./assets/NotoSerifTodhri-Regular.woff2) format("woff2");
+  unicode-range: U+105C0-105FF;
   font-display: swap;
 }
 
