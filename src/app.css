@@ -2,6 +2,8 @@
   font-family: "Roboto";
   src: url(./assets/Roboto-VariableFont_wdth_wght-latin.woff2) format("woff2");
   font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
 }
 
 @font-face {
@@ -14,6 +16,7 @@
   font-family: "Noto Sans Vithkuqi";
   src: url(./assets/NotoSansVithkuqi-VariableFont_wght.woff2) format("woff2");
   font-display: swap;
+  font-weight: 400 700;
 }
 
 @font-face {
