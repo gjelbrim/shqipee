@@ -1,21 +1,31 @@
 @font-face {
   font-family: "Roboto";
-  src: url(./assets/Roboto-VariableFont_wdth,wght.ttf) format("truetype");
+  src: url(./assets/Roboto-VariableFont_wdth_wght-latin.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
 }
 
 @font-face {
   font-family: "Noto Sans Elbasan";
-  src: url(./assets/NotoSansElbasan-Regular.ttf) format("truetype");
+  src: url(./assets/NotoSansElbasan-Regular.woff2) format("woff2");
+  unicode-range: U+10500-1052F;
+  font-display: swap;
 }
 
 @font-face {
   font-family: "Noto Sans Vithkuqi";
-  src: url(./assets/NotoSansVithkuqi-VariableFont_wght.ttf) format("truetype");
+  src: url(./assets/NotoSansVithkuqi-VariableFont_wght.woff2) format("woff2");
+  unicode-range: U+10570-105BF;
+  font-display: swap;
+  font-weight: 400 700;
 }
 
 @font-face {
   font-family: "Todhri";
-  src: url(./assets/NotoSerifTodhri-Regular.ttf) format("truetype");
+  src: url(./assets/NotoSerifTodhri-Regular.woff2) format("woff2");
+  unicode-range: U+105C0-105FF;
+  font-display: swap;
 }
 
 * {
@@ -25,6 +35,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+/* regular text has always rendered at 500 (Google Fonts only served that weight);
+   form controls don't inherit font-weight, so set them explicitly */
+body,
+textarea,
+button {
+  font-weight: 500;
 }
 
 h2 {
