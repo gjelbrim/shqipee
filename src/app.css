@@ -1,8 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Elbasan&family=Noto+Sans+Vithkuqi:wght@400..700&family=Roboto:wght@500&display=swap');
+@font-face {
+  font-family: "Roboto";
+  src: url(./assets/Roboto-VariableFont_wdth,wght.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Elbasan";
+  src: url(./assets/NotoSansElbasan-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "Noto Sans Vithkuqi";
+  src: url(./assets/NotoSansVithkuqi-VariableFont_wght.ttf) format("truetype");
+}
 
 @font-face {
   font-family: "Todhri";
-  src: url(./assets/TodhriFont.ttf);
+  src: url(./assets/NotoSerifTodhri-Regular.ttf) format("truetype");
 }
 
 * {
