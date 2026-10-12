@@ -41,7 +41,7 @@ src/components/BottomContent.svelte          — supplementary info per script
 
 ### Fonts
 
-All fonts are self-hosted WOFF2 files in `src/assets/` (no Google Fonts), declared in `src/app.css` with `font-display: swap`: Roboto (variable, subset to Latin), Noto Sans Elbasan, Noto Sans Vithkuqi (variable) and Noto Serif Todhri (family name `Todhri`). Regular text is set to weight 500. All are SIL OFL 1.1; the `OFL_*.txt` files next to them must stay.
+All fonts are self-hosted WOFF2 files in `src/assets/` (no Google Fonts), declared in `src/app.css` with `font-display: swap` (the script fonts also with a `unicode-range`, so each page only downloads the fonts it renders): Roboto (variable, subset to Latin), Noto Sans Elbasan, Noto Sans Vithkuqi (variable) and Noto Serif Todhri (family name `Todhri`). Regular text is set to weight 500. All are SIL OFL 1.1; the `OFL_*.txt` files next to them must stay.
 
 To regenerate from the upstream TTFs (fonttools + brotli), keep the name table so the copyright/license entries survive:
 
