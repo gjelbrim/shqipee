@@ -34,6 +34,14 @@
   box-sizing: border-box;
 }
 
+/* regular text has always rendered at 500 (Google Fonts only served that weight);
+   form controls don't inherit font-weight, so set them explicitly */
+body,
+textarea,
+button {
+  font-weight: 500;
+}
+
 h2 {
   font-size: 64px;
   margin: 0;
