@@ -39,9 +39,17 @@ src/components/BottomContent.svelte          — supplementary info per script
 - `localStorage` persists `transliterationInput:<script>` and `transliterationIsLatin:<script>` per script across page reloads.
 
 
-### Custom font
+### Fonts
 
-`src/assets/TodhriFont.ttf` is loaded globally in `src/app.css` for the Todhri script rendering.
+All fonts are self-hosted WOFF2 files in `src/assets/` (no Google Fonts), declared in `src/app.css` with `font-display: swap`: Roboto (variable, subset to Latin), Noto Sans Elbasan, Noto Sans Vithkuqi (variable) and Noto Serif Todhri (family name `Todhri`). Regular text is set to weight 500. All are SIL OFL 1.1; the `OFL_*.txt` files next to them must stay.
+
+To regenerate from the upstream TTFs (fonttools + brotli), keep the name table so the copyright/license entries survive:
+
+```bash
+pyftsubset Roboto-VariableFont_wdth,wght.ttf --unicodes="U+0000-024F,U+0300-036F,U+2000-206F,U+20AC,U+2122,U+2190-21FF" \
+  --layout-features='*' --name-IDs='*' --name-languages='*' --flavor=woff2 --output-file=Roboto-VariableFont_wdth_wght-latin.woff2
+fonttools ttLib.woff2 compress -o NotoSansElbasan-Regular.woff2 NotoSansElbasan-Regular.ttf   # same for Vithkuqi, Todhri
+```
 
 ### Routing
 
