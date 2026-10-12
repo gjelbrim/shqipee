@@ -30,7 +30,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
               {:else if scriptType === ScriptType.VITHKUQI}
                   language and pronunciation <span class="highlight">change over time</span>. therefore, vithkuqi <span class="highlight">cannot be transliterated 1:1</span> into latin and vice versa. support outside of this site is <span class="highlight">very limited</span>.
               {:else if scriptType === ScriptType.TODHRI}
-                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. currently there is <span class="highlight">no font mapping</span> this alphabet. therefore it <span class="highlight">cannot be displayed</span> outside of this site.
+                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. so far <span class="highlight">very few fonts</span> support it, so it will <span class="highlight">often not display</span> outside of this site.
               {/if}
           </p>
         </div>
