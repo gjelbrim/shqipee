@@ -2,6 +2,7 @@
 import {copy} from 'svelte-copy'
 import AlphabetGrid from './AlphabetGrid.svelte';
 import { alphabet } from '../alphabet.svelte.js';
+import { buildShareUrl, parseShareParams } from '../utils/shareLink.js';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 
@@ -11,7 +12,7 @@ let { scriptType } = $props();
 let isLatinToScript = $state(true);
 let inputText = $state("");
 let pasteError = $state(false);
-let copyStatus = $state(null);   // null | 'copied' | 'failed'
+let copyStatus = $state(null);   // null | 'copied' | 'linked' | 'failed'
 let announcement = $state("");   // read out by screen readers via the status region
 
 // language tags so screen readers pick an Albanian voice and know the script
@@ -79,11 +80,35 @@ let pasteErrorTimer;
 // timer for clearing the copy confirmation
 let copyStatusTimer;
 
+const ANNOUNCEMENTS = {copied: 'copied to clipboard', linked: 'link copied to clipboard'};
+
 const showCopyStatus = (status) => {
     copyStatus = status;
-    announcement = status === 'copied' ? 'copied to clipboard' : '';
+    announcement = ANNOUNCEMENTS[status] ?? '';
     clearTimeout(copyStatusTimer);
     copyStatusTimer = setTimeout(() => copyStatus = null, 2000);
+};
+
+// touch devices get the system share sheet; elsewhere the link is copied
+const useShareSheet = matchMedia('(pointer: coarse)').matches && 'share' in navigator;
+
+// share a link that reopens this page with the current input and direction
+const shareLink = async () => {
+    const url = buildShareUrl(location.href, scriptType, inputText, isLatinToScript);
+    if (useShareSheet) {
+        try {
+            await navigator.share({title: document.title, url});
+        } catch (e) {
+            // dismissed share sheet; nothing to report
+        }
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(url);
+        showCopyStatus('linked');
+    } catch (e) {
+        showCopyStatus('failed');
+    }
 };
 
 // caret/selection in the input field, tracked here because the browser resets the
@@ -139,6 +164,19 @@ const closeOnEscape = (event) => {
 
 onMount(() => {
     mobileQuery.addEventListener('change', updateIsMobile);
+
+    // a shared link (?text=…) wins over the saved state; drop the query afterwards so
+    // a reload doesn't bring the link text back over later edits
+    const shared = parseShareParams(location.search, scriptType);
+    if (shared) {
+        isLatinToScript = shared.isLatinToScript;
+        inputText = shared.text;
+        caret = null;
+        saveToStorage(inputText, isLatinToScript);
+        history.replaceState(history.state, '', location.pathname);
+        return;
+    }
+
     try {
         // drop pre-per-script keys, which leaked state between scripts
         localStorage.removeItem('transliterationInput');
@@ -230,16 +268,26 @@ onDestroy(() => {
   
   
   
-      <div class="output-container" class:flash={copyStatus === 'copied'}>
+      <div class="output-container" class:flash={copyStatus === 'copied' || copyStatus === 'linked'}>
         <div class="input-header">
           <h2 id="output-title">{outputTitle}</h2>
-          <button
-            class:copied={copyStatus === 'copied'}
-            class="copy-button"
-            title="Copy"
-            aria-label="Copy text"
-            use:copy={{ text: outputText, onCopy: () => showCopyStatus('copied'), onError: () => showCopyStatus('failed') }}
-          ></button>
+          <div class="header-buttons">
+            <button
+              class:copied={copyStatus === 'linked'}
+              class="share-button"
+              title="Share link"
+              aria-label="Share a link to this text"
+              disabled={!inputText}
+              onclick={shareLink}
+            ></button>
+            <button
+              class:copied={copyStatus === 'copied'}
+              class="copy-button"
+              title="Copy"
+              aria-label="Copy text"
+              use:copy={{ text: outputText, onCopy: () => showCopyStatus('copied'), onError: () => showCopyStatus('failed') }}
+            ></button>
+          </div>
         </div>
         <textarea
           id="out"
@@ -432,8 +480,30 @@ onDestroy(() => {
     cursor: pointer;
   }
 
+  .share-button {
+    width: 32px;
+    height: 32px;
+    background-image: url("/src/assets/link.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    filter: var(--icon-filter);
+    border: none;
+    cursor: pointer;
+  }
+
+  .share-button:hover {
+    opacity: 0.8;
+  }
+
+  .share-button:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
   /* after copying the icon turns into a check mark for a moment */
-  .copy-button.copied {
+  .copy-button.copied,
+  .share-button.copied {
     background-image: url("/src/assets/check.svg");
   }
 
@@ -498,6 +568,7 @@ onDestroy(() => {
 
     .paste-button,
     .copy-button,
+    .share-button,
     .keyboard-button {
       width: 24px;
       height: 24px;
