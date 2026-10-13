@@ -56,7 +56,7 @@
   /* type */
   --font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
   --font-size-h1: 92px;
-  --font-size-h2: 64px;
+  --font-size-h2: 44px;
 }
 
 /* dark palette; the inline script in index.html sets data-theme from the saved
@@ -80,7 +80,7 @@
     --space-section: 32px;
     --space-block: 16px;
     --font-size-h1: 64px;
-    --font-size-h2: 48px;
+    --font-size-h2: 32px;
   }
 }
 
