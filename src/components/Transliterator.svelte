@@ -1,5 +1,6 @@
 <script>
 import {copy} from 'svelte-copy'
+import AlphabetGrid from './AlphabetGrid.svelte';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 
@@ -19,6 +20,10 @@ const inputTitle = $derived(isLatinToScript ? "latin" : scriptType);
 const outputTitle = $derived(isLatinToScript ? scriptType : "latin");
 const outputText = $derived(transliterate(inputText, scriptType, isLatinToScript));
 const inputLang = $derived(LANGUAGE_TAGS[inputTitle]);
+const scriptLang = $derived(LANGUAGE_TAGS[scriptType]);
+// on-screen alphabet, offered while typing in the script (script -> Latin)
+let alphabetOpen = $state(false);
+let keyboardButton;
 const outputLang = $derived(LANGUAGE_TAGS[outputTitle]);
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
@@ -35,7 +40,9 @@ const saveToStorage = (input, isLatin) => {
 const swapDirection = () => {
     const previousOutput = outputText;
     isLatinToScript = !isLatinToScript;
+    alphabetOpen = false;
     inputText = previousOutput;
+    caret = null;
     saveToStorage(inputText, isLatinToScript);
     announcement = `now ${inputTitle} to ${outputTitle}`;
 };
@@ -56,6 +63,24 @@ const showCopyStatus = (status) => {
     copyStatusTimer = setTimeout(() => copyStatus = null, 2000);
 };
 
+// caret/selection in the input field, tracked here because the browser resets the
+// selection of an unfocused textarea when its value is set; null means "at the end"
+let caret = null;
+const rememberCaret = (event) => {
+    caret = {start: event.target.selectionStart, end: event.target.selectionEnd};
+};
+
+// insert text (from the alphabet table) at the caret of the input field without
+// focusing it, so the on-screen keyboard of a phone stays closed
+const insertAtCursor = (text) => {
+    const start = Math.min(caret?.start ?? inputText.length, inputText.length);
+    const end = Math.min(caret?.end ?? start, inputText.length);
+    inputText = inputText.slice(0, start) + text + inputText.slice(end);
+    caret = {start: start + text.length, end: start + text.length};
+    clearTimeout(saveDebounceTimer);
+    saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
+};
+
 // input handler: bind:value updates the text; debounce the localStorage write
 const handleInput = (event) => {
     const input = event.target.value;
@@ -67,6 +92,7 @@ const handleInput = (event) => {
 const pasteFromClipboard = async () => {
     try {
         inputText = await navigator.clipboard.readText();
+        caret = null;
         saveToStorage(inputText, isLatinToScript);
         pasteError = false;
     } catch (error) {
@@ -74,6 +100,16 @@ const pasteFromClipboard = async () => {
         clearTimeout(pasteErrorTimer);
         pasteErrorTimer = setTimeout(() => pasteError = false, 3000);
     }
+};
+
+// close the popover on Escape or a click outside it
+const closeOnOutside = (event) => {
+    if (alphabetOpen && !event.target.closest('.popover-anchor')) alphabetOpen = false;
+};
+const closeOnEscape = (event) => {
+    if (event.key !== 'Escape' || !alphabetOpen) return;
+    alphabetOpen = false;
+    keyboardButton?.focus();
 };
 
 onMount(() => {
@@ -86,6 +122,7 @@ onMount(() => {
         if (savedInput !== null && savedIsLatinRaw !== null) {
             isLatinToScript = savedIsLatinRaw === 'true';
             inputText = savedInput;
+            caret = null;
         }
     } catch (e) {
         console.warn('localStorage unavailable, saved state could not be restored:', e);
@@ -99,12 +136,35 @@ onDestroy(() => {
 });
 </script>
 
+<svelte:window onclick={closeOnOutside} onkeydown={closeOnEscape} />
+
 <div class="switchArea">
     <div class="input-div">
       <div class="input-container">
         <div class="input-header">
           <h2 id="input-title">{inputTitle}</h2>
-          <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
+          <div class="header-buttons">
+            {#if !isLatinToScript}
+              <div class="popover-anchor">
+                <button
+                  class="keyboard-button"
+                  class:open={alphabetOpen}
+                  title="Alphabet"
+                  aria-label="Show {scriptType} alphabet"
+                  aria-expanded={alphabetOpen}
+                  aria-controls="alphabet-panel"
+                  bind:this={keyboardButton}
+                  onclick={() => alphabetOpen = !alphabetOpen}
+                ></button>
+                {#if alphabetOpen}
+                  <div id="alphabet-panel" class="popover" role="group" aria-label="{scriptType} alphabet">
+                    <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+                  </div>
+                {/if}
+              </div>
+            {/if}
+            <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
+          </div>
         </div>
         <textarea
           id="inp"
@@ -112,7 +172,10 @@ onDestroy(() => {
           aria-labelledby="input-title"
           lang={inputLang}
           placeholder="input text"
-          oninput={handleInput}
+          oninput={(event) => { handleInput(event); rememberCaret(event); }}
+          onselect={rememberCaret}
+          onkeyup={rememberCaret}
+          onclick={rememberCaret}
           bind:value={inputText}
         ></textarea>
         <div class="input-bottom-line"></div>
@@ -187,6 +250,48 @@ onDestroy(() => {
   }
 
   /* the icons are black SVGs; --icon-filter lightens them in dark mode */
+  .popover-anchor {
+    display: flex;
+  }
+
+  .popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;  /* right edge of the button group = right edge of the column */
+    z-index: 30;
+    width: min(560px, calc(100vw - 2 * var(--page-padding-x)));
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 14px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-ink);
+    border-radius: 8px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  .header-buttons {
+    position: relative;
+    display: flex;
+    gap: 14px;
+  }
+
+  .keyboard-button {
+    width: 32px;
+    height: 32px;
+    background-image: url("/src/assets/keyboard.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    filter: var(--icon-filter);
+    border: none;
+    cursor: pointer;
+  }
+
+  .keyboard-button:hover,
+  .keyboard-button.open {
+    opacity: 0.6;
+  }
+
   .paste-button {
     width: 32px;
     height: 32px;
@@ -351,7 +456,8 @@ onDestroy(() => {
     }
 
     .paste-button,
-    .copy-button {
+    .copy-button,
+    .keyboard-button {
       width: 24px;
       height: 24px;
     }
