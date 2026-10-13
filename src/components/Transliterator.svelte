@@ -153,6 +153,7 @@ onDestroy(() => {
     margin-bottom: 0.5rem;
   }
 
+  /* the icons are black SVGs; --icon-filter lightens them in dark mode */
   .paste-button {
     width: 32px;
     height: 32px;
@@ -160,6 +161,7 @@ onDestroy(() => {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
+    filter: var(--icon-filter);
     border: none;
     cursor: pointer;
   }
@@ -215,6 +217,7 @@ onDestroy(() => {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
+    filter: var(--icon-filter);
     border: none;
     cursor: pointer;
   }
@@ -240,6 +243,7 @@ onDestroy(() => {
     background-repeat: no-repeat;
     background-size: contain;
     background-color: transparent;
+    filter: var(--icon-filter);
     border: none;
     cursor: pointer;
   }

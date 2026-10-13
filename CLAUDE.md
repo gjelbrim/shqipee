@@ -55,6 +55,8 @@ fonttools ttLib.woff2 compress -o NotoSansElbasan-Regular.woff2 NotoSansElbasan-
 
 Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Media queries can't use custom properties, so breakpoints are still literal.
 
+Dark mode: `:root[data-theme="dark"]` in `app.css` redefines the color tokens (and `--icon-filter`, which lightens the black icon SVGs). Keep new colors as tokens so both themes stay in sync. An inline script in `index.html` sets `data-theme` before the first paint from the saved choice (`localStorage.theme`) or the system setting; `src/theme.svelte.js` holds the state, follows system changes until the user picks a theme, and `ThemeToggle.svelte` (fixed bottom-right, rendered in `App.svelte`) switches it.
+
 ### Routing
 
 `src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.
