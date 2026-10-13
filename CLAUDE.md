@@ -25,6 +25,9 @@ src/utils/scriptTypes.js      — ScriptType enum { ELBASAN, VITHKUQI, TODHRI }
 src/utils/transliterate.js    — pure transliterate(text, scriptType, isLatinToScript) + flipMapping()
 src/routes/ScriptRoute.svelte                — page for one script (title, TopSection, Transliterator, BottomContent); App.svelte maps paths to script types
 src/components/Transliterator.svelte         — UI: calls transliterate(), swap direction, clipboard, localStorage persistence
+src/utils/alphabet.js         — getAlphabet(scriptType): letters for the alphabet table (Albanian order, then script extras; Vithkuqi also capitals)
+src/alphabet.svelte.js        — shared `alphabet.open` state; App hides the floating theme button while the alphabet is open
+src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile toggles capitals), opened by the keyboard icon only in script → Latin direction: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
 src/components/TopSection.svelte             — heading + Navbar
 src/router.svelte.js                         — reactive router state + navigate()
 src/components/Navbar.svelte                 — links to the three routes
@@ -38,6 +41,8 @@ src/components/BottomContent.svelte          — supplementary info per script
 - `flipMapping()` in `transliterate.js` inverts a mapping for script→Latin direction; since the flipped keys lose that order, the regex alternatives are sorted by length. The regex for each script and direction is built once at module load (`matchers`), not per call.
 - `localStorage` persists `transliterationInput:<script>` and `transliterationIsLatin:<script>` per script across page reloads.
 
+
+- The alphabet popover inserts glyphs at the caret of the input without focusing it (so a phone's keyboard stays closed). Transliterator tracks the caret itself (`caret`), because browsers reset the selection of an unfocused textarea when its value is set.
 
 ### Fonts
 
