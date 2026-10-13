@@ -3,7 +3,11 @@ import {transliterate} from './transliterate.js';
 import {ScriptType} from './scriptTypes.js';
 import {elbasanMapping, vithkuqiMapping, todhriMapping} from '../data/mappings.js';
 
+/** @import {Script} from './scriptTypes.js' */
+
+/** @param {string} text @param {Script} scriptType */
 const toScript = (text, scriptType) => transliterate(text, scriptType, true);
+/** @param {string} text @param {Script} scriptType */
 const toLatin = (text, scriptType) => transliterate(text, scriptType, false);
 
 const mappings = {
@@ -21,6 +25,7 @@ describe('mappings', () => {
     // letters sharing a code point can't be told apart in script -> Latin direction;
     // only case variants of the same letter (e.g. DH/Dh) may collide
     it.each(Object.entries(mappings))('%s has no ambiguous values', (_, mapping) => {
+        /** @type {Record<string, string>} */
         const seen = {};
         for (const [key, value] of Object.entries(mapping)) {
             if (value in seen) expect(key.toLowerCase()).toBe(seen[value].toLowerCase());
@@ -90,10 +95,20 @@ describe('round trip', () => {
         [ScriptType.TODHRI]: ['shtëpi', 'asht', 'nxënës', 'juga', 'mbret', 'jyq']
     };
 
-    for (const [scriptType, list] of Object.entries(words)) {
+    for (const [scriptType, list] of /** @type {[Script, string[]][]} */ (Object.entries(words))) {
         it.each(list)(`${scriptType}: %s`, (word) => {
             const expected = scriptType === ScriptType.VITHKUQI ? word : word.toLowerCase();
             expect(toLatin(toScript(word, scriptType), scriptType)).toBe(expected);
         });
     }
+});
+
+describe('repeated calls', () => {
+    // the regexes are shared between calls, so no state may carry over
+    it('returns the same result when called again', () => {
+        const first = toScript('shqipëri', ScriptType.ELBASAN);
+        expect(toScript('shqipëri', ScriptType.ELBASAN)).toBe(first);
+        expect(toLatin(first, ScriptType.ELBASAN)).toBe('shqipëri');
+        expect(toLatin(first, ScriptType.ELBASAN)).toBe('shqipëri');
+    });
 });

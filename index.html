@@ -2,9 +2,34 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>elbasan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>shqip.ee | Albanian Latin ⇄ Elbasan, Vithkuqi & Todhri</title>
+    <meta name="description" content="Transliterate Albanian Latin text into the historical Elbasan, Vithkuqi and Todhri scripts and back." />
+    <meta name="theme-color" content="#DBE1D5" />
+    <script>
+      // set the theme before the first paint so dark mode doesn't flash light
+      // (see src/theme.svelte.js)
+      (function () {
+        var saved = null;
+        try { saved = localStorage.getItem('theme'); } catch (e) {}
+        var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        if (dark) document.querySelector('meta[name="theme-color"]').content = '#1b1f1a';
+      })();
+    </script>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="shqip.ee" />
+    <meta property="og:title" content="shqip.ee | Albanian Latin ⇄ Elbasan, Vithkuqi & Todhri" />
+    <meta property="og:description" content="Transliterate Albanian Latin text into the historical Elbasan, Vithkuqi and Todhri scripts and back." />
+    <meta property="og:url" content="https://shqip.ee/" />
+    <meta property="og:image" content="https://shqip.ee/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="shqip.ee logo with the Elbasan letter gje" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="app"></div>

@@ -1,21 +1,119 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Elbasan&family=Noto+Sans+Vithkuqi:wght@400..700&family=Roboto:wght@500&display=swap');
+@font-face {
+  font-family: "Roboto";
+  src: url(./assets/Roboto-VariableFont_wdth_wght-latin.woff2) format("woff2");
+  font-display: swap;
+  font-weight: 100 900;
+  font-stretch: 75% 100%;
+}
+
+@font-face {
+  font-family: "Noto Sans Elbasan";
+  src: url(./assets/NotoSansElbasan-Regular.woff2) format("woff2");
+  unicode-range: U+10500-1052F;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Noto Sans Vithkuqi";
+  src: url(./assets/NotoSansVithkuqi-VariableFont_wght.woff2) format("woff2");
+  unicode-range: U+10570-105BF;
+  font-display: swap;
+  font-weight: 400 700;
+}
 
 @font-face {
   font-family: "Todhri";
-  src: url(./assets/TodhriFont.ttf);
+  src: url(./assets/NotoSerifTodhri-Regular.woff2) format("woff2");
+  unicode-range: U+105C0-105FF;
+  font-display: swap;
+}
+
+/* Breakpoints (literal in every @media, custom properties don't work there;
+   breakpoints.test.js rejects any other value):
+     1200px  stacked: transliterator fields and bottom blocks in one column
+      768px  mobile:  smaller type and spacing, centered header, no logo */
+
+:root {
+  /* colors */
+  --color-bg: #DBE1D5;
+  --color-text: #000;
+  --color-ink: #1d1d1b;        /* lines, links */
+  --color-text-muted: #333;    /* inactive nav links */
+  --color-accent: #c3181e;
+  --icon-filter: none;         /* the icon SVGs are black */
+
+  /* layout */
+  --page-padding-x: 80px;
+  --page-padding-y: 20px;
+  --column-gap: 200px;         /* middle column between left and right blocks */
+  --column-min-width: 300px;
+  --accent-bar-width: 14px;    /* red bar left of headings and the note */
+
+  /* type */
+  --font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
+  --font-size-h1: 92px;
+  --font-size-h2: 64px;
+}
+
+/* dark palette; the inline script in index.html sets data-theme from the saved
+   choice or the system setting. Contrast on --color-bg: text 13.8, ink 11.6,
+   muted 7.6, accent 5.0 (WCAG AA needs 4.5) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #1b1f1a;
+  --color-text: #e6ebe1;
+  --color-ink: #d3d9cd;
+  --color-text-muted: #a9b1a2;
+  --color-accent: #f2555a;
+  --icon-filter: invert(90%);  /* black -> #e6e6e6, close to --color-text */
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-padding-x: 20px;
+    --page-padding-y: 10px;
+    --accent-bar-width: 7px;
+    --font-size-h1: 64px;
+    --font-size-h2: 48px;
+  }
 }
 
 * {
-  background: #DBE1D5;
-  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
-  max-height: 100%;
+  font-family: var(--font-family);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* hidden on screen, still read by screen readers */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* regular text has always rendered at 500 (Google Fonts only served that weight);
+   form controls don't inherit font-weight, so set them explicitly */
+body,
+textarea,
+button {
+  font-weight: 500;
+}
+
 h2 {
-  font-size: 64px;
+  font-size: var(--font-size-h2);
   margin: 0;
 }
 
@@ -23,7 +121,7 @@ main {
   position: relative;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 20px 80px;
+  padding: var(--page-padding-y) var(--page-padding-x);
   box-sizing: border-box;
   min-height: 100vh;
   display: flex;
@@ -32,22 +130,13 @@ main {
 }
 
 h1 {
-  font-size: 92px;
+  font-size: var(--font-size-h1);
   line-height: 0.9em;
   padding-bottom: 5%;
 }
 
 @media (max-width: 768px) {
-  h2 {
-    font-size: 48px;
-  }
-
   h1 {
-    font-size: 64px;
     text-align: left;
-  }
-
-  main {
-    padding: 10px 20px;
   }
 }

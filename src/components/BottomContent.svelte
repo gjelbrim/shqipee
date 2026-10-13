@@ -1,6 +1,7 @@
 <script>
 import {ScriptType} from '../utils/scriptTypes.js';
-export let scriptType;
+/** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
+let { scriptType } = $props();
 
 const SCRIPT_INFO = {
     [ScriptType.ELBASAN]: {
@@ -14,14 +15,8 @@ const SCRIPT_INFO = {
     }
 };
 
-let wikiLink = "";
-let scriptName = "";
-
-$: {
-    const scriptInfo = SCRIPT_INFO[scriptType];
-    wikiLink = scriptInfo ? scriptInfo.wikiLink : "";
-    scriptName = scriptInfo ? scriptType : "";
-}
+const wikiLink = $derived(SCRIPT_INFO[scriptType]?.wikiLink ?? "");
+const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
 </script>
 
 <div class="bottom-content">
@@ -36,7 +31,7 @@ $: {
               {:else if scriptType === ScriptType.VITHKUQI}
                   language and pronunciation <span class="highlight">change over time</span>. therefore, vithkuqi <span class="highlight">cannot be transliterated 1:1</span> into latin and vice versa. support outside of this site is <span class="highlight">very limited</span>.
               {:else if scriptType === ScriptType.TODHRI}
-                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. currently there is <span class="highlight">no font mapping</span> this alphabet. therefore it <span class="highlight">cannot be displayed</span> outside of this site.
+                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. so far <span class="highlight">very few fonts</span> support it, so it will <span class="highlight">often not display</span> outside of this site.
               {/if}
           </p>
         </div>
@@ -47,18 +42,18 @@ $: {
       <div class="credits-section">
         <div class="credit-block">
           <span class="label">developed by</span>
-          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj</a>
+          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj<span class="visually-hidden"> (opens in a new tab)</span></a>
         </div>
         <div class="credit-block">
           <span class="label">designed by</span>
-          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl</a>
+          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl<span class="visually-hidden"> (opens in a new tab)</span></a>
         </div>
       </div>
 
       <div class="wiki-section">
         <span class="label">learn more</span>
         <a href={wikiLink} target="_blank" rel="noopener noreferrer" class="wiki-link">
-          read about {scriptName} on wikipedia <span class="arrow">↗</span>
+          read about {scriptName} on wikipedia <span class="arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
     </div>
@@ -89,12 +84,12 @@ $: {
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
-    color: #1d1d1b;
+    color: var(--color-ink);
     transition: color 0.2s ease;
   }
 
   .credit-link:hover {
-    color: #c3181e;
+    color: var(--color-accent);
   }
 
   .wiki-section {
@@ -105,8 +100,8 @@ $: {
   .wiki-link {
     font-size: 18px;
     text-decoration: none;
-    color: #1d1d1b;
-    border-bottom: 1px solid #1d1d1b;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
     padding-bottom: 2px;
     display: inline-block;
     width: fit-content;
@@ -114,8 +109,8 @@ $: {
   }
 
   .wiki-link:hover {
-    color: #c3181e;
-    border-bottom-color: #c3181e;
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
   }
 
   .arrow {
@@ -135,7 +130,7 @@ $: {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-left: 14px solid #c3181e;
+    border-left: var(--accent-bar-width) solid var(--color-accent);
     padding-left: 20px;
     transition: all 0.3s ease;
   }
@@ -146,32 +141,36 @@ $: {
   }
 
   .warning-label {
-    color: #c3181e;
+    color: var(--color-accent);
+    opacity: 1;  /* .label's 0.6 would drop the red below 4.5:1 contrast */
     font-weight: 700;
     margin-bottom: 5px;
   }
 
   .highlight {
-    color: #c3181e;
+    color: var(--color-accent);
     font-weight: 700;
   }
 
   .bottom-content {
+    /* opaque so Chrome keeps subpixel text antialiasing; this block ends up on its
+       own compositing layer next to the output textarea */
+    background: var(--color-bg);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
   .spacer {
-    width: 200px;
-    min-width: 200px;
+    width: var(--column-gap);
+    min-width: var(--column-gap);
   }
 
   .text-left {
     display: flex;
     flex-direction: row;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   .text-left-item {
@@ -183,12 +182,12 @@ $: {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   a,
   a:visited {
-    color: black;
+    color: var(--color-text);
     text-decoration: underline;
   }
 
@@ -214,7 +213,6 @@ $: {
     }
 
     .disclaimer-wrapper {
-      border-left-width: 7px;
       padding-left: 15px;
     }
 

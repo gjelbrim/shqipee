@@ -8,6 +8,7 @@ if (typeof window !== 'undefined') {
   });
 }
 
+/** @param {string} href */
 export function navigate(href) {
   history.pushState({}, '', href);
   router.path = href;
