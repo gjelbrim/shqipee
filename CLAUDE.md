@@ -26,7 +26,7 @@ src/utils/transliterate.js    — pure transliterate(text, scriptType, isLatinTo
 src/routes/ScriptRoute.svelte                — page for one script (title, TopSection, Transliterator, BottomContent); App.svelte maps paths to script types
 src/components/Transliterator.svelte         — UI: calls transliterate(), swap direction, clipboard, localStorage persistence
 src/utils/alphabet.js         — getAlphabet(scriptType): letters for the alphabet table (Albanian order, then script extras; Vithkuqi also capitals)
-src/panel.svelte.js           — shared `panel.open` (null | 'alphabet' | 'history'); App hides the floating theme button while a panel is open
+src/panel.svelte.js           — shared `panel.open` (null | 'alphabet' | 'history'); on mobile App hides the floating theme button while a panel is open
 src/utils/history.js          — history per script (localStorage `transliterationHistory:<script>`, max 20): addEntry() merges continued typing into the newest entry and moves repeats to the top
 src/components/HistoryList.svelte            — history entries (restore on click, ✕ removes one, "clear history" needs a second click)
 src/utils/shareLink.js        — buildShareUrl()/parseShareParams(): share links `/<script>?text=…[&from=<script>]`
