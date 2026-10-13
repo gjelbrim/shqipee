@@ -1,7 +1,9 @@
 <script>
 import {copy} from 'svelte-copy'
 import AlphabetGrid from './AlphabetGrid.svelte';
-import { alphabet } from '../alphabet.svelte.js';
+import HistoryList from './HistoryList.svelte';
+import { panel } from '../panel.svelte.js';
+import { addEntry, removeEntry, loadHistory, saveHistory } from '../utils/history.js';
 import { buildShareUrl, parseShareParams } from '../utils/shareLink.js';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
@@ -23,12 +25,19 @@ const outputTitle = $derived(isLatinToScript ? scriptType : "latin");
 const outputText = $derived(transliterate(inputText, scriptType, isLatinToScript));
 const inputLang = $derived(LANGUAGE_TAGS[inputTitle]);
 const scriptLang = $derived(LANGUAGE_TAGS[scriptType]);
-// on-screen alphabet, offered while typing in the script (script -> Latin): a popover
-// above the input on wider screens, an inline panel below it on mobile
+// panels for the input (panel.open): the on-screen alphabet, offered while typing in
+// the script (script -> Latin), and the history. A popover above the input on wider
+// screens, an inline panel below it on mobile
 let keyboardButton;
+let historyButton;
+let headerButtonsEl;
 let inputEl;
 let popoverEl = $state();
 let popoverMaxHeight = $state(0);
+let popoverRight = $state(0);
+
+const PANEL_LABELS = {alphabet: 'alphabet', history: 'history'};
+const togglePanel = (name) => panel.open = panel.open === name ? null : name;
 
 // same width as the 768px breakpoint in app.css
 const mobileQuery = matchMedia('(max-width: 768px)');
@@ -43,6 +52,8 @@ const fitPopover = () => {
     const spaceAbove = () => inputEl.getBoundingClientRect().top - 16;
     if (spaceAbove() < MIN_POPOVER_HEIGHT) window.scrollBy(0, spaceAbove() - MIN_POPOVER_HEIGHT);
     popoverMaxHeight = Math.max(160, spaceAbove());
+    // leave the icons next to the heading uncovered
+    popoverRight = (headerButtonsEl?.offsetWidth ?? 0) + 10;
 };
 
 $effect(() => {
@@ -62,9 +73,10 @@ const saveToStorage = (input, isLatin) => {
 
 // swap direction: carry over the previous output as the new input
 const swapDirection = () => {
+    commitHistory();
     const previousOutput = outputText;
     isLatinToScript = !isLatinToScript;
-    alphabet.open = false;
+    panel.open = null;
     inputText = previousOutput;
     caret = null;
     saveToStorage(inputText, isLatinToScript);
@@ -80,9 +92,51 @@ let pasteErrorTimer;
 // timer for clearing the copy confirmation
 let copyStatusTimer;
 
+// history: the current input is added after a typing pause and when it's copied,
+// shared, swapped or left (see addEntry for how continued typing is merged)
+const HISTORY_PAUSE = 2000;
+let historyEntries = $state([]);
+let historyTimer = null;
+
+const commitHistory = () => {
+    clearTimeout(historyTimer);
+    historyTimer = null;
+    const next = addEntry(historyEntries, inputText, isLatinToScript);
+    if (next === historyEntries) return;
+    historyEntries = next;
+    saveHistory(scriptType, historyEntries);
+};
+const scheduleHistory = () => {
+    clearTimeout(historyTimer);
+    historyTimer = setTimeout(commitHistory, HISTORY_PAUSE);
+};
+
+const restoreEntry = (index) => {
+    const entry = historyEntries[index];
+    clearTimeout(historyTimer);
+    historyTimer = null;
+    isLatinToScript = entry.isLatinToScript;
+    inputText = entry.text;
+    caret = null;
+    saveToStorage(inputText, isLatinToScript);
+    panel.open = null;
+    announcement = `restored ${entry.text}`;
+};
+const removeHistoryEntry = (index) => {
+    historyEntries = removeEntry(historyEntries, index);
+    saveHistory(scriptType, historyEntries);
+    announcement = 'removed from history';
+};
+const clearHistory = () => {
+    historyEntries = [];
+    saveHistory(scriptType, historyEntries);
+    announcement = 'history cleared';
+};
+
 const ANNOUNCEMENTS = {copied: 'copied to clipboard', linked: 'link copied to clipboard'};
 
 const showCopyStatus = (status) => {
+    if (status !== 'failed') commitHistory();
     copyStatus = status;
     announcement = ANNOUNCEMENTS[status] ?? '';
     clearTimeout(copyStatusTimer);
@@ -127,6 +181,7 @@ const insertAtCursor = (text) => {
     caret = {start: start + text.length, end: start + text.length};
     clearTimeout(saveDebounceTimer);
     saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
+    scheduleHistory();
 };
 
 // input handler: bind:value updates the text; debounce the localStorage write
@@ -134,6 +189,7 @@ const handleInput = (event) => {
     const input = event.target.value;
     clearTimeout(saveDebounceTimer);
     saveDebounceTimer = setTimeout(() => saveToStorage(input, isLatinToScript), 300);
+    scheduleHistory();
 };
 
 // paste text from clipboard
@@ -142,6 +198,7 @@ const pasteFromClipboard = async () => {
         inputText = await navigator.clipboard.readText();
         caret = null;
         saveToStorage(inputText, isLatinToScript);
+        commitHistory();
         pasteError = false;
     } catch (error) {
         pasteError = true;
@@ -153,17 +210,22 @@ const pasteFromClipboard = async () => {
 // close the popover on Escape or a click outside it (the inline panel on mobile is
 // part of the page and stays open until toggled)
 const closeOnOutside = (event) => {
-    if (!alphabet.open || isMobile) return;
-    if (!popoverEl?.contains(event.target) && !keyboardButton?.contains(event.target)) alphabet.open = false;
+    if (!panel.open || isMobile) return;
+    // clicks that removed their own element (e.g. deleting a history entry) count as inside
+    if (!event.target.isConnected) return;
+    const inside = [popoverEl, keyboardButton, historyButton].some(el => el?.contains(event.target));
+    if (!inside) panel.open = null;
 };
 const closeOnEscape = (event) => {
-    if (event.key !== 'Escape' || !alphabet.open) return;
-    alphabet.open = false;
-    keyboardButton?.focus();
+    if (event.key !== 'Escape' || !panel.open) return;
+    const button = panel.open === 'history' ? historyButton : keyboardButton;
+    panel.open = null;
+    button?.focus();
 };
 
 onMount(() => {
     mobileQuery.addEventListener('change', updateIsMobile);
+    historyEntries = loadHistory(scriptType);
 
     // a shared link (?text=…) wins over the saved state; drop the query afterwards so
     // a reload doesn't bring the link text back over later edits
@@ -194,7 +256,8 @@ onMount(() => {
 });
 
 onDestroy(() => {
-    alphabet.open = false;
+    if (historyTimer) commitHistory();
+    panel.open = null;
     mobileQuery.removeEventListener('change', updateIsMobile);
     clearTimeout(pasteErrorTimer);
     clearTimeout(copyStatusTimer);
@@ -202,36 +265,67 @@ onDestroy(() => {
 });
 </script>
 
-<svelte:window onclick={closeOnOutside} onkeydown={closeOnEscape} onresize={() => popoverEl && fitPopover()} />
+<svelte:window
+  onclick={closeOnOutside}
+  onkeydown={closeOnEscape}
+  onresize={() => popoverEl && fitPopover()}
+  onpagehide={() => historyTimer && commitHistory()}
+/>
+
+{#snippet panelContent()}
+  {#if panel.open === 'alphabet'}
+    <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+  {:else if panel.open === 'history'}
+    <HistoryList
+      entries={historyEntries}
+      {scriptType}
+      {scriptLang}
+      onpick={restoreEntry}
+      onremove={removeHistoryEntry}
+      onclear={clearHistory}
+    />
+  {/if}
+{/snippet}
 
 <div class="switchArea">
     <div class="input-div">
       <div class="input-container">
         <div class="input-header">
           <h2 id="input-title">{inputTitle}</h2>
-          {#if alphabet.open && !isMobile}
+          {#if panel.open && !isMobile}
             <div
-              id="alphabet-panel"
+              id="{panel.open}-panel"
               class="popover"
               role="group"
-              aria-label="{scriptType} alphabet"
+              aria-label="{scriptType} {PANEL_LABELS[panel.open]}"
               style:max-height="{popoverMaxHeight}px"
+              style:right="{popoverRight}px"
               bind:this={popoverEl}
             >
-              <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+              {@render panelContent()}
             </div>
           {/if}
-          <div class="header-buttons">
+          <div class="header-buttons" bind:this={headerButtonsEl}>
+            <button
+              class="history-button"
+              class:open={panel.open === 'history'}
+              title="History"
+              aria-label="Show {scriptType} history"
+              aria-expanded={panel.open === 'history'}
+              aria-controls="history-panel"
+              bind:this={historyButton}
+              onclick={() => togglePanel('history')}
+            ></button>
             {#if !isLatinToScript}
               <button
                 class="keyboard-button"
-                class:open={alphabet.open}
+                class:open={panel.open === 'alphabet'}
                 title="Alphabet"
                 aria-label="Show {scriptType} alphabet"
-                aria-expanded={alphabet.open}
+                aria-expanded={panel.open === 'alphabet'}
                 aria-controls="alphabet-panel"
                 bind:this={keyboardButton}
-                onclick={() => alphabet.open = !alphabet.open}
+                onclick={() => togglePanel('alphabet')}
               ></button>
             {/if}
             <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
@@ -251,9 +345,9 @@ onDestroy(() => {
           bind:this={inputEl}
         ></textarea>
         <div class="input-bottom-line"></div>
-        {#if alphabet.open && isMobile}
-          <div id="alphabet-panel" class="alphabet-inline" role="group" aria-label="{scriptType} alphabet">
-            <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+        {#if panel.open && isMobile}
+          <div id="{panel.open}-panel" class="panel-inline" role="group" aria-label="{scriptType} {PANEL_LABELS[panel.open]}">
+            {@render panelContent()}
           </div>
         {/if}
         {#if pasteError}
@@ -337,13 +431,12 @@ onDestroy(() => {
     margin-bottom: 0.5rem;
   }
 
-  /* covers the heading and grows upwards from the top of the input field,
-     leaving the buttons on the right uncovered (2 x 32px icons + 14px gap + 10px) */
+  /* covers the heading and grows upwards from the top of the input field; its right
+     edge (style:right) leaves the buttons next to the heading uncovered */
   .popover {
     position: absolute;
     bottom: 0;
     left: 0;
-    right: 88px;
     z-index: 30;
     overflow-y: auto;
     padding: 14px;
@@ -353,8 +446,8 @@ onDestroy(() => {
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
   }
 
-  /* on mobile the alphabet sits between the input and the swap button */
-  .alphabet-inline {
+  /* on mobile the panel sits between the input and the swap button */
+  .panel-inline {
     margin-top: 16px;
   }
 
@@ -364,6 +457,23 @@ onDestroy(() => {
   }
 
   /* the icons are black SVGs; --icon-filter lightens them in dark mode */
+  .history-button {
+    width: 32px;
+    height: 32px;
+    background-image: url("/src/assets/history.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-color: transparent;
+    filter: var(--icon-filter);
+    border: none;
+    cursor: pointer;
+  }
+
+  .history-button:hover,
+  .history-button.open {
+    opacity: 0.6;
+  }
+
   .keyboard-button {
     width: 32px;
     height: 32px;
@@ -569,6 +679,7 @@ onDestroy(() => {
     .paste-button,
     .copy-button,
     .share-button,
+    .history-button,
     .keyboard-button {
       width: 24px;
       height: 24px;
