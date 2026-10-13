@@ -31,7 +31,7 @@
 /* Breakpoints (literal in every @media, custom properties don't work there;
    breakpoints.test.js rejects any other value):
      1200px  stacked: transliterator fields and bottom blocks in one column
-      768px  mobile:  smaller type and spacing, centered header, no logo */
+      768px  mobile:  smaller type and spacing, no logo */
 
 :root {
   /* colors */
@@ -48,6 +48,10 @@
   --column-gap: 200px;         /* middle column between left and right blocks */
   --column-min-width: 300px;
   --accent-bar-width: 14px;    /* red bar left of headings and the note */
+
+  /* spacing: everything sits on these two steps */
+  --space-section: 64px;       /* between header, transliterator and bottom blocks */
+  --space-block: 24px;         /* between blocks inside a section */
 
   /* type */
   --font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
@@ -73,6 +77,8 @@
     --page-padding-x: 20px;
     --page-padding-y: 10px;
     --accent-bar-width: 7px;
+    --space-section: 32px;
+    --space-block: 16px;
     --font-size-h1: 64px;
     --font-size-h2: 48px;
   }
@@ -132,11 +138,4 @@ main {
 h1 {
   font-size: var(--font-size-h1);
   line-height: 0.9em;
-  padding-bottom: 5%;
-}
-
-@media (max-width: 768px) {
-  h1 {
-    text-align: left;
-  }
 }

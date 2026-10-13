@@ -101,7 +101,6 @@
     background: transparent;
     color: var(--color-text);
     border: 1px solid color-mix(in srgb, var(--color-ink) 25%, transparent);
-    border-radius: 6px;
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
     /* no blue tap flash on mobile; hover/focus styles give the feedback */

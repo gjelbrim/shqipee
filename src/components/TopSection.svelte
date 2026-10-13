@@ -5,10 +5,9 @@
     let { scriptType } = $props();
 </script>
 
+  <!-- same columns as the transliterator below (left column, gap, right column), so the
+       nav starts on the edge of the right column; stacked and mobile: nav under the heading -->
   <div class="top-section">
-    <div class="redLine">
-      <!-- red line -->
-    </div>
     <div class="headingTop">
         {#if scriptType === ScriptType.ELBASAN}
             <h1>elbasan <br> alphabet</h1>
@@ -19,7 +18,6 @@
         {/if}
     </div>
     <div class="insertNav">
-      <!-- nav -->
       <Navbar />
     </div>
     <div class="logoIcon" aria-hidden="true">
@@ -29,41 +27,56 @@
 
 <style>
   .top-section {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-bottom: 5%;
+    display: grid;
+    grid-template-columns: minmax(var(--column-min-width), 1fr) var(--column-gap) minmax(var(--column-min-width), 1fr);
+    grid-template-areas: "heading . nav";
+    align-items: start;
+    padding-bottom: var(--space-section);
   }
 
   .headingTop {
-    display: flex;
-    flex: 2;
+    grid-area: heading;
     border-left: var(--accent-bar-width) solid var(--color-accent);
     padding-left: 10px;
   }
 
   .insertNav {
-    display: flex;
+    grid-area: nav;
   }
 
+  /* sits in the right column with the nav, flush right */
   .logoIcon {
+    grid-area: nav;
+    justify-self: end;
     font-size: 128px;
-    display: flex;
-    flex: 1;
+    line-height: 0.8;
     color: var(--color-accent);
-    margin: 0px;
-    justify-content: flex-end;
+  }
+
+  @media (max-width: 1200px) {
+    .top-section {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "heading logo"
+        "nav nav";
+      row-gap: var(--space-block);
+    }
+
+    .logoIcon {
+      grid-area: logo;
+    }
   }
 
   @media (max-width: 768px) {
     .top-section {
-      flex-direction: column;
-      align-items: center;
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        "heading"
+        "nav";
     }
 
     .headingTop {
       padding-left: 5px;
-      text-align: center;
     }
 
     .logoIcon {

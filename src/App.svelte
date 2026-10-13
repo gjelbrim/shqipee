@@ -39,10 +39,8 @@
     bottom: max(20px, env(safe-area-inset-bottom));
     z-index: 10;
     padding: 8px;
-    border-radius: 50%;
     background: var(--color-bg);
     border: 1px solid var(--color-ink);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     line-height: 0;
   }
 

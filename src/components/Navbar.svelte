@@ -24,10 +24,8 @@
 <style>
   .navbar {
     display: flex;
-    justify-content: center;
     align-items: center;
     gap: 30px;
-    margin-bottom: 20px;
   }
 
   .navbar a {
