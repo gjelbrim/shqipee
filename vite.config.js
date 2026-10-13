@@ -42,9 +42,10 @@ export default defineConfig({
         // only for link previews
         globIgnores: ['og-image.png'],
         // client-side routes (/vithkuqi, /todhri) are served by index.html, like the
-        // rewrite in vercel.json; Vercel Analytics stays network-only
+        // rewrite in vercel.json; Vercel Analytics and the files for crawlers
+        // (robots.txt, llms.txt, sitemap.xml) stay network-only
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/_vercel\//]
+        navigateFallbackDenylist: [/^\/_vercel\//, /\.(txt|xml)$/]
       }
     })
   ],
