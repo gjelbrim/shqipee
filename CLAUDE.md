@@ -57,6 +57,13 @@ Global design tokens (colors, page padding, column widths, accent bar width, hea
 
 Dark mode: `:root[data-theme="dark"]` in `app.css` redefines the color tokens (and `--icon-filter`, which lightens the black icon SVGs). Keep new colors as tokens so both themes stay in sync. An inline script in `index.html` sets `data-theme` before the first paint from the saved choice (`localStorage.theme`) or the system setting; `src/theme.svelte.js` holds the state, follows system changes until the user picks a theme, and `ThemeToggle.svelte` (fixed bottom-right, rendered in `App.svelte`) switches it.
 
+### Accessibility
+
+- `.visually-hidden` (global, `app.css`) hides text on screen but keeps it for screen readers, e.g. "(opens in a new tab)" on external links.
+- The textareas are labelled by their `h2` (`aria-labelledby`) and carry BCP 47 language tags (`sq`, `sq-Elba`, `sq-Vith`, `sq-Todr`) that follow the swap direction.
+- `Transliterator.svelte` has one `role="status"` region (`announcement`) for spoken feedback (copy, swap); errors use `role="alert"`.
+- Keep a visible focus state for anything focusable; the textareas show it as a red bottom line.
+
 ### Routing
 
 `src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.

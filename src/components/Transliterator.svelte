@@ -9,10 +9,17 @@ let { scriptType } = $props();
 let isLatinToScript = $state(true);
 let inputText = $state("");
 let pasteError = $state(false);
+let copyStatus = $state(null);   // null | 'copied' | 'failed'
+let announcement = $state("");   // read out by screen readers via the status region
+
+// language tags so screen readers pick an Albanian voice and know the script
+const LANGUAGE_TAGS = {latin: 'sq', elbasan: 'sq-Elba', vithkuqi: 'sq-Vith', todhri: 'sq-Todr'};
 
 const inputTitle = $derived(isLatinToScript ? "latin" : scriptType);
 const outputTitle = $derived(isLatinToScript ? scriptType : "latin");
 const outputText = $derived(transliterate(inputText, scriptType, isLatinToScript));
+const inputLang = $derived(LANGUAGE_TAGS[inputTitle]);
+const outputLang = $derived(LANGUAGE_TAGS[outputTitle]);
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
 const saveToStorage = (input, isLatin) => {
@@ -30,6 +37,7 @@ const swapDirection = () => {
     isLatinToScript = !isLatinToScript;
     inputText = previousOutput;
     saveToStorage(inputText, isLatinToScript);
+    announcement = `now ${inputTitle} to ${outputTitle}`;
 };
 
 // debounce timer for localStorage writes
@@ -37,6 +45,16 @@ let saveDebounceTimer;
 
 // timer for clearing paste error message
 let pasteErrorTimer;
+
+// timer for clearing the copy confirmation
+let copyStatusTimer;
+
+const showCopyStatus = (status) => {
+    copyStatus = status;
+    announcement = status === 'copied' ? 'copied to clipboard' : '';
+    clearTimeout(copyStatusTimer);
+    copyStatusTimer = setTimeout(() => copyStatus = null, 2000);
+};
 
 // input handler: bind:value updates the text; debounce the localStorage write
 const handleInput = (event) => {
@@ -76,6 +94,7 @@ onMount(() => {
 
 onDestroy(() => {
     clearTimeout(pasteErrorTimer);
+    clearTimeout(copyStatusTimer);
     clearTimeout(saveDebounceTimer);
 });
 </script>
@@ -84,12 +103,14 @@ onDestroy(() => {
     <div class="input-div">
       <div class="input-container">
         <div class="input-header">
-          <h2>{inputTitle}</h2>
+          <h2 id="input-title">{inputTitle}</h2>
           <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
         </div>
         <textarea
           id="inp"
           class="styled-input"
+          aria-labelledby="input-title"
+          lang={inputLang}
           placeholder="input text"
           oninput={handleInput}
           bind:value={inputText}
@@ -109,20 +130,34 @@ onDestroy(() => {
   
       <div class="output-container">
         <div class="input-header">
-          <h2>{outputTitle}</h2>
-          <button class="copy-button" title="Copy" aria-label="Copy text" use:copy={{ text: outputText }}></button>
+          <h2 id="output-title">{outputTitle}</h2>
+          <button
+            class="copy-button"
+            title="Copy"
+            aria-label="Copy text"
+            use:copy={{ text: outputText, onCopy: () => showCopyStatus('copied'), onError: () => showCopyStatus('failed') }}
+          ></button>
         </div>
         <textarea
           id="out"
           class="styled-input"
+          aria-labelledby="output-title"
+          lang={outputLang}
           placeholder="transliteration"
           readonly
           value={outputText}
         ></textarea>
         <div class="input-bottom-line"></div>
+        {#if copyStatus === 'copied'}
+          <!-- announced through the status region below, so hidden from screen readers here -->
+          <p class="copy-status" aria-hidden="true">copied to clipboard</p>
+        {:else if copyStatus === 'failed'}
+          <p class="paste-error" role="alert">Unable to copy to clipboard</p>
+        {/if}
       </div>
     </div>
-  
+
+    <p class="visually-hidden" role="status">{announcement}</p>
 </div>
 
 <style>
@@ -185,6 +220,17 @@ onDestroy(() => {
     resize: none;
     padding-top: 10px;
     box-sizing: border-box;
+  }
+
+  /* focus indicator: the line under the focused field turns red */
+  .styled-input:focus + .input-bottom-line {
+    background-color: var(--color-accent);
+  }
+
+  .copy-status {
+    font-size: 0.75rem;
+    color: var(--color-ink);
+    margin-top: 4px;
   }
 
   .styled-input::placeholder {
