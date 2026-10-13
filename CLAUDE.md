@@ -53,7 +53,9 @@ fonttools ttLib.woff2 compress -o NotoSansElbasan-Regular.woff2 NotoSansElbasan-
 
 ### Styling
 
-Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Dark mode follows the system setting: `@media (prefers-color-scheme: dark)` redefines the color tokens (and `--icon-filter`, which lightens the black icon SVGs); keep new colors as tokens so both themes stay in sync. Media queries can't use custom properties, so breakpoints are still literal.
+Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Media queries can't use custom properties, so breakpoints are still literal.
+
+Dark mode follows the system setting: `@media (prefers-color-scheme: dark)` in `app.css` redefines the color tokens (and `--icon-filter`, which lightens the black icon SVGs). Keep new colors as tokens so both themes stay in sync.
 
 ### Routing
 
