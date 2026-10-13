@@ -53,7 +53,7 @@ fonttools ttLib.woff2 compress -o NotoSansElbasan-Regular.woff2 NotoSansElbasan-
 
 ### Styling
 
-Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Media queries can't use custom properties, so breakpoints are still literal.
+Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Media queries can't use custom properties, so the two breakpoints are literal: `1200px` (stacked, one column) and `768px` (mobile). They're documented at the top of `app.css`, and `src/breakpoints.test.js` fails on any other `@media` value.
 
 ### Routing
 

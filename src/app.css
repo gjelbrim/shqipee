@@ -28,6 +28,11 @@
   font-display: swap;
 }
 
+/* Breakpoints (literal in every @media, custom properties don't work there;
+   breakpoints.test.js rejects any other value):
+     1200px  stacked: transliterator fields and bottom blocks in one column
+      768px  mobile:  smaller type and spacing, centered header, no logo */
+
 :root {
   /* colors */
   --color-bg: #DBE1D5;

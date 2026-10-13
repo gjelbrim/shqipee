@@ -262,6 +262,11 @@ onDestroy(() => {
       flex: 1;
       width: 100%;
     }
+
+    /* fields are stacked from here on, so the arrows point up/down */
+    .swap-button {
+      transform: rotate(90deg);
+    }
   }
 
   @media (max-width: 768px) {
@@ -283,7 +288,6 @@ onDestroy(() => {
     .swap-button {
       width: 48px;
       height: 48px;
-      transform: rotate(90deg);
     }
 
     .swap-container {
