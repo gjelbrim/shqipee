@@ -21,9 +21,32 @@ const outputTitle = $derived(isLatinToScript ? scriptType : "latin");
 const outputText = $derived(transliterate(inputText, scriptType, isLatinToScript));
 const inputLang = $derived(LANGUAGE_TAGS[inputTitle]);
 const scriptLang = $derived(LANGUAGE_TAGS[scriptType]);
-// on-screen alphabet, offered while typing in the script (script -> Latin)
+// on-screen alphabet, offered while typing in the script (script -> Latin): a popover
+// above the input on wider screens, an inline panel below it on mobile
 let alphabetOpen = $state(false);
 let keyboardButton;
+let inputEl;
+let popoverEl = $state();
+let popoverMaxHeight = $state(0);
+
+// same width as the 768px breakpoint in app.css
+const mobileQuery = matchMedia('(max-width: 768px)');
+let isMobile = $state(mobileQuery.matches);
+const updateIsMobile = (event) => isMobile = event.matches;
+
+// the popover grows upwards from the top of the input over the heading; give it the
+// room above the input, scrolling the page up a bit if that's too little
+const MIN_POPOVER_HEIGHT = 320;
+const fitPopover = () => {
+    if (!inputEl) return;
+    const spaceAbove = () => inputEl.getBoundingClientRect().top - 16;
+    if (spaceAbove() < MIN_POPOVER_HEIGHT) window.scrollBy(0, spaceAbove() - MIN_POPOVER_HEIGHT);
+    popoverMaxHeight = Math.max(160, spaceAbove());
+};
+
+$effect(() => {
+    if (popoverEl) fitPopover();
+});
 const outputLang = $derived(LANGUAGE_TAGS[outputTitle]);
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
@@ -102,9 +125,11 @@ const pasteFromClipboard = async () => {
     }
 };
 
-// close the popover on Escape or a click outside it
+// close the popover on Escape or a click outside it (the inline panel on mobile is
+// part of the page and stays open until toggled)
 const closeOnOutside = (event) => {
-    if (alphabetOpen && !event.target.closest('.popover-anchor')) alphabetOpen = false;
+    if (!alphabetOpen || isMobile) return;
+    if (!popoverEl?.contains(event.target) && !keyboardButton?.contains(event.target)) alphabetOpen = false;
 };
 const closeOnEscape = (event) => {
     if (event.key !== 'Escape' || !alphabetOpen) return;
@@ -113,6 +138,7 @@ const closeOnEscape = (event) => {
 };
 
 onMount(() => {
+    mobileQuery.addEventListener('change', updateIsMobile);
     try {
         // drop pre-per-script keys, which leaked state between scripts
         localStorage.removeItem('transliterationInput');
@@ -130,38 +156,44 @@ onMount(() => {
 });
 
 onDestroy(() => {
+    mobileQuery.removeEventListener('change', updateIsMobile);
     clearTimeout(pasteErrorTimer);
     clearTimeout(copyStatusTimer);
     clearTimeout(saveDebounceTimer);
 });
 </script>
 
-<svelte:window onclick={closeOnOutside} onkeydown={closeOnEscape} />
+<svelte:window onclick={closeOnOutside} onkeydown={closeOnEscape} onresize={() => popoverEl && fitPopover()} />
 
 <div class="switchArea">
     <div class="input-div">
       <div class="input-container">
         <div class="input-header">
           <h2 id="input-title">{inputTitle}</h2>
+          {#if alphabetOpen && !isMobile}
+            <div
+              id="alphabet-panel"
+              class="popover"
+              role="group"
+              aria-label="{scriptType} alphabet"
+              style:max-height="{popoverMaxHeight}px"
+              bind:this={popoverEl}
+            >
+              <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+            </div>
+          {/if}
           <div class="header-buttons">
             {#if !isLatinToScript}
-              <div class="popover-anchor">
-                <button
-                  class="keyboard-button"
-                  class:open={alphabetOpen}
-                  title="Alphabet"
-                  aria-label="Show {scriptType} alphabet"
-                  aria-expanded={alphabetOpen}
-                  aria-controls="alphabet-panel"
-                  bind:this={keyboardButton}
-                  onclick={() => alphabetOpen = !alphabetOpen}
-                ></button>
-                {#if alphabetOpen}
-                  <div id="alphabet-panel" class="popover" role="group" aria-label="{scriptType} alphabet">
-                    <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
-                  </div>
-                {/if}
-              </div>
+              <button
+                class="keyboard-button"
+                class:open={alphabetOpen}
+                title="Alphabet"
+                aria-label="Show {scriptType} alphabet"
+                aria-expanded={alphabetOpen}
+                aria-controls="alphabet-panel"
+                bind:this={keyboardButton}
+                onclick={() => alphabetOpen = !alphabetOpen}
+              ></button>
             {/if}
             <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
           </div>
@@ -177,8 +209,14 @@ onDestroy(() => {
           onkeyup={rememberCaret}
           onclick={rememberCaret}
           bind:value={inputText}
+          bind:this={inputEl}
         ></textarea>
         <div class="input-bottom-line"></div>
+        {#if alphabetOpen && isMobile}
+          <div id="alphabet-panel" class="alphabet-inline" role="group" aria-label="{scriptType} alphabet">
+            <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+          </div>
+        {/if}
         {#if pasteError}
           <p class="paste-error" role="alert">Unable to read from clipboard</p>
         {/if}
@@ -243,24 +281,21 @@ onDestroy(() => {
   }
 
   .input-header {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
   }
 
-  /* the icons are black SVGs; --icon-filter lightens them in dark mode */
-  .popover-anchor {
-    display: flex;
-  }
-
+  /* covers the heading and grows upwards from the top of the input field,
+     leaving the buttons on the right uncovered (2 x 32px icons + 14px gap + 10px) */
   .popover {
     position: absolute;
-    top: calc(100% + 10px);
-    right: 0;  /* right edge of the button group = right edge of the column */
+    bottom: 0;
+    left: 0;
+    right: 88px;
     z-index: 30;
-    width: min(560px, calc(100vw - 2 * var(--page-padding-x)));
-    max-height: 60vh;
     overflow-y: auto;
     padding: 14px;
     background: var(--color-bg);
@@ -269,12 +304,17 @@ onDestroy(() => {
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
   }
 
+  /* on mobile the alphabet sits between the input and the swap button */
+  .alphabet-inline {
+    margin-top: 16px;
+  }
+
   .header-buttons {
-    position: relative;
     display: flex;
     gap: 14px;
   }
 
+  /* the icons are black SVGs; --icon-filter lightens them in dark mode */
   .keyboard-button {
     width: 32px;
     height: 32px;
