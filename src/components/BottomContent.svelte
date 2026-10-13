@@ -68,7 +68,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: var(--space-block);
   }
 
   .credit-block {
@@ -76,10 +76,9 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     flex-direction: column;
   }
 
+  /* lowercase like all other text on the site */
   .label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    font-size: 14px;
     opacity: 0.6;
     margin-bottom: 2px;
   }
@@ -133,7 +132,6 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   .about-wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     border-left: var(--accent-bar-width) solid var(--color-accent);
     padding-left: 20px;
     transition: all 0.3s ease;
@@ -163,6 +161,8 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    /* both columns start on the same line */
+    align-items: flex-start;
   }
 
   .spacer {
@@ -204,9 +204,9 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
       display: none;
     }
 
+    /* on the column edge, like everything else in the stacked layout */
     .text-right {
-      padding-top: 40px;
-      padding-left: 45px;
+      padding-top: var(--space-section);
       padding-bottom: 80px;
     }
   }
@@ -223,10 +223,6 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     .about-wrapper:hover {
       border-left-width: 10px;
       padding-left: 12px;
-    }
-
-    .text-right {
-      padding-left: 20px;
     }
   }
 </style>

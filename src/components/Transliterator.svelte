@@ -468,7 +468,7 @@ onDestroy(() => {
   .input-div {
     display: flex;
     flex-direction: row;
-    padding-bottom: 5%;
+    padding-bottom: var(--space-section);
     width: 100%;
     justify-content: space-between;
   }
@@ -499,8 +499,6 @@ onDestroy(() => {
     padding: 14px;
     background: var(--color-bg);
     border: 1px solid var(--color-ink);
-    border-radius: 8px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
   }
 
   /* on mobile the panel sits between the input and the swap button */
@@ -736,7 +734,6 @@ onDestroy(() => {
 
     .input-div {
       padding-right: 0;
-      padding-bottom: 2%;
     }
 
     .styled-input {
