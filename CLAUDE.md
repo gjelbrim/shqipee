@@ -84,3 +84,7 @@ Dark mode: `:root[data-theme="dark"]` in `app.css` redefines the color tokens (a
 ### Routing
 
 `src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.
+
+### Security headers
+
+`vercel.json` sets security headers on every path: a Content-Security-Policy (only same-origin scripts, styles, fonts, images incl. `data:` for the inlined icon SVGs, connections and workers; `frame-ancestors 'none'`), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` and `Cross-Origin-Opener-Policy: same-origin`. Vercel Analytics loads from `/_vercel/*` (same origin) in production. Inline scripts are allowed only by their SHA-256 hash: after changing the theme script in `index.html`, put its new hash into the CSP — `src/securityHeaders.test.js` fails until then. `style-src` keeps `'unsafe-inline'` because Svelte sets inline styles (`style:` directives).
