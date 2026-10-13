@@ -128,10 +128,11 @@ onDestroy(() => {
   
   
   
-      <div class="output-container">
+      <div class="output-container" class:flash={copyStatus === 'copied'}>
         <div class="input-header">
           <h2 id="output-title">{outputTitle}</h2>
           <button
+            class:copied={copyStatus === 'copied'}
             class="copy-button"
             title="Copy"
             aria-label="Copy text"
@@ -148,10 +149,7 @@ onDestroy(() => {
           value={outputText}
         ></textarea>
         <div class="input-bottom-line"></div>
-        {#if copyStatus === 'copied'}
-          <!-- announced through the status region below, so hidden from screen readers here -->
-          <p class="copy-status" aria-hidden="true">copied to clipboard</p>
-        {:else if copyStatus === 'failed'}
+        {#if copyStatus === 'failed'}
           <p class="paste-error" role="alert">Unable to copy to clipboard</p>
         {/if}
       </div>
@@ -227,12 +225,6 @@ onDestroy(() => {
     background-color: var(--color-accent);
   }
 
-  .copy-status {
-    font-size: 0.75rem;
-    color: var(--color-ink);
-    margin-top: 4px;
-  }
-
   .styled-input::placeholder {
     color: var(--color-text);
     opacity: 0.7;
@@ -292,6 +284,19 @@ onDestroy(() => {
     filter: var(--icon-filter);
     border: none;
     cursor: pointer;
+  }
+
+  /* after copying the icon turns into a check mark for a moment */
+  .copy-button.copied {
+    background-image: url("/src/assets/check.svg");
+  }
+
+  .output-container .input-bottom-line {
+    transition: background-color 0.3s ease;
+  }
+
+  .output-container.flash .input-bottom-line {
+    background-color: var(--color-accent);
   }
 
   .copy-button:hover {
