@@ -1,6 +1,25 @@
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { VitePWA } from 'vite-plugin-pwa'
+import { PAGE_META, renderHead } from './src/utils/pageMeta.js'
+
+// writes <script>.html (vithkuqi.html, todhri.html) next to index.html with that page's
+// title, description, canonical and Open Graph tags, for link previews and crawlers that
+// don't run JavaScript; vercel.json rewrites /vithkuqi and /todhri to them
+/** @returns {import('vite').Plugin} */
+const pageHeads = () => ({
+  name: 'page-heads',
+  apply: 'build',
+  enforce: 'post',
+  generateBundle(_, bundle) {
+    const index = bundle['index.html']
+    if (index?.type !== 'asset') throw new Error('index.html missing from the bundle')
+    for (const meta of Object.values(PAGE_META)) {
+      if (meta.path === '/') continue
+      this.emitFile({ type: 'asset', fileName: `${meta.path.slice(1)}.html`, source: renderHead(String(index.source), meta) })
+    }
+  }
+})
 
 const description = 'Transliterate Albanian Latin text into the historical Elbasan, Vithkuqi and Todhri scripts and back.'
 
@@ -8,6 +27,7 @@ const description = 'Transliterate Albanian Latin text into the historical Elbas
 export default defineConfig({
   plugins: [
     svelte(),
+    pageHeads(),
     // installable app that works offline: the service worker precaches the whole build
     // (all fonts included, so every script renders offline) and updates itself silently;
     // a new version is used from the next start

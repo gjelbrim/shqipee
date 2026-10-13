@@ -9,7 +9,9 @@ import {createHash} from 'node:crypto';
 const vercel = JSON.parse(readFileSync('vercel.json', 'utf8'));
 const csp = vercel.headers.flatMap((/** @type {{headers: {key: string, value: string}[]}} */ rule) => rule.headers)
     .find((/** @type {{key: string}} */ header) => header.key === 'Content-Security-Policy')?.value ?? '';
-const inlineScripts = [...readFileSync('index.html', 'utf8').matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/g)]
+// inline scripts that run; data blocks such as JSON-LD (type="application/ld+json") don't
+// and aren't subject to the CSP
+const inlineScripts = [...readFileSync('index.html', 'utf8').matchAll(/<script(?![^>]*\b(?:src|type)=)[^>]*>([\s\S]*?)<\/script>/g)]
     .map(match => match[1]);
 
 describe('content security policy', () => {
