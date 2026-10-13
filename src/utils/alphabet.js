@@ -34,3 +34,12 @@ export const getAlphabet = (scriptType) => {
     }
     return groups;
 };
+
+// shift key of the alphabet table, like a phone keyboard: 'off', 'once' (next letter
+// is a capital, then back to 'off') or 'lock' (caps lock, from a double tap or long press)
+export const shiftAfterTap = (state, isDoubleTap) => {
+    if (isDoubleTap && state === 'once') return 'lock';
+    return state === 'off' ? 'once' : 'off';
+};
+
+export const shiftAfterLetter = (state) => state === 'once' ? 'off' : state;
