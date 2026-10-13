@@ -30,7 +30,7 @@ src/panel.svelte.js           — shared `panel.open` (null | 'alphabet' | 'hist
 src/utils/history.js          — history per script (localStorage `transliterationHistory:<script>`, max 20): addEntry() merges continued typing into the newest entry and moves repeats to the top
 src/components/HistoryList.svelte            — history entries (restore on click, ✕ removes one, "clear history" needs a second click)
 src/utils/shareLink.js        — buildShareUrl()/parseShareParams(): share links `/<script>?text=…[&from=<script>]`
-src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile toggles capitals), opened by the keyboard icon only in script → Latin direction. Alphabet and history share one panel slot next to the input: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
+src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile — tap for one capital, double tap or hold for caps lock; `shiftAfterTap`/`shiftAfterLetter` in alphabet.js), opened by the keyboard icon only in script → Latin direction. Alphabet and history share one panel slot next to the input: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
 src/components/TopSection.svelte             — heading + Navbar
 src/router.svelte.js                         — reactive router state + navigate()
 src/components/Navbar.svelte                 — links to the three routes

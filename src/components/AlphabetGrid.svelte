@@ -1,14 +1,46 @@
 <script>
-  import { getAlphabet } from '../utils/alphabet.js';
+  import { getAlphabet, shiftAfterTap, shiftAfterLetter } from '../utils/alphabet.js';
 
   // clicking a letter inserts its glyph via onpick
   let { scriptType, scriptLang, onpick } = $props();
 
   const groups = $derived(getAlphabet(scriptType));
-  // scripts with capitals (Vithkuqi) get a shift key that toggles between the groups
+  // scripts with capitals (Vithkuqi) get a shift key: a tap gives one capital, a double
+  // tap or long press locks it (see shiftAfterTap)
   const capitals = $derived(groups.find(group => group.name === 'capitals'));
-  let shift = $state(false);
-  const letters = $derived(shift && capitals ? capitals.letters : groups[0].letters);
+  let shift = $state('off');   // 'off' | 'once' | 'lock'
+  const letters = $derived(shift !== 'off' && capitals ? capitals.letters : groups[0].letters);
+
+  const DOUBLE_TAP_MS = 400;
+  const LONG_PRESS_MS = 500;
+  let lastTap = 0;
+  let longPressTimer;
+  let longPressed = false;
+
+  const tapShift = () => {
+    // the click that ends a long press has already locked it
+    if (longPressed) {
+      longPressed = false;
+      return;
+    }
+    const now = Date.now();
+    shift = shiftAfterTap(shift, now - lastTap < DOUBLE_TAP_MS);
+    lastTap = now;
+  };
+  const startLongPress = () => {
+    longPressed = false;
+    clearTimeout(longPressTimer);
+    longPressTimer = setTimeout(() => {
+      longPressed = true;
+      shift = 'lock';
+    }, LONG_PRESS_MS);
+  };
+  const cancelLongPress = () => clearTimeout(longPressTimer);
+
+  const pick = (letter) => {
+    onpick(letter.glyph);
+    shift = shiftAfterLetter(shift);
+  };
 </script>
 
 <div class="grid">
@@ -18,7 +50,7 @@
       type="button"
       title={`insert ${letter.latin}`}
       aria-label={letter.latin}
-      onclick={() => onpick(letter.glyph)}
+      onclick={() => pick(letter)}
     >
       <span class="glyph" lang={scriptLang} aria-hidden="true">{letter.glyph}</span>
       <span class="latin" aria-hidden="true">{letter.latin}</span>
@@ -27,15 +59,21 @@
   {#if capitals}
     <button
       class="tile shift"
-      class:active={shift}
+      class:active={shift !== 'off'}
+      class:locked={shift === 'lock'}
       type="button"
-      title={shift ? 'lowercase' : 'capitals'}
-      aria-label="capitals"
-      aria-pressed={shift}
-      onclick={() => shift = !shift}
+      title="tap: one capital · double tap or hold: caps lock"
+      aria-label={shift === 'lock' ? 'caps lock' : 'capitals'}
+      aria-pressed={shift !== 'off'}
+      onclick={tapShift}
+      onpointerdown={startLongPress}
+      onpointerup={cancelLongPress}
+      onpointerleave={cancelLongPress}
+      onpointercancel={cancelLongPress}
+      oncontextmenu={(event) => event.preventDefault()}
     >
-      <span class="glyph" aria-hidden="true">⇧</span>
-      <span class="latin" aria-hidden="true">{shift ? 'abc' : 'ABC'}</span>
+      <span class="glyph" aria-hidden="true">{shift === 'lock' ? '⇪' : '⇧'}</span>
+      <span class="latin" aria-hidden="true">{shift === 'off' ? 'ABC' : shift === 'once' ? 'Abc' : 'ABC lock'}</span>
     </button>
   {/if}
 </div>
@@ -60,6 +98,8 @@
     border-radius: 6px;
     cursor: pointer;
     transition: border-color 0.15s ease, color 0.15s ease;
+    /* no blue tap flash on mobile; hover/focus styles give the feedback */
+    -webkit-tap-highlight-color: transparent;
   }
 
   .tile:hover {
@@ -72,9 +112,27 @@
     line-height: 1.2;
   }
 
+  /* no double-tap zoom or long-press callout on touch screens */
+  .shift {
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
   .shift.active {
     border-color: var(--color-accent);
     color: var(--color-accent);
+  }
+
+  /* caps lock: filled, after .active so it wins */
+  .shift.locked {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .shift.locked .latin {
+    color: var(--color-bg);
   }
 
   .latin {

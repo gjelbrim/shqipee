@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest';
-import {getAlphabet} from './alphabet.js';
+import {getAlphabet, shiftAfterTap, shiftAfterLetter} from './alphabet.js';
 import {transliterate} from './transliterate.js';
 import {ScriptType} from './scriptTypes.js';
 
@@ -30,5 +30,29 @@ describe('alphabet table', () => {
         expect(getAlphabet(ScriptType.VITHKUQI).map(group => group.name)).toEqual(['letters', 'capitals']);
         expect(getAlphabet(ScriptType.ELBASAN).map(group => group.name)).toEqual(['letters']);
         expect(getAlphabet(ScriptType.TODHRI).map(group => group.name)).toEqual(['letters']);
+    });
+});
+
+describe('shift key', () => {
+    it('a tap turns it on for one letter, the letter turns it off again', () => {
+        const state = shiftAfterTap('off', false);
+        expect(state).toBe('once');
+        expect(shiftAfterLetter(state)).toBe('off');
+    });
+
+    it('a double tap locks it, and letters keep it locked', () => {
+        const state = shiftAfterTap(shiftAfterTap('off', false), true);
+        expect(state).toBe('lock');
+        expect(shiftAfterLetter(state)).toBe('lock');
+    });
+
+    it('a tap turns it off from either state', () => {
+        expect(shiftAfterTap('once', false)).toBe('off');
+        expect(shiftAfterTap('lock', false)).toBe('off');
+        expect(shiftAfterTap('lock', true)).toBe('off');
+    });
+
+    it('leaves letters alone while off', () => {
+        expect(shiftAfterLetter('off')).toBe('off');
     });
 });
