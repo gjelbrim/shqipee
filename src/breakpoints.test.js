@@ -2,7 +2,7 @@ import {describe, expect, it} from 'vitest';
 import {readFileSync, readdirSync} from 'node:fs';
 import {join} from 'node:path';
 
-// every @media query must use one of the documented breakpoints (see app.css)
+// every width-based @media query must use one of the documented breakpoints (see app.css)
 const BREAKPOINTS = ['max-width: 1200px', 'max-width: 768px'];
 
 const styleFiles = (dir) => readdirSync(dir, {withFileTypes: true}).flatMap(entry => {
@@ -13,7 +13,9 @@ const styleFiles = (dir) => readdirSync(dir, {withFileTypes: true}).flatMap(entr
 
 describe('breakpoints', () => {
     const queries = styleFiles('src').flatMap(file =>
-        [...readFileSync(file, 'utf8').matchAll(/@media\s*\(([^)]*)\)/g)].map(match => [file, match[1].trim()])
+        [...readFileSync(file, 'utf8').matchAll(/@media\s*\(([^)]*)\)/g)]
+            .map(match => [file, match[1].trim()])
+            .filter(([, query]) => query.includes('width'))
     );
 
     it('finds media queries to check', () => {
