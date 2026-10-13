@@ -50,18 +50,17 @@
   --font-size-h2: 64px;
 }
 
-/* dark palette, follows the system setting; contrast on --color-bg is
-   text 13.8, ink 11.6, muted 7.6, accent 5.0 (WCAG AA needs 4.5) */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --color-bg: #1b1f1a;
-    --color-text: #e6ebe1;
-    --color-ink: #d3d9cd;
-    --color-text-muted: #a9b1a2;
-    --color-accent: #f2555a;
-    --icon-filter: invert(90%);  /* black -> #e6e6e6, close to --color-text */
-  }
+/* dark palette; the inline script in index.html sets data-theme from the saved
+   choice or the system setting. Contrast on --color-bg: text 13.8, ink 11.6,
+   muted 7.6, accent 5.0 (WCAG AA needs 4.5) */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #1b1f1a;
+  --color-text: #e6ebe1;
+  --color-ink: #d3d9cd;
+  --color-text-muted: #a9b1a2;
+  --color-accent: #f2555a;
+  --icon-filter: invert(90%);  /* black -> #e6e6e6, close to --color-text */
 }
 
 @media (max-width: 768px) {
