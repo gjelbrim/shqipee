@@ -8,12 +8,13 @@
   ];
 </script>
 
-<nav class="navbar">
+<nav class="navbar" aria-label="Scripts">
   {#each routes as route}
     <a
       href={route.path}
       onclick={(e) => { e.preventDefault(); navigate(route.path); }}
       class:active={router.path === route.path}
+      aria-current={router.path === route.path ? 'page' : undefined}
     >
       {route.name}
     </a>

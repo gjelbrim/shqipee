@@ -21,7 +21,7 @@
       <!-- nav -->
       <Navbar />
     </div>
-    <div class="logoIcon">
+    <div class="logoIcon" aria-hidden="true">
       <p>𐔋</p>
     </div>
   </div>

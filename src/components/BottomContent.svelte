@@ -41,18 +41,18 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
       <div class="credits-section">
         <div class="credit-block">
           <span class="label">developed by</span>
-          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj</a>
+          <a href="https://github.com/gjelbrim" target="_blank" rel="noopener noreferrer" class="credit-link">gjelbrim haskaj<span class="visually-hidden"> (opens in a new tab)</span></a>
         </div>
         <div class="credit-block">
           <span class="label">designed by</span>
-          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl</a>
+          <a href="https://github.com/Litorian113" target="_blank" rel="noopener noreferrer" class="credit-link">franz anhäupl<span class="visually-hidden"> (opens in a new tab)</span></a>
         </div>
       </div>
 
       <div class="wiki-section">
         <span class="label">learn more</span>
         <a href={wikiLink} target="_blank" rel="noopener noreferrer" class="wiki-link">
-          read about {scriptName} on wikipedia <span class="arrow">↗</span>
+          read about {scriptName} on wikipedia <span class="arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
     </div>
@@ -141,6 +141,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
 
   .warning-label {
     color: var(--color-accent);
+    opacity: 1;  /* .label's 0.6 would drop the red below 4.5:1 contrast */
     font-weight: 700;
     margin-bottom: 5px;
   }
