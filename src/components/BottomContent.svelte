@@ -22,16 +22,20 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
 <div class="bottom-content">
     <div class="text-left">
       <div class="text-left-item">
-        <div class="disclaimer-wrapper">
-          <span class="label warning-label">important note</span>
-          <p id="disclaimer">
+        <div class="about-wrapper">
+          <span class="label accent-label">about {scriptName}</span>
+          <p class="about">
               {#if scriptType === ScriptType.ELBASAN}
-                  elbasanscript is being misused on social media by far-right extremists. the developer of
-                  this page explicitly <span class="highlight">distances himself</span> from such ideologies and condemns them.
+                  the elbasan script was created in the <span class="highlight">18th century</span> in central albania. its best-known
+                  source is the <span class="highlight">elbasan gospel manuscript</span>. it has been part of
+                  <span class="highlight">unicode since 2014</span>.
               {:else if scriptType === ScriptType.VITHKUQI}
-                  language and pronunciation <span class="highlight">change over time</span>. therefore, vithkuqi <span class="highlight">cannot be transliterated 1:1</span> into latin and vice versa. support outside of this site is <span class="highlight">very limited</span>.
+                  the vithkuqi script was devised around <span class="highlight">1844</span> by <span class="highlight">naum veqilharxhi</span>
+                  and named after his home village vithkuq. unlike elbasan and todhri, it has <span class="highlight">capital letters</span>.
+                  it has been part of unicode since 2021.
               {:else if scriptType === ScriptType.TODHRI}
-                  todhri alphabet has been added to the <span class="highlight">unicode standard in 2024</span>. so far <span class="highlight">very few fonts</span> support it, so it will <span class="highlight">often not display</span> outside of this site.
+                  the todhri script is named after <span class="highlight">dhaskal todhri</span>, an 18th-century teacher from elbasan.
+                  it was added to <span class="highlight">unicode in 2024</span>, so <span class="highlight">very few fonts</span> support it yet.
               {/if}
           </p>
         </div>
@@ -118,7 +122,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     margin-left: 5px;
   }
 
-  #disclaimer {
+  .about {
     line-height: 1.3em;
     font-size: 20px;
     margin-top: 5px;
@@ -126,7 +130,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     font-weight: 500;
   }
 
-  .disclaimer-wrapper {
+  .about-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -135,12 +139,12 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     transition: all 0.3s ease;
   }
 
-  .disclaimer-wrapper:hover {
+  .about-wrapper:hover {
     border-left-width: 18px;
     padding-left: 16px;
   }
 
-  .warning-label {
+  .accent-label {
     color: var(--color-accent);
     opacity: 1;  /* .label's 0.6 would drop the red below 4.5:1 contrast */
     font-weight: 700;
@@ -208,15 +212,15 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   }
 
   @media (max-width: 768px) {
-    #disclaimer {
+    .about {
       font-size: 16px;
     }
 
-    .disclaimer-wrapper {
+    .about-wrapper {
       padding-left: 15px;
     }
 
-    .disclaimer-wrapper:hover {
+    .about-wrapper:hover {
       border-left-width: 10px;
       padding-left: 12px;
     }
