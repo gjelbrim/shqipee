@@ -35,6 +35,7 @@
   --color-ink: #1d1d1b;        /* lines, links */
   --color-text-muted: #333;    /* inactive nav links */
   --color-accent: #c3181e;
+  --icon-filter: none;         /* the icon SVGs are black */
 
   /* layout */
   --page-padding-x: 80px;
@@ -47,6 +48,20 @@
   --font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
   --font-size-h1: 92px;
   --font-size-h2: 64px;
+}
+
+/* dark palette, follows the system setting; contrast on --color-bg is
+   text 13.8, ink 11.6, muted 7.6, accent 5.0 (WCAG AA needs 4.5) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --color-bg: #1b1f1a;
+    --color-text: #e6ebe1;
+    --color-ink: #d3d9cd;
+    --color-text-muted: #a9b1a2;
+    --color-accent: #f2555a;
+    --icon-filter: invert(90%);  /* black -> #e6e6e6, close to --color-text */
+  }
 }
 
 @media (max-width: 768px) {
