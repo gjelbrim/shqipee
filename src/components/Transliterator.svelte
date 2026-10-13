@@ -14,7 +14,7 @@ let { scriptType } = $props();
 let isLatinToScript = $state(true);
 let inputText = $state("");
 let pasteError = $state(false);
-let copyStatus = $state(null);   // null | 'copied' | 'linked' | 'failed'
+let copyStatus = $state(null);   // null | 'copied' | 'linked' | 'failed' | 'link-failed'
 let announcement = $state("");   // read out by screen readers via the status region
 
 // language tags so screen readers pick an Albanian voice and know the script
@@ -136,7 +136,7 @@ const clearHistory = () => {
 const ANNOUNCEMENTS = {copied: 'copied to clipboard', linked: 'link copied to clipboard'};
 
 const showCopyStatus = (status) => {
-    if (status !== 'failed') commitHistory();
+    if (status === 'copied' || status === 'linked') commitHistory();
     copyStatus = status;
     announcement = ANNOUNCEMENTS[status] ?? '';
     clearTimeout(copyStatusTimer);
@@ -161,7 +161,7 @@ const shareLink = async () => {
         await navigator.clipboard.writeText(url);
         showCopyStatus('linked');
     } catch (e) {
-        showCopyStatus('failed');
+        showCopyStatus('link-failed');
     }
 };
 
@@ -272,6 +272,13 @@ onDestroy(() => {
   onpagehide={() => historyTimer && commitHistory()}
 />
 
+{#snippet errorIcon()}
+  <!-- shown inside an icon button for a moment when its clipboard action failed -->
+  <svg class="error-icon" viewBox="0 0 20 20" aria-hidden="true">
+    <path d="M5 5l10 10M15 5L5 15" />
+  </svg>
+{/snippet}
+
 {#snippet panelContent()}
   {#if panel.open === 'alphabet'}
     <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
@@ -289,7 +296,7 @@ onDestroy(() => {
 
 <div class="switchArea">
     <div class="input-div">
-      <div class="input-container">
+      <div class="input-container" class:flash-error={pasteError}>
         <div class="input-header">
           <h2 id="input-title">{inputTitle}</h2>
           {#if panel.open && !isMobile}
@@ -328,7 +335,13 @@ onDestroy(() => {
                 onclick={() => togglePanel('alphabet')}
               ></button>
             {/if}
-            <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
+            <button
+              class="paste-button"
+              class:failed={pasteError}
+              title={pasteError ? 'Unable to read from clipboard' : 'Paste'}
+              aria-label="Paste from clipboard"
+              onclick={pasteFromClipboard}
+            >{#if pasteError}{@render errorIcon()}{/if}</button>
           </div>
         </div>
         <textarea
@@ -351,7 +364,8 @@ onDestroy(() => {
           </div>
         {/if}
         {#if pasteError}
-          <p class="paste-error" role="alert">Unable to read from clipboard</p>
+          <!-- the paste icon and the line show the error; the text is for screen readers -->
+          <p class="visually-hidden" role="alert">Unable to read from clipboard</p>
         {/if}
       </div>
   
@@ -362,25 +376,31 @@ onDestroy(() => {
   
   
   
-      <div class="output-container" class:flash={copyStatus === 'copied' || copyStatus === 'linked'}>
+      <div
+        class="output-container"
+        class:flash={copyStatus === 'copied' || copyStatus === 'linked'}
+        class:flash-error={copyStatus === 'failed' || copyStatus === 'link-failed'}
+      >
         <div class="input-header">
           <h2 id="output-title">{outputTitle}</h2>
           <div class="header-buttons">
             <button
               class:copied={copyStatus === 'linked'}
+              class:failed={copyStatus === 'link-failed'}
               class="share-button"
-              title="Share link"
+              title={copyStatus === 'link-failed' ? 'Unable to copy the link' : 'Share link'}
               aria-label="Share a link to this text"
               disabled={!inputText}
               onclick={shareLink}
-            ></button>
+            >{#if copyStatus === 'link-failed'}{@render errorIcon()}{/if}</button>
             <button
               class:copied={copyStatus === 'copied'}
+              class:failed={copyStatus === 'failed'}
               class="copy-button"
-              title="Copy"
+              title={copyStatus === 'failed' ? 'Unable to copy to clipboard' : 'Copy'}
               aria-label="Copy text"
               use:copy={{ text: outputText, onCopy: () => showCopyStatus('copied'), onError: () => showCopyStatus('failed') }}
-            ></button>
+            >{#if copyStatus === 'failed'}{@render errorIcon()}{/if}</button>
           </div>
         </div>
         <textarea
@@ -393,8 +413,10 @@ onDestroy(() => {
           value={outputText}
         ></textarea>
         <div class="input-bottom-line"></div>
-        {#if copyStatus === 'failed'}
-          <p class="paste-error" role="alert">Unable to copy to clipboard</p>
+        {#if copyStatus === 'failed' || copyStatus === 'link-failed'}
+          <p class="visually-hidden" role="alert">
+            {copyStatus === 'failed' ? 'Unable to copy to clipboard' : 'Unable to copy the link'}
+          </p>
         {/if}
       </div>
     </div>
@@ -507,10 +529,31 @@ onDestroy(() => {
     opacity: 0.8;
   }
 
-  .paste-error {
-    font-size: 0.75rem;
+  /* a failed clipboard action turns its icon into a red cross for a moment */
+  .paste-button.failed,
+  .copy-button.failed,
+  .share-button.failed {
+    background-image: none;
+    filter: none;
     color: var(--color-accent);
-    margin-top: 4px;
+  }
+
+  .error-icon {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+    stroke-linecap: round;
+  }
+
+  .input-container .input-bottom-line {
+    transition: background-color 0.3s ease;
+  }
+
+  .input-container.flash-error .input-bottom-line,
+  .output-container.flash-error .input-bottom-line {
+    background-color: var(--color-accent);
   }
 
   .styled-input {

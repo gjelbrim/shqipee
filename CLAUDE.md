@@ -71,7 +71,7 @@ Dark mode: `:root[data-theme="dark"]` in `app.css` redefines the color tokens (a
 
 - `.visually-hidden` (global, `app.css`) hides text on screen but keeps it for screen readers, e.g. "(opens in a new tab)" on external links.
 - The textareas are labelled by their `h2` (`aria-labelledby`) and carry BCP 47 language tags (`sq`, `sq-Elba`, `sq-Vith`, `sq-Todr`) that follow the swap direction.
-- `Transliterator.svelte` has one `role="status"` region (`announcement`) for spoken feedback (copy, swap); errors use `role="alert"`.
+- `Transliterator.svelte` has one `role="status"` region (`announcement`) for spoken feedback (copy, swap); errors use a visually hidden `role="alert"`. Visible feedback never shifts the layout: the icon turns into a check mark (success) or a red cross (clipboard error) and the line under the field flashes red.
 - Keep a visible focus state for anything focusable; the textareas show it as a red bottom line.
 
 ### Routing
