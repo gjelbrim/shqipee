@@ -4,7 +4,7 @@
   import ScriptRoute from './routes/ScriptRoute.svelte';
   import NotFound from './routes/notfound.svelte';
   import ThemeToggle from './components/ThemeToggle.svelte';
-  import { alphabet } from './alphabet.svelte.js';
+  import { panel } from './panel.svelte.js';
 
   const scriptRoutes = {
     '/': ScriptType.ELBASAN,
@@ -27,8 +27,8 @@
 <footer></footer>
 
 <!-- fixed to the bottom-right corner of the viewport on every page; hidden while the
-     on-screen alphabet is open so it doesn't cover letters -->
-{#if !alphabet.open}
+     alphabet or history panel is open so it doesn't cover them -->
+{#if !panel.open}
   <div class="theme-float"><ThemeToggle /></div>
 {/if}
 
