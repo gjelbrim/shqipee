@@ -9,9 +9,12 @@ npm run dev       # Start dev server (localhost:5173, SPA routing via historyApi
 npm run build     # Build to ./dist
 npm run preview   # Preview the production build
 npm test          # Run Vitest unit tests once
+npm run check     # Type-check JS and Svelte files (svelte-check, strict)
 ```
 
-Tests live next to the code (`*.test.js`). CI (`.github/workflows/ci.yml`) runs `npm test` and `npm run build` on every PR and push to `main`.
+Tests live next to the code (`*.test.js`). CI (`.github/workflows/ci.yml`) runs `npm run check`, `npm test` and `npm run build` on every PR and push to `main`.
+
+Types: plain JS with JSDoc, checked via `checkJs` + `strict` in `jsconfig.json`. Shared types are `@typedef`s next to their code (`Script` in `scriptTypes.js`, `Mapping` in `transliterate.js`, `HistoryEntry` in `history.js`, `Letter`/`ShiftState` in `alphabet.js`) and are pulled in with `/** @import {…} from '…' */`; component props are typed with `/** @type {{…}} */` above `$props()`. TypeScript 6 includes no `@types/*` by default, so Node types are only referenced in `breakpoints.test.js` (`/// <reference types="node" />`).
 
 ## Architecture
 

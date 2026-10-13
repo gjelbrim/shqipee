@@ -1,11 +1,23 @@
 <script>
   import { transliterate } from '../utils/transliterate.js';
 
-  // entries: [{text, isLatinToScript}], newest first
+  /** @import {Script} from '../utils/scriptTypes.js' */
+  /** @import {HistoryEntry} from '../utils/history.js' */
+  /**
+   * @type {{
+   *   entries: HistoryEntry[],   // newest first
+   *   scriptType: Script,
+   *   scriptLang: string,
+   *   onpick: (index: number) => void,
+   *   onremove: (index: number) => void,
+   *   onclear: () => void
+   * }}
+   */
   let { entries, scriptType, scriptLang, onpick, onremove, onclear } = $props();
 
   // clearing everything takes a second click, so one stray tap doesn't wipe the history
   let confirmClear = $state(false);
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
   let confirmTimer;
   const clearAll = () => {
     if (!confirmClear) {

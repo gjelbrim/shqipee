@@ -22,7 +22,12 @@
      * Typecheck JS in `.svelte` and `.js` files by default.
      * Disable this if you'd like to use dynamic types.
      */
-    "checkJs": true
+    "checkJs": true,
+    /**
+     * Strict checks (TypeScript 6 default, set here for older editors);
+     * run them with `npm run check`.
+     */
+    "strict": true
   },
   /**
    * Use global.d.ts instead of compilerOptions.types

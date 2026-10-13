@@ -3,6 +3,8 @@
   import Transliterator from "../components/Transliterator.svelte";
   import BottomContent from "../components/BottomContent.svelte";
 
+  /** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
+
   let { scriptType } = $props();
 </script>
 

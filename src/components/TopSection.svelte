@@ -1,6 +1,7 @@
 <script>
     import Navbar from "./Navbar.svelte";
     import {ScriptType} from '../utils/scriptTypes.js';
+    /** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
     let { scriptType } = $props();
 </script>
 
