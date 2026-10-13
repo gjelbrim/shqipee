@@ -1,9 +1,16 @@
 <script>
   import { navigate } from '../router.svelte.js';
+
+  // unknown paths get index.html with status 200 (rewrite in vercel.json), so tell search
+  // engines not to index them; without a canonical link, which would contradict noindex
+  $effect(() => {
+    document.head.querySelector('link[rel="canonical"]')?.remove();
+  });
 </script>
 
 <svelte:head>
-  <title>shqip.ee | 404</title>
+  <title>Page not found | shqip.ee</title>
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <main>

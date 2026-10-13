@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>shqip.ee | Albanian Latin ⇄ Elbasan, Vithkuqi & Todhri</title>
-    <meta name="description" content="Transliterate Albanian Latin text into the historical Elbasan, Vithkuqi and Todhri scripts and back." />
+    <title>Albanian Elbasan Alphabet Converter | shqip.ee</title>
+    <meta name="description" content="Convert Albanian text from the Latin alphabet into the historical Elbasan script and back, letter by letter. Free, no sign-up, works offline." />
+    <link rel="canonical" href="https://shqip.ee/" />
     <meta name="theme-color" content="#DBE1D5" />
     <script>
       // set the theme before the first paint so dark mode doesn't flash light
@@ -22,14 +23,43 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="shqip.ee" />
-    <meta property="og:title" content="shqip.ee | Albanian Latin ⇄ Elbasan, Vithkuqi & Todhri" />
-    <meta property="og:description" content="Transliterate Albanian Latin text into the historical Elbasan, Vithkuqi and Todhri scripts and back." />
+    <meta property="og:title" content="Albanian Elbasan Alphabet Converter | shqip.ee" />
+    <meta property="og:description" content="Convert Albanian text from the Latin alphabet into the historical Elbasan script and back, letter by letter. Free, no sign-up, works offline." />
     <meta property="og:url" content="https://shqip.ee/" />
     <meta property="og:image" content="https://shqip.ee/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="shqip.ee logo with the Elbasan letter gje" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- structured data for search engines (a data block, not run, so not affected by the CSP) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "shqip.ee",
+          "url": "https://shqip.ee/"
+        },
+        {
+          "@type": "WebApplication",
+          "name": "shqip.ee",
+          "url": "https://shqip.ee/",
+          "description": "Converts Albanian text between the Latin alphabet and the historical Elbasan, Vithkuqi and Todhri scripts, in both directions.",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="app"></div>
