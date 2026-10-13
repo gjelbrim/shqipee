@@ -1,0 +1,23 @@
+# shqip.ee
+
+> Free web app that transliterates Albanian text written in the Latin alphabet into the historical Albanian scripts Elbasan, Vithkuqi and Todhri, and back. Runs entirely in the browser; no account, no server-side processing, works offline after the first visit.
+
+Each script has its own page. Type or paste Latin text to get the script, or swap the direction to turn text in the script back into Latin letters. Digraphs such as "sh", "gj" or "xh" become one letter where the script has one. Elbasan and Todhri have no capitals; Vithkuqi does. The output uses the Unicode blocks Elbasan (U+10500–U+1052F), Vithkuqi (U+10570–U+105BF) and Todhri (U+105C0–U+105FF).
+
+A text can be shared as a link: `https://shqip.ee/<script>?text=<text>` (for example https://shqip.ee/todhri?text=shtëpi); add `&from=<script>` when the text is in the script and should be turned into Latin.
+
+## Pages
+
+- [Elbasan](https://shqip.ee/): Latin ⇄ Elbasan script (18th century, Elbasan region)
+- [Vithkuqi](https://shqip.ee/vithkuqi): Latin ⇄ Vithkuqi script (19th century, Naum Veqilharxhi)
+- [Todhri](https://shqip.ee/todhri): Latin ⇄ Todhri script (18th century, attributed to Dhaskal Todhri)
+
+## Background
+
+- [Elbasan alphabet](https://en.wikipedia.org/wiki/Elbasan_alphabet)
+- [Vithkuqi alphabet](https://en.wikipedia.org/wiki/Vithkuqi_alphabet)
+- [Todhri alphabet](https://en.wikipedia.org/wiki/Todhri_alphabet)
+
+## Optional
+
+- [Source code](https://github.com/gjelbrim/shqipee): Svelte app, GPL-3.0 licensed
