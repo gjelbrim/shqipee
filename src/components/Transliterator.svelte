@@ -143,7 +143,7 @@ onDestroy(() => {
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   .input-header {
@@ -170,7 +170,7 @@ onDestroy(() => {
 
   .paste-error {
     font-size: 0.75rem;
-    color: #c3181e;
+    color: var(--color-accent);
     margin-top: 4px;
   }
 
@@ -186,7 +186,7 @@ onDestroy(() => {
   }
 
   .styled-input::placeholder {
-    color: rgb(0, 0, 0);
+    color: var(--color-text);
     opacity: 0.7;
   }
 
@@ -196,7 +196,7 @@ onDestroy(() => {
     left: 0;
     width: 100%;
     height: 3px;
-    background-color: #1d1d1b;
+    background-color: var(--color-ink);
   }
 
   .swap-container {
@@ -204,8 +204,8 @@ onDestroy(() => {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    width: 200px;
-    min-width: 200px;
+    width: var(--column-gap);
+    min-width: var(--column-gap);
   }
 
   .swap-button {
@@ -224,10 +224,13 @@ onDestroy(() => {
   }
 
   .output-container {
+    /* opaque so Chrome keeps subpixel text antialiasing in the output, which
+       gets its own compositing layer once it has content */
+    background: var(--color-bg);
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   .copy-button {

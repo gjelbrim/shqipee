@@ -51,6 +51,10 @@ pyftsubset Roboto-VariableFont_wdth,wght.ttf --unicodes="U+0000-024F,U+0300-036F
 fonttools ttLib.woff2 compress -o NotoSansElbasan-Regular.woff2 NotoSansElbasan-Regular.ttf   # same for Vithkuqi, Todhri
 ```
 
+### Styling
+
+Global design tokens (colors, page padding, column widths, accent bar width, heading sizes) are CSS custom properties on `:root` in `src/app.css`; components use `var(--…)` instead of literal values. Mobile values are overridden in one `@media (max-width: 768px) { :root { … } }` block. Media queries can't use custom properties, so breakpoints are still literal.
+
 ### Routing
 
 `src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.

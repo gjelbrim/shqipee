@@ -37,7 +37,7 @@
   .headingTop {
     display: flex;
     flex: 2;
-    border-left: 14px solid #c3181e;
+    border-left: var(--accent-bar-width) solid var(--color-accent);
     padding-left: 10px;
   }
 
@@ -49,7 +49,7 @@
     font-size: 128px;
     display: flex;
     flex: 1;
-    color: #c3181e;
+    color: var(--color-accent);
     margin: 0px;
     justify-content: flex-end;
   }
@@ -61,7 +61,6 @@
     }
 
     .headingTop {
-      border-left: 7px solid #c3181e;
       padding-left: 5px;
       text-align: center;
     }

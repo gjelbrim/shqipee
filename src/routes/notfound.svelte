@@ -34,14 +34,14 @@
 
   a {
     font-size: 1rem;
-    color: #1d1d1b;
+    color: var(--color-ink);
     text-decoration: none;
-    border-bottom: 2px solid #1d1d1b;
+    border-bottom: 2px solid var(--color-ink);
     padding-bottom: 2px;
   }
 
   a:hover {
-    color: #c3181e;
-    border-bottom-color: #c3181e;
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
   }
 </style>

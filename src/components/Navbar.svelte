@@ -27,18 +27,17 @@
     align-items: center;
     gap: 30px;
     margin-bottom: 20px;
-    background-color: #DBE1D5;
   }
 
   .navbar a {
     text-decoration: none;
     font-size: 1.2rem;
-    color: #333;
+    color: var(--color-text-muted);
     position: relative;
   }
 
   .navbar a.active {
-    color: #C3181E;
+    color: var(--color-accent);
   }
 
   .navbar a.active::after {
@@ -48,6 +47,6 @@
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #C3181E;
+    background-color: var(--color-accent);
   }
 </style>
