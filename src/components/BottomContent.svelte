@@ -1,5 +1,6 @@
 <script>
 import {ScriptType} from '../utils/scriptTypes.js';
+/** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
 let { scriptType } = $props();
 
 const SCRIPT_INFO = {

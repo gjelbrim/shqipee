@@ -6,6 +6,7 @@
   import ThemeToggle from './components/ThemeToggle.svelte';
   import { panel } from './panel.svelte.js';
 
+  /** @type {Record<string, import('./utils/scriptTypes.js').Script | undefined>} */
   const scriptRoutes = {
     '/': ScriptType.ELBASAN,
     '/vithkuqi': ScriptType.VITHKUQI,

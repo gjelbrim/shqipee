@@ -11,7 +11,7 @@ inject()
 injectSpeedInsights()
 
 const app = mount(App, {
-  target: document.getElementById('app'),
+  target: /** @type {HTMLElement} */ (document.getElementById('app')),
 })
 
 export default app

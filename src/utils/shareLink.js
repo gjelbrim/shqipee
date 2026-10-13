@@ -1,6 +1,15 @@
 // share links: /<script>?text=<input>[&from=<script>]; "from" is only set for
 // script -> Latin, so plain Latin links stay short and readable
 
+/** @import {Script} from './scriptTypes.js' */
+
+/**
+ * @param {string} pageUrl
+ * @param {Script} scriptType
+ * @param {string} text
+ * @param {boolean} isLatinToScript
+ * @returns {string}
+ */
 export const buildShareUrl = (pageUrl, scriptType, text, isLatinToScript) => {
     const url = new URL(pageUrl);
     url.search = '';
@@ -11,6 +20,11 @@ export const buildShareUrl = (pageUrl, scriptType, text, isLatinToScript) => {
 };
 
 // returns {text, isLatinToScript} for a share link on this script's page, otherwise null
+/**
+ * @param {string} search
+ * @param {Script} scriptType
+ * @returns {{text: string, isLatinToScript: boolean} | null}
+ */
 export const parseShareParams = (search, scriptType) => {
     const params = new URLSearchParams(search);
     const text = params.get('text');

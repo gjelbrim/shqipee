@@ -11,6 +11,7 @@ const readSaved = () => {
     }
 };
 
+/** @param {boolean} dark */
 const apply = (dark) => {
     document.documentElement.dataset.theme = dark ? 'dark' : 'light';
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? THEME_COLORS.dark : THEME_COLORS.light);

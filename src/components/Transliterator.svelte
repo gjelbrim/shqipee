@@ -8,16 +8,23 @@ import { buildShareUrl, parseShareParams } from '../utils/shareLink.js';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 
+/** @import {Script} from '../utils/scriptTypes.js' */
+/** @import {HistoryEntry} from '../utils/history.js' */
+
+/** @type {{scriptType: Script}} */
 let { scriptType } = $props();
 
 // direction and input; titles and output follow from them
 let isLatinToScript = $state(true);
 let inputText = $state("");
 let pasteError = $state(false);
-let copyStatus = $state(null);   // null | 'copied' | 'linked' | 'failed' | 'link-failed'
+/** @typedef {'copied' | 'linked' | 'failed' | 'link-failed'} CopyStatus */
+/** @type {CopyStatus | null} */
+let copyStatus = $state(null);
 let announcement = $state("");   // read out by screen readers via the status region
 
 // language tags so screen readers pick an Albanian voice and know the script
+/** @type {Record<'latin' | Script, string>} */
 const LANGUAGE_TAGS = {latin: 'sq', elbasan: 'sq-Elba', vithkuqi: 'sq-Vith', todhri: 'sq-Todr'};
 
 const inputTitle = $derived(isLatinToScript ? "latin" : scriptType);
@@ -28,20 +35,27 @@ const scriptLang = $derived(LANGUAGE_TAGS[scriptType]);
 // panels for the input (panel.open): the on-screen alphabet, offered while typing in
 // the script (script -> Latin), and the history. A popover above the input on wider
 // screens, an inline panel below it on mobile
-let keyboardButton;
+/** @type {HTMLButtonElement | undefined} */
+let keyboardButton = $state();
+/** @type {HTMLButtonElement | undefined} */
 let historyButton;
+/** @type {HTMLElement | undefined} */
 let headerButtonsEl;
+/** @type {HTMLTextAreaElement | undefined} */
 let inputEl;
+/** @type {HTMLElement | undefined} */
 let popoverEl = $state();
 let popoverMaxHeight = $state(0);
 let popoverRight = $state(0);
 
 const PANEL_LABELS = {alphabet: 'alphabet', history: 'history'};
+/** @param {'alphabet' | 'history'} name */
 const togglePanel = (name) => panel.open = panel.open === name ? null : name;
 
 // same width as the 768px breakpoint in app.css
 const mobileQuery = matchMedia('(max-width: 768px)');
 let isMobile = $state(mobileQuery.matches);
+/** @param {MediaQueryListEvent} event */
 const updateIsMobile = (event) => isMobile = event.matches;
 
 // the popover grows upwards from the top of the input over the heading; give it the
@@ -49,7 +63,8 @@ const updateIsMobile = (event) => isMobile = event.matches;
 const MIN_POPOVER_HEIGHT = 320;
 const fitPopover = () => {
     if (!inputEl) return;
-    const spaceAbove = () => inputEl.getBoundingClientRect().top - 16;
+    const input = inputEl;
+    const spaceAbove = () => input.getBoundingClientRect().top - 16;
     if (spaceAbove() < MIN_POPOVER_HEIGHT) window.scrollBy(0, spaceAbove() - MIN_POPOVER_HEIGHT);
     popoverMaxHeight = Math.max(160, spaceAbove());
     // leave the icons next to the heading uncovered
@@ -62,6 +77,10 @@ $effect(() => {
 const outputLang = $derived(LANGUAGE_TAGS[outputTitle]);
 
 // persist state to localStorage, ignoring errors (quota exceeded, private mode, etc.)
+/**
+ * @param {string} input
+ * @param {boolean} isLatin
+ */
 const saveToStorage = (input, isLatin) => {
     try {
         localStorage.setItem(`transliterationInput:${scriptType}`, input);
@@ -84,23 +103,28 @@ const swapDirection = () => {
 };
 
 // debounce timer for localStorage writes
+/** @type {ReturnType<typeof setTimeout> | undefined} */
 let saveDebounceTimer;
 
 // timer for clearing paste error message
+/** @type {ReturnType<typeof setTimeout> | undefined} */
 let pasteErrorTimer;
 
 // timer for clearing the copy confirmation
+/** @type {ReturnType<typeof setTimeout> | undefined} */
 let copyStatusTimer;
 
 // history: the current input is added after a typing pause and when it's copied,
 // shared, swapped or left (see addEntry for how continued typing is merged)
 const HISTORY_PAUSE = 2000;
+/** @type {HistoryEntry[]} */
 let historyEntries = $state([]);
-let historyTimer = null;
+/** @type {ReturnType<typeof setTimeout> | undefined} */
+let historyTimer;
 
 const commitHistory = () => {
     clearTimeout(historyTimer);
-    historyTimer = null;
+    historyTimer = undefined;
     const next = addEntry(historyEntries, inputText, isLatinToScript);
     if (next === historyEntries) return;
     historyEntries = next;
@@ -111,10 +135,11 @@ const scheduleHistory = () => {
     historyTimer = setTimeout(commitHistory, HISTORY_PAUSE);
 };
 
+/** @param {number} index */
 const restoreEntry = (index) => {
     const entry = historyEntries[index];
     clearTimeout(historyTimer);
-    historyTimer = null;
+    historyTimer = undefined;
     isLatinToScript = entry.isLatinToScript;
     inputText = entry.text;
     caret = null;
@@ -122,6 +147,7 @@ const restoreEntry = (index) => {
     panel.open = null;
     announcement = `restored ${entry.text}`;
 };
+/** @param {number} index */
 const removeHistoryEntry = (index) => {
     historyEntries = removeEntry(historyEntries, index);
     saveHistory(scriptType, historyEntries);
@@ -133,8 +159,10 @@ const clearHistory = () => {
     announcement = 'history cleared';
 };
 
+/** @type {Partial<Record<CopyStatus, string>>} */
 const ANNOUNCEMENTS = {copied: 'copied to clipboard', linked: 'link copied to clipboard'};
 
+/** @param {CopyStatus} status */
 const showCopyStatus = (status) => {
     if (status === 'copied' || status === 'linked') commitHistory();
     copyStatus = status;
@@ -167,13 +195,16 @@ const shareLink = async () => {
 
 // caret/selection in the input field, tracked here because the browser resets the
 // selection of an unfocused textarea when its value is set; null means "at the end"
+/** @type {{start: number, end: number} | null} */
 let caret = null;
+/** @param {Event & {currentTarget: HTMLTextAreaElement}} event */
 const rememberCaret = (event) => {
-    caret = {start: event.target.selectionStart, end: event.target.selectionEnd};
+    caret = {start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd};
 };
 
 // insert text (from the alphabet table) at the caret of the input field without
 // focusing it, so the on-screen keyboard of a phone stays closed
+/** @param {string} text */
 const insertAtCursor = (text) => {
     const start = Math.min(caret?.start ?? inputText.length, inputText.length);
     const end = Math.min(caret?.end ?? start, inputText.length);
@@ -185,8 +216,9 @@ const insertAtCursor = (text) => {
 };
 
 // input handler: bind:value updates the text; debounce the localStorage write
+/** @param {Event & {currentTarget: HTMLTextAreaElement}} event */
 const handleInput = (event) => {
-    const input = event.target.value;
+    const input = event.currentTarget.value;
     clearTimeout(saveDebounceTimer);
     saveDebounceTimer = setTimeout(() => saveToStorage(input, isLatinToScript), 300);
     scheduleHistory();
@@ -209,13 +241,16 @@ const pasteFromClipboard = async () => {
 
 // close the popover on Escape or a click outside it (the inline panel on mobile is
 // part of the page and stays open until toggled)
+/** @param {MouseEvent} event */
 const closeOnOutside = (event) => {
     if (!panel.open || isMobile) return;
+    const target = /** @type {Node} */ (event.target);
     // clicks that removed their own element (e.g. deleting a history entry) count as inside
-    if (!event.target.isConnected) return;
-    const inside = [popoverEl, keyboardButton, historyButton].some(el => el?.contains(event.target));
+    if (!target.isConnected) return;
+    const inside = [popoverEl, keyboardButton, historyButton].some(el => el?.contains(target));
     if (!inside) panel.open = null;
 };
+/** @param {KeyboardEvent} event */
 const closeOnEscape = (event) => {
     if (event.key !== 'Escape' || !panel.open) return;
     const button = panel.open === 'history' ? historyButton : keyboardButton;

@@ -1,6 +1,9 @@
 import {describe, expect, it} from 'vitest';
 import {addEntry, removeEntry, MAX_HISTORY} from './history.js';
 
+/** @import {HistoryEntry} from './history.js' */
+
+/** @param {HistoryEntry[]} entries */
 const texts = (entries) => entries.map(entry => entry.text);
 
 describe('history', () => {
@@ -38,6 +41,7 @@ describe('history', () => {
     });
 
     it(`keeps at most ${MAX_HISTORY} entries`, () => {
+        /** @type {HistoryEntry[]} */
         let entries = [];
         for (let i = 0; i < MAX_HISTORY + 5; i++) entries = addEntry(entries, `word ${String.fromCharCode(97 + i)}`, true);
         expect(entries).toHaveLength(MAX_HISTORY);

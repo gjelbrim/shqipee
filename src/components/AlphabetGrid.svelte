@@ -2,18 +2,23 @@
   import { getAlphabet, shiftAfterTap, shiftAfterLetter } from '../utils/alphabet.js';
 
   // clicking a letter inserts its glyph via onpick
+  /** @import {Script} from '../utils/scriptTypes.js' */
+  /** @import {Letter, ShiftState} from '../utils/alphabet.js' */
+  /** @type {{scriptType: Script, scriptLang: string, onpick: (glyph: string) => void}} */
   let { scriptType, scriptLang, onpick } = $props();
 
   const groups = $derived(getAlphabet(scriptType));
   // scripts with capitals (Vithkuqi) get a shift key: a tap gives one capital, a double
   // tap or long press locks it (see shiftAfterTap)
   const capitals = $derived(groups.find(group => group.name === 'capitals'));
-  let shift = $state('off');   // 'off' | 'once' | 'lock'
+  /** @type {ShiftState} */
+  let shift = $state('off');
   const letters = $derived(shift !== 'off' && capitals ? capitals.letters : groups[0].letters);
 
   const DOUBLE_TAP_MS = 400;
   const LONG_PRESS_MS = 500;
   let lastTap = 0;
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
   let longPressTimer;
   let longPressed = false;
 
@@ -37,6 +42,7 @@
   };
   const cancelLongPress = () => clearTimeout(longPressTimer);
 
+  /** @param {Letter} letter */
   const pick = (letter) => {
     onpick(letter.glyph);
     shift = shiftAfterLetter(shift);
