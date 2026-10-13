@@ -1,6 +1,7 @@
 <script>
 import {copy} from 'svelte-copy'
 import AlphabetGrid from './AlphabetGrid.svelte';
+import { alphabet } from '../alphabet.svelte.js';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 
@@ -23,7 +24,6 @@ const inputLang = $derived(LANGUAGE_TAGS[inputTitle]);
 const scriptLang = $derived(LANGUAGE_TAGS[scriptType]);
 // on-screen alphabet, offered while typing in the script (script -> Latin): a popover
 // above the input on wider screens, an inline panel below it on mobile
-let alphabetOpen = $state(false);
 let keyboardButton;
 let inputEl;
 let popoverEl = $state();
@@ -63,7 +63,7 @@ const saveToStorage = (input, isLatin) => {
 const swapDirection = () => {
     const previousOutput = outputText;
     isLatinToScript = !isLatinToScript;
-    alphabetOpen = false;
+    alphabet.open = false;
     inputText = previousOutput;
     caret = null;
     saveToStorage(inputText, isLatinToScript);
@@ -128,12 +128,12 @@ const pasteFromClipboard = async () => {
 // close the popover on Escape or a click outside it (the inline panel on mobile is
 // part of the page and stays open until toggled)
 const closeOnOutside = (event) => {
-    if (!alphabetOpen || isMobile) return;
-    if (!popoverEl?.contains(event.target) && !keyboardButton?.contains(event.target)) alphabetOpen = false;
+    if (!alphabet.open || isMobile) return;
+    if (!popoverEl?.contains(event.target) && !keyboardButton?.contains(event.target)) alphabet.open = false;
 };
 const closeOnEscape = (event) => {
-    if (event.key !== 'Escape' || !alphabetOpen) return;
-    alphabetOpen = false;
+    if (event.key !== 'Escape' || !alphabet.open) return;
+    alphabet.open = false;
     keyboardButton?.focus();
 };
 
@@ -156,6 +156,7 @@ onMount(() => {
 });
 
 onDestroy(() => {
+    alphabet.open = false;
     mobileQuery.removeEventListener('change', updateIsMobile);
     clearTimeout(pasteErrorTimer);
     clearTimeout(copyStatusTimer);
@@ -170,7 +171,7 @@ onDestroy(() => {
       <div class="input-container">
         <div class="input-header">
           <h2 id="input-title">{inputTitle}</h2>
-          {#if alphabetOpen && !isMobile}
+          {#if alphabet.open && !isMobile}
             <div
               id="alphabet-panel"
               class="popover"
@@ -186,13 +187,13 @@ onDestroy(() => {
             {#if !isLatinToScript}
               <button
                 class="keyboard-button"
-                class:open={alphabetOpen}
+                class:open={alphabet.open}
                 title="Alphabet"
                 aria-label="Show {scriptType} alphabet"
-                aria-expanded={alphabetOpen}
+                aria-expanded={alphabet.open}
                 aria-controls="alphabet-panel"
                 bind:this={keyboardButton}
-                onclick={() => alphabetOpen = !alphabetOpen}
+                onclick={() => alphabet.open = !alphabet.open}
               ></button>
             {/if}
             <button class="paste-button" title="Paste" aria-label="Paste from clipboard" onclick={pasteFromClipboard}></button>
@@ -212,7 +213,7 @@ onDestroy(() => {
           bind:this={inputEl}
         ></textarea>
         <div class="input-bottom-line"></div>
-        {#if alphabetOpen && isMobile}
+        {#if alphabet.open && isMobile}
           <div id="alphabet-panel" class="alphabet-inline" role="group" aria-label="{scriptType} alphabet">
             <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
           </div>

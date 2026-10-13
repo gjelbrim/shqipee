@@ -26,7 +26,8 @@ src/utils/transliterate.js    — pure transliterate(text, scriptType, isLatinTo
 src/routes/ScriptRoute.svelte                — page for one script (title, TopSection, Transliterator, BottomContent); App.svelte maps paths to script types
 src/components/Transliterator.svelte         — UI: calls transliterate(), swap direction, clipboard, localStorage persistence
 src/utils/alphabet.js         — getAlphabet(scriptType): letters for the alphabet table (Albanian order, then script extras; Vithkuqi also capitals)
-src/components/AlphabetGrid.svelte           — clickable alphabet table, opened by the keyboard icon only in script → Latin direction: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
+src/alphabet.svelte.js        — shared `alphabet.open` state; App hides the floating theme button while the alphabet is open
+src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile toggles capitals), opened by the keyboard icon only in script → Latin direction: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
 src/components/TopSection.svelte             — heading + Navbar
 src/router.svelte.js                         — reactive router state + navigate()
 src/components/Navbar.svelte                 — links to the three routes

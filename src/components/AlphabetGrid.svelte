@@ -5,44 +5,42 @@
   let { scriptType, scriptLang, onpick } = $props();
 
   const groups = $derived(getAlphabet(scriptType));
+  // scripts with capitals (Vithkuqi) get a shift key that toggles between the groups
+  const capitals = $derived(groups.find(group => group.name === 'capitals'));
+  let shift = $state(false);
+  const letters = $derived(shift && capitals ? capitals.letters : groups[0].letters);
 </script>
 
-<div class="alphabet">
-  {#each groups as group (group.name)}
-    {#if groups.length > 1}
-      <span class="group-label">{group.name}</span>
-    {/if}
-    <div class="grid">
-      {#each group.letters as letter (letter.latin)}
-        <button
-          class="tile"
-          type="button"
-          title={`insert ${letter.latin}`}
-          aria-label={letter.latin}
-          onclick={() => onpick(letter.glyph)}
-        >
-          <span class="glyph" lang={scriptLang} aria-hidden="true">{letter.glyph}</span>
-          <span class="latin" aria-hidden="true">{letter.latin}</span>
-        </button>
-      {/each}
-    </div>
+<div class="grid">
+  {#each letters as letter (letter.latin)}
+    <button
+      class="tile"
+      type="button"
+      title={`insert ${letter.latin}`}
+      aria-label={letter.latin}
+      onclick={() => onpick(letter.glyph)}
+    >
+      <span class="glyph" lang={scriptLang} aria-hidden="true">{letter.glyph}</span>
+      <span class="latin" aria-hidden="true">{letter.latin}</span>
+    </button>
   {/each}
+  {#if capitals}
+    <button
+      class="tile shift"
+      class:active={shift}
+      type="button"
+      title={shift ? 'lowercase' : 'capitals'}
+      aria-label="capitals"
+      aria-pressed={shift}
+      onclick={() => shift = !shift}
+    >
+      <span class="glyph" aria-hidden="true">⇧</span>
+      <span class="latin" aria-hidden="true">{shift ? 'abc' : 'ABC'}</span>
+    </button>
+  {/if}
 </div>
 
 <style>
-  .alphabet {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .group-label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.6;
-  }
-
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
@@ -72,6 +70,11 @@
   .glyph {
     font-size: 1.5rem;
     line-height: 1.2;
+  }
+
+  .shift.active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 
   .latin {
