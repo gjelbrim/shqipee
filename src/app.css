@@ -28,13 +28,48 @@
   font-display: swap;
 }
 
+:root {
+  /* colors */
+  --color-bg: #DBE1D5;
+  --color-text: #000;
+  --color-ink: #1d1d1b;        /* lines, links */
+  --color-text-muted: #333;    /* inactive nav links */
+  --color-accent: #c3181e;
+
+  /* layout */
+  --page-padding-x: 80px;
+  --page-padding-y: 20px;
+  --column-gap: 200px;         /* middle column between left and right blocks */
+  --column-min-width: 300px;
+  --accent-bar-width: 14px;    /* red bar left of headings and the note */
+
+  /* type */
+  --font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
+  --font-size-h1: 92px;
+  --font-size-h2: 64px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --page-padding-x: 20px;
+    --page-padding-y: 10px;
+    --accent-bar-width: 7px;
+    --font-size-h1: 64px;
+    --font-size-h2: 48px;
+  }
+}
+
 * {
-  background: #DBE1D5;
-  font-family: "Roboto", "Noto Sans Vithkuqi", "Noto Sans Elbasan", Todhri, sans-serif;
-  max-height: 100%;
+  font-family: var(--font-family);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 /* regular text has always rendered at 500 (Google Fonts only served that weight);
@@ -46,7 +81,7 @@ button {
 }
 
 h2 {
-  font-size: 64px;
+  font-size: var(--font-size-h2);
   margin: 0;
 }
 
@@ -54,7 +89,7 @@ main {
   position: relative;
   max-width: 1600px;
   margin: 0 auto;
-  padding: 20px 80px;
+  padding: var(--page-padding-y) var(--page-padding-x);
   box-sizing: border-box;
   min-height: 100vh;
   display: flex;
@@ -63,22 +98,13 @@ main {
 }
 
 h1 {
-  font-size: 92px;
+  font-size: var(--font-size-h1);
   line-height: 0.9em;
   padding-bottom: 5%;
 }
 
 @media (max-width: 768px) {
-  h2 {
-    font-size: 48px;
-  }
-
   h1 {
-    font-size: 64px;
     text-align: left;
-  }
-
-  main {
-    padding: 10px 20px;
   }
 }

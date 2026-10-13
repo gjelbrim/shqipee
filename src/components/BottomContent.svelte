@@ -83,12 +83,12 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     font-size: 24px;
     font-weight: bold;
     text-decoration: none;
-    color: #1d1d1b;
+    color: var(--color-ink);
     transition: color 0.2s ease;
   }
 
   .credit-link:hover {
-    color: #c3181e;
+    color: var(--color-accent);
   }
 
   .wiki-section {
@@ -99,8 +99,8 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   .wiki-link {
     font-size: 18px;
     text-decoration: none;
-    color: #1d1d1b;
-    border-bottom: 1px solid #1d1d1b;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-ink);
     padding-bottom: 2px;
     display: inline-block;
     width: fit-content;
@@ -108,8 +108,8 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   }
 
   .wiki-link:hover {
-    color: #c3181e;
-    border-bottom-color: #c3181e;
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
   }
 
   .arrow {
@@ -129,7 +129,7 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-left: 14px solid #c3181e;
+    border-left: var(--accent-bar-width) solid var(--color-accent);
     padding-left: 20px;
     transition: all 0.3s ease;
   }
@@ -140,32 +140,35 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   }
 
   .warning-label {
-    color: #c3181e;
+    color: var(--color-accent);
     font-weight: 700;
     margin-bottom: 5px;
   }
 
   .highlight {
-    color: #c3181e;
+    color: var(--color-accent);
     font-weight: 700;
   }
 
   .bottom-content {
+    /* opaque so Chrome keeps subpixel text antialiasing; this block ends up on its
+       own compositing layer next to the output textarea */
+    background: var(--color-bg);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
   .spacer {
-    width: 200px;
-    min-width: 200px;
+    width: var(--column-gap);
+    min-width: var(--column-gap);
   }
 
   .text-left {
     display: flex;
     flex-direction: row;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   .text-left-item {
@@ -177,12 +180,12 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-width: 300px;
+    min-width: var(--column-min-width);
   }
 
   a,
   a:visited {
-    color: black;
+    color: var(--color-text);
     text-decoration: underline;
   }
 
@@ -208,7 +211,6 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     }
 
     .disclaimer-wrapper {
-      border-left-width: 7px;
       padding-left: 15px;
     }
 
