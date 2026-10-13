@@ -77,6 +77,10 @@ Dark mode: `:root[data-theme="dark"]` in `app.css` redefines the color tokens (a
 - `Transliterator.svelte` has one `role="status"` region (`announcement`) for spoken feedback (copy, swap); errors use a visually hidden `role="alert"`. Visible feedback never shifts the layout: the icon turns into a check mark (success) or a red cross (clipboard error) and the line under the field flashes red.
 - Keep a visible focus state for anything focusable; the textareas show it as a red bottom line.
 
+### PWA / offline
+
+`vite-plugin-pwa` (configured in `vite.config.js`) generates `manifest.webmanifest`, `sw.js` and `registerSW.js` at build time; there is no service worker in dev. The service worker precaches the whole build (~350 KB, all four fonts included so every script renders offline, `og-image.png` excluded) and serves `index.html` for navigations (client-side routes, share links), except `/_vercel/*` (Analytics). Updates are silent (`registerType: 'autoUpdate'`): a new version installs in the background and is used from the next start. The manifest has shortcuts to the three scripts. Icons in `public/`: `pwa-192x192.png`, `pwa-512x512.png` (rendered from `favicon.svg`) and `pwa-maskable-512x512.png` (full background, glyph at 72 % so it stays inside Android's safe zone). `vercel.json` serves `sw.js`, `registerSW.js` and the manifest with `max-age=0, must-revalidate`.
+
 ### Routing
 
 `src/router.svelte.js` exports a `$state` object `router` (`router.path`, kept in sync on `popstate`) and `navigate(href)`, which calls `history.pushState` and updates `router.path`. `App.svelte` picks what to render from `router.path` (`/` → Elbasan, `/vithkuqi`, `/todhri`, anything else → `notfound.svelte`). `Navbar.svelte` renders plain `<a>` links whose `onclick` calls `navigate()` and highlights the link matching `router.path`.
