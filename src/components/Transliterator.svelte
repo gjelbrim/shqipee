@@ -594,7 +594,7 @@ onDestroy(() => {
     fill: none;
     stroke: currentColor;
     stroke-width: 2.4;
-    stroke-linecap: round;
+    stroke-linecap: square;
   }
 
   .input-container .input-bottom-line {
