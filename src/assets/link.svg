@@ -1,4 +1,6 @@
 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.5 11.5a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1 1" stroke="black" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M11.5 8.5a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1-1" stroke="black" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="rotate(-45 10 10)">
+<path d="M8 7H2V13H8M12 7H18V13H12" fill="none" stroke="black" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/>
+<path d="M6.5 10H13.5" fill="none" stroke="black" stroke-width="1.7" stroke-linecap="square" stroke-linejoin="miter"/>
+</g>
 </svg>

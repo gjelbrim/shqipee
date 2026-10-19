@@ -5,6 +5,7 @@ import HistoryList from './HistoryList.svelte';
 import { panel } from '../panel.svelte.js';
 import { addEntry, removeEntry, loadHistory, saveHistory } from '../utils/history.js';
 import { buildShareUrl, parseShareParams } from '../utils/shareLink.js';
+import { deleteBackward } from '../utils/textEdit.js';
 import {transliterate} from '../utils/transliterate.js';
 import { onMount, onDestroy } from 'svelte';
 
@@ -202,17 +203,33 @@ const rememberCaret = (event) => {
     caret = {start: event.currentTarget.selectionStart, end: event.currentTarget.selectionEnd};
 };
 
-// insert text (from the alphabet table) at the caret of the input field without
-// focusing it, so the on-screen keyboard of a phone stays closed
-/** @param {string} text */
-const insertAtCursor = (text) => {
+// the alphabet table edits the input at the caret without focusing it, so the on-screen
+// keyboard of a phone stays closed
+const caretRange = () => {
     const start = Math.min(caret?.start ?? inputText.length, inputText.length);
     const end = Math.min(caret?.end ?? start, inputText.length);
-    inputText = inputText.slice(0, start) + text + inputText.slice(end);
-    caret = {start: start + text.length, end: start + text.length};
+    return {start, end};
+};
+/**
+ * @param {string} text
+ * @param {number} position  caret afterwards
+ */
+const setInputFromAlphabet = (text, position) => {
+    inputText = text;
+    caret = {start: position, end: position};
     clearTimeout(saveDebounceTimer);
     saveDebounceTimer = setTimeout(() => saveToStorage(inputText, isLatinToScript), 300);
     scheduleHistory();
+};
+/** @param {string} text */
+const insertAtCursor = (text) => {
+    const {start, end} = caretRange();
+    setInputFromAlphabet(inputText.slice(0, start) + text + inputText.slice(end), start + text.length);
+};
+const deleteAtCursor = () => {
+    const {start, end} = caretRange();
+    const result = deleteBackward(inputText, start, end);
+    if (result.text !== inputText) setInputFromAlphabet(result.text, result.caret);
 };
 
 // input handler: bind:value updates the text; debounce the localStorage write
@@ -316,7 +333,7 @@ onDestroy(() => {
 
 {#snippet panelContent()}
   {#if panel.open === 'alphabet'}
-    <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} />
+    <AlphabetGrid {scriptType} {scriptLang} onpick={insertAtCursor} ondelete={deleteAtCursor} />
   {:else if panel.open === 'history'}
     <HistoryList
       entries={historyEntries}
@@ -577,7 +594,7 @@ onDestroy(() => {
     fill: none;
     stroke: currentColor;
     stroke-width: 2.4;
-    stroke-linecap: round;
+    stroke-linecap: square;
   }
 
   .input-container .input-bottom-line {

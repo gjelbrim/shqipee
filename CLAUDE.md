@@ -33,7 +33,8 @@ src/panel.svelte.js           — shared `panel.open` (null | 'alphabet' | 'hist
 src/utils/history.js          — history per script (localStorage `transliterationHistory:<script>`, max 20): addEntry() merges continued typing into the newest entry and moves repeats to the top
 src/components/HistoryList.svelte            — history entries (restore on click, ✕ removes one, "clear history" needs a second click)
 src/utils/shareLink.js        — buildShareUrl()/parseShareParams(): share links `/<script>?text=…[&from=<script>]`
-src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile — tap for one capital, double tap or hold for caps lock; `shiftAfterTap`/`shiftAfterLetter` in alphabet.js), opened by the keyboard icon only in script → Latin direction. Alphabet and history share one panel slot next to the input: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
+src/utils/textEdit.js         — deleteBackward(): backspace for the alphabet table, removes the selection or the whole letter (grapheme cluster) before the caret
+src/components/AlphabetGrid.svelte           — clickable alphabet table (Vithkuqi: shift tile — tap for one capital, double tap or hold for caps lock; `shiftAfterTap`/`shiftAfterLetter` in alphabet.js; delete tile — deletes on press, repeats while held, Enter/Space delete once), opened by the keyboard icon only in script → Latin direction. Alphabet and history share one panel slot next to the input: a popover over the input heading (desktop/tablet), an inline panel between input and swap button (mobile, `isMobile` via matchMedia at the 768px breakpoint)
 src/components/TopSection.svelte             — heading + Navbar
 src/router.svelte.js                         — reactive router state + navigate()
 src/components/Navbar.svelte                 — links to the three routes
@@ -51,7 +52,7 @@ src/utils/pageMeta.js         — PAGE_META per script (path, title, description
 
 
 - History: the input is added after a 2s typing pause and on copy, share, swap and leaving the page (`commitHistory`).
-- The alphabet popover inserts glyphs at the caret of the input without focusing it (so a phone's keyboard stays closed). Transliterator tracks the caret itself (`caret`), because browsers reset the selection of an unfocused textarea when its value is set.
+- The alphabet popover inserts and deletes glyphs at the caret of the input without focusing it (so a phone's keyboard stays closed). Transliterator tracks the caret itself (`caret`), because browsers reset the selection of an unfocused textarea when its value is set.
 
 ### Fonts
 
