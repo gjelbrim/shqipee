@@ -1,11 +1,12 @@
 <script>
+  import { onDestroy } from 'svelte';
   import { getAlphabet, shiftAfterTap, shiftAfterLetter } from '../utils/alphabet.js';
 
-  // clicking a letter inserts its glyph via onpick
+  // clicking a letter inserts its glyph via onpick; the delete key calls ondelete
   /** @import {Script} from '../utils/scriptTypes.js' */
   /** @import {Letter, ShiftState} from '../utils/alphabet.js' */
-  /** @type {{scriptType: Script, scriptLang: string, onpick: (glyph: string) => void}} */
-  let { scriptType, scriptLang, onpick } = $props();
+  /** @type {{scriptType: Script, scriptLang: string, onpick: (glyph: string) => void, ondelete: () => void}} */
+  let { scriptType, scriptLang, onpick, ondelete } = $props();
 
   const groups = $derived(getAlphabet(scriptType));
   // scripts with capitals (Vithkuqi) get a shift key: a tap gives one capital, a double
@@ -47,6 +48,34 @@
     onpick(letter.glyph);
     shift = shiftAfterLetter(shift);
   };
+
+  // delete key like a phone's backspace: deletes on press and keeps deleting while held.
+  // Pointer presses are handled on pointerdown; clicks without a pointer (Enter or Space,
+  // event.detail 0) delete once
+  const REPEAT_DELAY_MS = 500;
+  const REPEAT_MS = 100;
+  /** @type {ReturnType<typeof setTimeout> | undefined} */
+  let repeatTimer;
+  /** @param {PointerEvent} event */
+  const startDelete = (event) => {
+    if (event.button !== 0) return;
+    ondelete();
+    clearTimeout(repeatTimer);
+    const repeat = () => {
+      ondelete();
+      repeatTimer = setTimeout(repeat, REPEAT_MS);
+    };
+    repeatTimer = setTimeout(repeat, REPEAT_DELAY_MS);
+  };
+  const stopDelete = () => clearTimeout(repeatTimer);
+  /** @param {MouseEvent} event */
+  const clickDelete = (event) => {
+    if (event.detail === 0) ondelete();
+  };
+  onDestroy(() => {
+    clearTimeout(repeatTimer);
+    clearTimeout(longPressTimer);
+  });
 </script>
 
 <div class="grid">
@@ -82,6 +111,21 @@
       <span class="latin" aria-hidden="true">{shift === 'off' ? 'ABC' : shift === 'once' ? 'Abc' : 'ABC lock'}</span>
     </button>
   {/if}
+  <button
+    class="tile delete"
+    type="button"
+    title="delete · hold to keep deleting"
+    aria-label="delete"
+    onclick={clickDelete}
+    onpointerdown={startDelete}
+    onpointerup={stopDelete}
+    onpointerleave={stopDelete}
+    onpointercancel={stopDelete}
+    oncontextmenu={(event) => event.preventDefault()}
+  >
+    <span class="glyph" aria-hidden="true">⌫</span>
+    <span class="latin" aria-hidden="true">delete</span>
+  </button>
 </div>
 
 <style>
@@ -119,7 +163,8 @@
   }
 
   /* no double-tap zoom or long-press callout on touch screens */
-  .shift {
+  .shift,
+  .delete {
     touch-action: manipulation;
     user-select: none;
     -webkit-user-select: none;
