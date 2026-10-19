@@ -137,11 +137,6 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
     transition: all 0.3s ease;
   }
 
-  .about-wrapper:hover {
-    border-left-width: 18px;
-    padding-left: 16px;
-  }
-
   .accent-label {
     color: var(--color-accent);
     opacity: 1;  /* .label's 0.6 would drop the red below 4.5:1 contrast */
@@ -218,11 +213,6 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
 
     .about-wrapper {
       padding-left: 15px;
-    }
-
-    .about-wrapper:hover {
-      border-left-width: 10px;
-      padding-left: 12px;
     }
   }
 </style>
