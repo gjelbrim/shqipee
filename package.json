@@ -17,7 +17,7 @@
     "svelte-check": "^4.7.6",
     "svelte-copy": "^2.0.0",
     "typescript": "^6.0.3",
-    "vite": "^8.3.4",
+    "vite": "^8.3.5",
     "vite-plugin-pwa": "^2.0.0",
     "vitest": "^5.0.5"
   },
