@@ -3,6 +3,7 @@
   import { ScriptType } from './utils/scriptTypes.js';
   import ScriptRoute from './routes/ScriptRoute.svelte';
   import NotFound from './routes/notfound.svelte';
+  import AboutRoute from './routes/AboutRoute.svelte';
   import ThemeToggle from './components/ThemeToggle.svelte';
   import { panel } from './panel.svelte.js';
 
@@ -21,6 +22,8 @@
   {#key scriptType}
     <ScriptRoute {scriptType} />
   {/key}
+{:else if router.path === '/about'}
+  <AboutRoute />
 {:else}
   <NotFound />
 {/if}

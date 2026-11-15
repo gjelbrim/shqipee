@@ -2,6 +2,8 @@
   import TopSection from "../components/TopSection.svelte";
   import Transliterator from "../components/Transliterator.svelte";
   import BottomContent from "../components/BottomContent.svelte";
+  import ProjectFooter from "../components/ProjectFooter.svelte";
+  const MOCK_LINK = new URLSearchParams(location.search).get('link');
   import { PAGE_META, applyPageMeta } from "../utils/pageMeta.js";
 
   /** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
@@ -15,4 +17,5 @@
   <TopSection {scriptType} />
   <Transliterator {scriptType} />
   <BottomContent {scriptType} />
+  {#if MOCK_LINK === 'c'}<ProjectFooter />{/if}
 </main>

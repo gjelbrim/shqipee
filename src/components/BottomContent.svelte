@@ -2,6 +2,8 @@
 import {ScriptType} from '../utils/scriptTypes.js';
 /** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
 let { scriptType } = $props();
+const MOCK_LINK = new URLSearchParams(location.search).get('link');
+import { navigate } from '../router.svelte.js';
 
 const SCRIPT_INFO = {
     [ScriptType.ELBASAN]: {
@@ -60,6 +62,14 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
           read about {scriptName} on wikipedia <span class="arrow" aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>
         </a>
       </div>
+      {#if MOCK_LINK === 'b'}
+        <div class="wiki-section project-section">
+          <span class="label">about</span>
+          <a href="/about" class="wiki-link" onclick={(e) => { e.preventDefault(); navigate('/about' + location.search); }}>
+            read about this project <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      {/if}
     </div>
   </div>
 
@@ -98,6 +108,10 @@ const scriptName = $derived(SCRIPT_INFO[scriptType] ? scriptType : "");
   .wiki-section {
     display: flex;
     flex-direction: column;
+  }
+
+  .project-section {
+    margin-top: var(--space-block);
   }
 
   .wiki-link {

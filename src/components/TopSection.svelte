@@ -1,15 +1,17 @@
 <script>
     import Navbar from "./Navbar.svelte";
     import {ScriptType} from '../utils/scriptTypes.js';
-    /** @type {{scriptType: import('../utils/scriptTypes.js').Script}} */
-    let { scriptType } = $props();
+    /** @type {{scriptType?: import('../utils/scriptTypes.js').Script, heading?: [string, string]}} */
+    let { scriptType, heading } = $props();
 </script>
 
   <!-- same columns as the transliterator below (left column, gap, right column), so the
        nav starts on the edge of the right column; stacked and mobile: nav under the heading -->
   <div class="top-section">
     <div class="headingTop">
-        {#if scriptType === ScriptType.ELBASAN}
+        {#if heading}
+            <h1>{heading[0]} <br> {heading[1]}</h1>
+        {:else if scriptType === ScriptType.ELBASAN}
             <h1>elbasan <br> alphabet</h1>
         {:else if scriptType === ScriptType.VITHKUQI}
             <h1>vithkuqi <br> alphabet</h1>
