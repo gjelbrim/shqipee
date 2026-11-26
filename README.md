@@ -35,7 +35,7 @@ Digraphs such as `sh`, `gj` or `xh` become one letter where the script has one. 
 
 ## Development
 
-Requires Node.js 22.
+Requires Node.js 24.22.1.
 
 ```bash
 npm ci            # install dependencies

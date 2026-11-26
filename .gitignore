@@ -223,5 +223,7 @@ tags
 .ionide
 
 .claude/
+.omc/
+graphify-out/
 
 # End of https://www.toptal.com/developers/gitignore/api/vim,macos,svelte,visualstudiocode,node
