@@ -10,7 +10,7 @@ Thanks for helping! Bug reports, corrections to the character maps and small imp
 
 ## Setup
 
-Requires Node.js 22.
+Requires Node.js 24.22.1.
 
 ```bash
 git clone https://github.com/gjelbrim/shqipee.git
